@@ -1,0 +1,155 @@
+How to work with annotations aspart of the Spring Framework?
+The support of working with annotations aspart of the Spring Framework has been added from spring 2.5+ onwards, and the spring has added incrementally the support of working with annotations
+
+1. @Required
+by default the setter injection properties are optional to be injected for an bean definition, the ioc container instantiates the object of the target bean even the dependent properties are not injected. but somtimes we want to mandate the setter injection properties aswell, unless the setter properties are provided/configured with their dependencies we dont want ioc container to instantiate the object of Target, this can be achieved using @Required annotation
+
+class EMail {
+	String subject;
+	String body;
+	MailAddress from;
+	MailAddress to;
+	
+	public void setSubject(String subject) {}
+	@Required
+	public void setBody(String body) {}
+	@Required
+	public void setFrom(MailAddress from) {}
+	@Required
+	public void setTo(MailAddress to) {}	
+}
+
+class MailAddress {
+	String emailId;
+	String domain;
+	
+	public void setEmailId(String emailId) {}
+	public void setDomain(String domain) {}
+}
+
+application-context.xml
+-----------------------
+<bean id="email" class="EMail">
+	<property name="subject" value="test mail"/>
+	<property name="body" value="test to @Required annotation"/>
+</bean>
+
+<context:annotation-config/>
+
+
+Test.java
+---------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+EMail email = beanFactory.getBean("email", EMail.class);
+sop(email);
+
+ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+EMail email = context.getBean("email", EMail.class);
+sop(email);
+
+Annotations can be written at #5 places within an class
+1. Class level
+2. Attribute Level
+3. Method Level
+4. Constructor Level
+5. Parameter/Arguments Level	
+depends on the place where we want to bind the configuration in a give class, we attach the annotation to that specific place/level. The annotation author designates/defines an annotation can be applied at what places based on the nature of usage
+
+@Required annotation = is used for enforcing or mandating the setter injected properties for a bean definition, so it has to be written on the corresponding setter, indicating the ioc container which setter injection is mandatory
+
+How does annotations works in Spring framework?
+-----------------------------------------------	
+The annotations are not integral part or not planned from initial release of the spring framework, the ioc container has not been designed to work with or around annotations. Later versions of the spring framework has added the support of annotations, so to enhance the capability of the ioc container and add additional functionality the spring developers has choosen the path of PostProcessors
+Annotations in spring framework works based on BeanPostProcessor and BeanFactoryPostProcessor.
+	
+For eg.. incase of @Required annotation, for across all the bean definitions that are instantiated by the ioc container, we need to perform a common post processing.
+after instantiating the object of a bean definition, after performing the dependency injection, before the bean is placed in the ioc container, we want to check whether the attributes annotated with corresponding setters with @Required are configured and injected with dependencies or not, this can be done easily by writing an BeanPostProcessor
+
+There are #2 common myths interms of annotations exists in market for spring framework
+1. BeanFactory doesnt support annotations, we need to mandatorily creating ioc container using ApplicationContext to work with annotations
+2. By default annotations will not work, we need to enable annotations in spring framework asking the ioc container to read annotations using
+<context:annotation-config/> tag
+
+Let us answer each of the above myths
+1.
+The Spring Framework has provided BeanFactoryPostProcessor or BeanPostProcessor for each annotation depends on the nature/type of the annotation.
+For an @Required annotation, the spring has provided RequiredAnnotationBeanPostProcessor, same way for @Autowired annotation the spring has provided AutowiredAnnotationBeanPostProcessor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
