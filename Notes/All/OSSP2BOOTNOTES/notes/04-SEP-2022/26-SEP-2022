@@ -1,0 +1,128 @@
+The SpringApplication.run(Config.class, args) will detects and loads the external configuration into the environment object of our application from various different places as described below.
+1. if we have enabled devtools, then it looks for spring-boot-devtools.properties under the user home directory and loads into the environment object
+2. it looks for an environment variable with name SPRING_APPLICATION_JSON populated with JSon object as value. it parses the key/value pair of the JSon object and loads into the env object 
+3. loads the init-param and context-param of an web application
+4. env variables
+5. jvm system properties
+6. RandomValueSourceProperty we declared in application.properties|yml
+7. detects and loads application.properties|yml from below directory locations
+	1. under the project directory
+	2. under the config subdirectory of the project
+	3. from the classpath location of the project
+	4. from the config subdirectory under the classpath of the project
+
+
+@Component
+class Toy {
+	@Value("${toyName}")
+	String toyName;
+	@Value("${price}")
+	double price;
+}
+
+	
+@SpringBootApplication	
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		Toy toy = context.getBean(Toy.class);
+		sop(toy);
+	}
+}	
+
+#1
+[project directory] [projectdir/config] [classpath][classpath/config]
+application.properties
+toyName=Toy Train
+price=2000
+(or)
+	
+#2	
+set SPRING_APPLICATION_JSON={"toyName": "Super Car", "price": 4030}
+java -jar ExtConfig.jar
+
+(or)
+	
+#3
+set toyName=Teddy
+set price=100
+java -jar ExtConfig.jar
+
+
+#4
+java -DtoyName=flyingcar -Dprice=9393 -jar extConfig.jar
+
+(or)
+	
+#5
+application.properties
+price=${random.long}
+toyName=${random.string}
+------------------------------------------------------------------------------------------------------------------------
+How to customize the Spring boot application using Fluent builder api?
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

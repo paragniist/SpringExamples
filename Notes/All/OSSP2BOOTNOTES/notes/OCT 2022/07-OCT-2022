@@ -1,0 +1,8 @@
+event-driven programming
+event-driven programming is a programming technic or a programming paradigm in which the flow of execution of the program is determined based on the events being exchanged between the programs of the application
+There are several reasons for using event driven programming model
+1. by adopting an event-driven programming model, the components of our application will become completely loosely coupled, without knowing the interfaces of each other the components can exchange events and communicate with each other
+2. through event-driven programming model we achieve asynchronous communication between the programs of our application
+3. even-driven programming only allow one-way communication between the programs
+
+							

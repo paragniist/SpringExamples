@@ -1,0 +1,109 @@
+How to use our own custom yaml file to be loaded into the env object of the ioc container, so that we can use those values in injecting them into the attributes the bean definitions?
+There are 2 ways are there
+1. YamlPropertySourceLoader
+2. YamlFactoryBean
+
+
+#1. YamlPropertySourceLoader
+YamlPropertySourceLoader is a class that help us in coverting an YAML file into the PropertySource object, but it will no load the PropertySource into the environment object of the ioc container.
+	
+Now its the developers responsibility to load the PropertySource object that is provided by the PropertySourceLoader into the env object of the ioc container.
+	
+but when to load the PropertySource into env object of the ioc container?
+after the ioc container has been created with the env object, after the bean definitions are loaded into the ioc container, before ioc container instantiates the objects for the bean definitions we need to perform intialization ontop of the ioc container by adding PropertySource into the env object 
+
+Who is creating the ioc container and refreshing it?
+SpringApplication class is creating the ioc container with the env object and refreshing it.
+	
+Then how can we perform additional operation ontop of the ioc container that is created by the SpringApplication?
+The SpringApplication to help us in performing additional operation on top of the ioc container before refreshing the context, it invokes ApplicationContextInitializer interface implementation class by passing ioc container
+	
+So it is the developers responsibility in writing an implementation class for ApplicationContextInitializer and register with SpringApplication class, so that SpringApplication class invokes the ApplicationContextInitializer implementation at the appropriate stage in booting up the Spring Boot application which means after creating the ioc, after loading bean definitions before invoking refresh on the ioc container
+
+@Component
+@ConfigurationProperties(prefix="airTicket")
+class AirTicket {
+	private String pnrNo;
+	private String source;
+	private String destination;
+	private String flightNo;
+	private double price;
+	// accessors
+}
+
+config.yml
+-----------
+airTicket:
+	source: hyderabad
+	destination: new york
+	pnrNo: p9383
+	flightNo: f3830
+	price: 145000
+		
+class YamlConfigLoaderApplicationContextInitializer implements ApplicationContextInitializer {
+	public void initialize(ConfigurableApplicationContext context) {
+		YamlPropertySourceLoader yamlPropertySourceLoader = new YamlPropertySourceLoader();
+		List<PropertySource> propertySources = yamlPropertySourceLoader.load(context.getResource("classpath:config.yml"));
+		
+		ConfigurableEnvironment env = context.getEnvironment();
+		
+		for(PropertySource propertySource : propertySources) {
+			env.getPropertySources().add(propertySource);
+		}
+	}
+}
+
+@SpringBootApplication
+class BootApplication {
+	public static void main(String[] args) {
+		YamlConfigLoaderApplicationContextInitializer initializer = new YamlConfigLoaderApplicationContextInitializer();
+		//ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		SpringApplicationBuilder builder = new SpringApplicationBuilder(BootApplication.class).initializers(initializer);
+		SpringApplication springApplication = builder.build();
+		ApplicationContext context = springApplication.run(args);
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

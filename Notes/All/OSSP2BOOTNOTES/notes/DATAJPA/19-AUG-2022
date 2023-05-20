@@ -1,0 +1,134 @@
+#1. Entity class
+
+@Entity
+@Table(name="bus")
+class Bus {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	int busNo;
+	String rtaRegistrationNo;
+	String model;
+	String manufacturer;
+	String chasisNo;
+	String engineNo;
+	LocalDate dateOfRegistration;
+	double price;
+	//accessors
+}
+
+@Configuration
+@PropertySource("classpath:db.properties")
+class PersistenceConfig {
+	@Bean
+	public DataSource dataSource(@Value("${db.driverClassname}") String driverClassname, @Value("${db.url}") String url, @Value("${db.username}") String username, @Value("${db.password}") String password) {}
+	
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(DataSource dataSource) {
+		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+		
+		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+		jpaVendorAdapter.setShowSql(true);
+		jpaVendorAdapter.setGenerateDdl(true);
+		
+		entityManagerFactoryBean.setDataSource(dataSource);
+		entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+		entityManagerFactoryBean.setPackagesToScan("com.jpa.entities");
+		return entityManagerFactoryBean;
+	}
+	@Bean
+	public JpaTransactionManager jpaTransactionManager(EntityManagerFactory emf) {}
+	@Bean
+	public JpaTemplate jpaTemplate(EntityManagerFactory emf) {}
+}
+
+Spring DataJpa
+--------------
+Spring DataJpa is a module introduced by the spring framework to eliminate completely the boiler-plate logic that we write in performing persistence operations while work with jpa api using spring framework. The spring datajpa completely eliminates the need of writing Dao in an application.
+	
+	
+How does spring datajpa works, and how does it eliminates the boiler-plate logic that has to be written in the daos of our application.
+The SpringDataJpa uses the runtime proxy generation capabilities in eliminating the boiler-plate logic
+
+
+Spring DataJpa works based on Proxy design pattern?
+Proxy are surrogates or substitutes of the original class, proxies looks same as the original class, when we communicate with proxy or the original the post effect of them would be same.
+When we talk to proxy it internal goes and talks to the original object and provides the outcome of original to us
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

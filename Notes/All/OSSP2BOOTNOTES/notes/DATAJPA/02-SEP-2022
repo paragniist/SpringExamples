@@ -1,0 +1,266 @@
+How to work with performing update operation on an entity class while working with datajpa?
+By default when we bind a method with query in datajpa, it treats it as an select query and performs the getResultList() operation on TypedQuery object internally. but when we bind an DML query like insert/update/delete on to the method of repository, we need to indicate dataJpa not to fetch resultList rather perform update operation and fetch rows effected by using @Modifying annotation on the method.
+	
+	
+interface TripRepository extends JpaRepository<Trip, Integer> {
+	@Query("from Trip t where t.days >= ?1")
+	public List<Trip> getTripsByDays(int days);
+	
+	@Modifying
+	@Query("update Trip t set t.source=?2 t.destination=?3 where t.tripNo=?1")
+	public int updateSourceAndDestinationByTripNo(int tripNo, String source, String destination);
+}	
+------------------------------------------------------------------------------------------------------------------------
+Projections
+-----------
+
+By default the methods of the datajpa repositories returns the List of entity objects populating with all the columns of data. but we dont wanted the entire columns of data from the table while quering we wanted to fetch only a subset of columns from the data which can be done through projections
+
+select * from table where columnName=value
+      ----   --------     -----------------
+			 |					|			 		       |
+		projection  from clause		 criteria
+
+projection indicates what columns of data from the records of table we wanted to fetch, by default the repository methods fetches the entire record of information and populates into the entity object, if we dont wanted entire columns of each record from the table we need to use projections
+
+There are multiple types of projections are supported by datajpa
+1. interface-based projection
+	1.1 closed projection
+	1.2 open projection
+2. class-based projection
+3. dynamic projection
+
+
+1. interface-based projection
+we define interface declared with getter methods corresponding to the attributes of the entity class. Instead of return List<Entity> as a return type we return List<Interface> for which datajpa creates an runtime proxy object and populates only those subset of columns of data into those objects and returns to us. There are 2 types of interface-based projections
+
+1.1 closed projection
+In closed projections we delcare the getter methods corresponding to the attributes of the entity class we wanted query. 
+
+class Trip {
+	int tripNo;
+	String source;
+	String destination;
+	LocalDate plannedDate;
+	int days;
+	double estimatedCost;
+	// accessors
+}
+
+interface QuickTrip {
+	String getSource();
+	String getDestination();
+	int getDays();
+}
+
+interface TripRepository extends JpaRepository<Trip, Integer> {
+	List<QuickTrip> findByDays(int days);
+}
+
+#2. open projection
+in case of open projections instead of declare getter methods matching with the entity class attributeNames, we declare any random names for the method that makes more meaningful and bind these methods with the attributes of the entity class using expressions
+	
+interface HolidayTrip {
+	@Value("#{target.tripName}")
+	String getVacationName();
+	@Value("#{target.source}")
+	String getHolidayFrom();
+	@Value("#{target.destination}")
+	String getHolidayDestination();
+	@Value("#{target.days}")
+	int getHolidayDays();
+}	
+
+target = points to the entity object we are reffering to access the data
+------------------------------------------------------------------------------------------------------------------------
+2. class-based projection
+Instead of using an interface for choosing the columns we use class
+	
+class QuickTrip {
+	String source;
+	String destination;
+	int days;
+	public QuickTrip(String source, String destination, int days) {}
+	// getters
+}	
+------------------------------------------------------------------------------------------------------------------------
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

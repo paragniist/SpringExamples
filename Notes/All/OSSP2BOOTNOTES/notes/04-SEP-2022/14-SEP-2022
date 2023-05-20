@@ -1,0 +1,263 @@
+How many ways we can setup a spring boot project?
+It is recommended to use a build tool in setting up/creating an spring boot project
+
+Incase of Maven:
+There are 3 ways in setting up an spring boot project are there
+1. maven project with starter dependencies & plugins configured directly
+boot-maven
+|-src
+  |-main
+		|-java
+		|-resources
+|-pom.xml
+dependencies:
+|-org.springframework.boot:spring-boot-starter:2.7.3
+plugins:
+|-spring-boot-maven-plugin
+
+2. using spring-boot-parent project
+This is the most commonly used approach in creating an spring boot project while working with maven.
+	
+
+To quickly setup an spring boot project, the spring boot team has provided starter dependencies. To setup an spring framework application the developers has spend lot of time in
+1. identifying the module dependencies based on technology of the project and their cross module dependencies of the spring framework along with their compatibile verions
+2. these spring framework modules requires third-party dependencies and we need to add them into the project to make the project functional
+	2.1 identifying which third-party libraries are required for working with the spring framework modules is difficult
+	2.2 in addition we need to take care of version compatabilities
+	
+From the above we can understand developer needs to go in trail/error basis in identifying and setting up an spring framework application
+
+To overcome the above problem spring boot has provided starter dependencies. starter dependencies works based on maven transitive dependency mechanism 
+
+The spring boot development team has identified most commonly used technologies in developing a project. For each popular/frequently used technologies they created starter dependencies
+
+For eg.. people common develop web applications so spring boot has provided spring-boot-starter-web. 
+each starter dependency is nothing but an empty jar attached with pom file. In this pom.xml of the starter artifact the spring boot team has declared
+1. spring framework modules to work on that technology
+2. other dependent spring framework modules with their relevant compatible versions
+3. third-party libraries with their compatible verions 
+and publised into maven central repository
+
+so when we add spring-boot-starter-web as a dependency in our project, all of the transitive dependencies declared as part of the starter dependency also will be added to our project.
+		
+In this way spring boot developers has created lot of starter dependencies for each technology we use commonly and published them into maven repository. each of the starter dependencies are associated with gav coordinates as
+groupId=org.springframework.boot
+artifactId=spring-boot-starter-*
+
+There is an base starter provided by spring boot called spring-boot-starter which has the spring core and the required module dependencies commonly required across all the starters of spring boot
+
+
+Spring Framework 4
+	spring-core-4.0
+	spring-aop-4.0
+	
+spring-boot:2.2
+	spring-boot-starter:2.2
+	spring-boot-starter-web:2.2
+	spring-boot-starter-datajpa:2.2
+		
+Spring Framework 4.5
+ spring-boot: 2.5
+	 
+
+How to upgrade to the newer version of the spring framework while working with spring boot?
+upgrading to an newer of the spring frameworks means upgrade all the spring boot starter dependencies and spring boot plugins used in the project, so that we move to the newer version of the spring framework
+
+From the above we can understand upgrading from one version of the spring boot to a newer version is a tedious job because we need to modify all the starter dependencies and plugins configured in our project
+
+To overcome the above project spring boot developers has provided an common parent project called spring-boot-starter-parent
+
+spring-boot-starter-parent:2.2
+|-pom.xml
+  |-packaging="pom"
+	|-dependencyManagement
+		|-spring-boot-starter-*
+	|-pluginManagement
+		|-spring-boot-plugins
+		
+bootmaven
+|-pom.xml
+  parent:
+   spring-boot-starter-parent:2.2
+		 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

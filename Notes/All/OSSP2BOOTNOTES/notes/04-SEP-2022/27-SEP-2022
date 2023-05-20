@@ -1,0 +1,6 @@
+Fluent builder api
+
+What is builder design pattern?
+Builder is an creational design pattern out of GOF design patterns. There are 2 main creational design patterns are there which are Factory and Builder.
+	
+Factory = Factory is used for creating the object of another class. 

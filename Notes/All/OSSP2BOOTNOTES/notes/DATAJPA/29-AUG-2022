@@ -1,0 +1,71 @@
+Spring DataJpa works based on Runtime proxies, for each entity class we need to create an Repository interface so that DataJpa creates an Runtime proxy on top of the interface to perform persistence operations on that entity class
+The base interface in DataJpa is Repository, it is an marker interface, from the Repository we have an sub-interface called "CRUDRepository"	
+	
+interface CRUDRepository<T, ID> {
+	T save(T t);
+	void delete(T t);
+	long count();
+  T	findById(ID id);
+	Iterable findAll();
+	boolean existsById(ID id);
+}
+
+Instead of using CRUDRepository interface, the datajpa has provided sub-interfaces for each technology
+1. JPARepository
+2. MongoRepository
+
+There is an special interface called PaginationAndSortingRepository which has supported methods for pagination and sorting functionality in accessing the data.
+There are 2 interfaces are there
+1. Sort
+2. Pageable
+
+interface PaginationAndSortingRepository extends CRUDRepository {
+	Iterable findAll(Sort sort);
+	Iterable findAll(Pageable pageable);
+}
+
+Pageable = object we populate pageSize and pageNo, upon passing the Pageable object with necesarry attributes of data, the datajpa proxy itself queries and returns the subset of records
+
+Sort = object into which we can populate sort column of the table we want to find the data
+
+
+JPARepository is an interface that extends from PaginationAndSortingRepository, which means when we write our Repository interface from JPARepository, then we have both Sort and Pagination capabilities
+
+interface JPARepository extends PaginationAndSortingRepository {}
+
+------------------------------------------------------------------------------------------------------------------------
+How to query the data from database by using various different filter conditions using datajpa?
+To query the data for an entity class we need to write jpql query and substitution parameters 
+
+TypeQuery<Trip> typedQuery = entityManager.createQuery("from Trip where days > :days", Trip.class);
+typedQuery.setParameter("days", days);
+List<Trip> trips = typedQuery.getResultList();
+
+For executing any jpql query the code we need to write would be same only the change is the jpql query and the position parameters we substitute. so again it looks like boiler-plate logic in executing the queries. The datajpa eliminates us to write the queries and execute them by writing above code.
+	
+DataJpa supports 2 types of queries
+1. derived queries
+2. declared queries
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

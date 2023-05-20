@@ -1,0 +1,126 @@
+Configuration Properties in Spring Boot
+----------------------------------------
+
+@Component
+@ConfigurationProperties(prefix="policy")
+class Policy {
+	//@Value("${policyNo}")
+	String policyNo;
+	//@Value("${policyHolderName}")
+	String policyHolderName;
+	//@Value("${planName}")
+	String planName;
+	//@Value("${tenure}")
+	int tenure;
+	//@Value("${sumInsurred}")
+	double sumInsurred;
+	//@Value("${planType}")
+	String policyType;
+	
+	// accessors
+}
+
+
+application.properties
+----------------------
+policy.policyNo=p03938
+policy.policyHolderName=Rod
+policy.planName=UniversalCover
+policy.tenure=24
+policy.sumInsurred=500000
+policy.policyType=Medical
+
+application.yml
+----------------
+policy:
+	policyNo: 9383
+	policyHolderName: rod
+	planName: Universal Coverage
+	tenure: 24
+	sumInsurred: 500000
+	policyType: Medical
+
+@SpringBootApplication
+@EnableConfigurationProperties
+class ConfigurationPropertiesApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(ConfigurationPropertiesApplication.class,args);
+		Policy policy = context.getBean(Policy.class);
+		sop(policy);
+	}
+}
+
+If we want to perform primitive dependency injection for a bean definition attributes, we need to @Value annotation for all the attributes of a class, if we have more number of attributes into which we want to inject primitive values, we need to more @Value annotations, which takes lot of time
+
+To overcome the above problem Spring Boot developers has provided ConfigurationPropertiesBeanPostProcessor. BeanPostProcessors are used for applying common post processing logic across all the bean definitions that are instantiated by the ioc container before these bean definitions are placed inside the ioc container
+
+To apply an BeanFactoryPostProcessor or BeanPostProcessor we need to configure it as bean definition within ioc container, if we create ioc container with ApplicationContext, it will gets automatically registered witin in ioc container upon defining it as bean definition.
+	
+To apply ConfigurationPropertiesBeanPostProcessor we need to even configure it as bean definition within the ioc container, but Spring boot has provided spring-boot-configuration-processor maven dependency and has to write @EnableConfigurationProperties on Application class to make it as  bean definition
+
+Now the ConfigurationPropertiesBeanPostProcessor will be called for each bean definition after ioc container has created the object of the bean definition before performing lifecycle management activities it will call ConfigurationPropertiesBeanPostProcessor.
+	
+Now the ConfigurationPropertiesBeanPostProcessor will pick up the attributeName of the primitive attributes from the class/beandefinition and searches within the env object of the ioc container to identify is there any property exists matching with the attribtueName if yes, injects as primitive value into the attribute 
+
+But we dont want the ConfigurationPropertiesbeanPostProcessor to perform primtiive injection for all the bean definitions, we want it to apply for few or specific bean definitions only. So the SpringBoot has provided an @EnableConfigurationProperties annotation that should be written ontop of the classes for whom we want to apply ConfigurationPropertiesBeanPostProcessor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

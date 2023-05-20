@@ -1,0 +1,93 @@
+How does spring boot mvc application works, what are the bootstrapping steps that are taken place internally when we call SpringApplication.run(Config.class, args)?
+When it comes to Spring boot mvc application, we didnt packaged our appliation as an war file, we didnt deployed our application on a servlet container, we just run our application by invoking SpringApplication.run(Config.class, args) then how does our application is running
+1. We didnt configured DispatcherServlet or ContextLoaderListener, where these components are coming from, does these exists, if yes who has taken care of configuring them?
+2. Where are the spring mvc components configured like HandlerMapping, ViewResolvers in handling the request?
+3. Who has deployed the application on EmbeddedServlet container and started it?
+	
+Let us try to understand how does these comes into picture by exploring the internal flow.
+When we run SpringApplication.run(Config.class, args):
+1. create an empty environment object
+2. detects and loads the external configuration of our application into the environment object
+3. print banner
+4. detects the WebApplicationType based on the dependencies added to the classpath of our application
+	4.1 if webmvc jar dependencies are found it treats the WebApplicationType = WEB and
+		instantiates AnnotationConfigServletWebServerApplicationContext
+	4.2 if webflux jar dependencies are found it treats the WebApplicationType = REACTIVE and
+		instantiates AnnotationConfigReactiveWebServerApplicationContext
+	4.3 otherwise it treats the WebApplicationType = NONE and
+		instantiates AnnotationConfigApplicationContext
+while working with springboot mvc application we add spring-boot-starter-web there by which the mvc jars are found under the classpath, so SpringApplication.run(..) will instantiates AnnotationConfigServletWebServerApplicationContext
+5. identifies, instantiates and registers spring factories to the ioc container (auto-configuration classes)
+6. invokes ApplicationContextInitializer
+ApplicationContextInitializer is used for performing post construction activity upon creating the ioc container before instantiating the beans
+7. prepareContext()
+8. refreshContext()
+
+Within the refreshContext() method, it internally invokes onRefresh() method on AnnotationConfigServletWebServerApplicationContext
+|-ServletWebServerApplicationContext
+	
+	
+8.1 upon refreshing the ioc container all of the bean definitions within the ioc container are fully instantiated, which means our application is ready for deployment, since the ioc container knows that all the bean definitions are fully instantiated and ready let the ioc container itself take the responsibility of deploying the application on embedded servlet container
+
+In spring boot application, most of the responsibilities are handled by the SpringApplication class itself, but when it comes to deploying the application into the Embedded Servlet container, why does AnnotationConfigServletWebServerApplicationContext taking the responsibility?
+	
+deploying and managing the application on a servlet container is a specific job related to webmvc/reactive applications only and having it aspart of SpringApplication class will apply to all the types of applications which doesnt makes sense. So to make it applicable only to web/reactive applications, they have provided Specialized implementations of ApplicationContext called
+AnnotationConfigServletWebServerApplicationContext
+AnnotationConfigReactiveWebServerApplicationContext
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

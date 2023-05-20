@@ -1,0 +1,76 @@
+Spring Boot Exit code
+----------------------
+Every program upon completing the execution, to indicate the status of the completion as success/failure it has to return an exitcode to the underlying operating system.
+1. Zero = if the program returns an exitcode as zero to the operating system it indicates success.
+2. Non-Zero = if the program returns an non-zero exitcode, to the operating system means, there is an failure in executing the program.
+	
+In case of java program also it has to return an exitcode upon the completion indicating the status of the execution. The default behaviour of the java program is
+= if the program completed execution successfully without an exception, then jvm automatically returns an exitcode of zero indicating the successful completion
+= if the java program while running ran into an un-checked exception and reported to the jvm, then jvm indicating the failure returns an non-zero exitcode to the operating system
+
+By default jvm returns an exitcode indicating the failure, we can customize the exitcode being returned by the jvm with an exitcode being returned from the program itself.
+	
+System.exit(exitCode);
+
+How can we handle exitcode in Spring Boot Application?
+Spring Boot Applications are just any java applications only, so the default behaviour of java application will be applicable to spring boot application aswell. if the spring boot application completed successfully without any exception it returns zero exitcode, otherwise an non-zero exitcode
+
+But sometimes we wanted to customize the exitcode of the springboot application can we use System.exit(exitCode)?
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

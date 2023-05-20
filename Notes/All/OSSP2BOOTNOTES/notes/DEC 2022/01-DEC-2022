@@ -1,0 +1,95 @@
+1. how to customize the embedded servlet container?
+	1.1 configuration approach
+	1.2 using programmatic approach
+	
+2. how to switch to a different embedded servlet container?
+
+3. how to deploying spring boot webmvc application on a standalone container and run it as an bootJar application aswell?
+------------------------------------------------------------------------------------------------------------------------
+1. How to customize the embedded servlet container in spring boot?
+The AnnotationConfigServletWebServerApplicationContext is taking care of instantiating and deploying the application on the Embedded Servlet container. It takes the help of ServletWebServerFactory in creating the object of WebServer with appropriate configuration.
+	
+The ServletWebServerFactory implementations holds the configuration values with which they has to instantiate the WebServer implementation object. The WebServerFactoryCustomizer takes care of populating the ServletWebServerFactory with configuration values so that the ServletWebServerFactory instantiates the WebServer object
+
+The Springboot has provided an ServletWebServerFactoryCustomizerAutoConfiguration class which takes the server configuration values and instantiates the WebServerFactoryCustomizer object, so that it populates these values in WebServerFactory
+
+if we look at the whole flow of execution, we can see 2 ways of customizing the WebServer
+1. we can write configuration values pertaining to the embedded servlet container in application.yml|properties, which would be read by the AutoConfiguration class and populates into WebServerFactoryCustomizer, there by which the WebServer will be instantiated by the WebServerFactory using our configuration values
+
+2. we can programmatically instantiate our own WebServerFactoryCustomizer into which we can populate the configuration values instead of using configuration file
+
+#1. configuration driven customization
+application.yml
+----------------
+server.port=8082
+server.address=0.0.0.0/127.0.0.1
+	
+server.error.whitelabel.enabled=false = by default spring boot provides an standard error webpage, if we dont want the default error page we can disable using this property
+server.error.path=/errorPage
+
+we can set these properties indicating what information should be displayed aspart of the error page
+server.error.include-exception=true
+server.error.include-stacktrace=always
+	
+server.tomcat.threads.max=200 #tuning the worker threads
+server.connection-timeout=5s
+server.max-http-header-size=8KB
+server.tomcat.max-swallow-size=2MB = maximum size of the request body
+server.tomcat.max-http-post-size=2MB = post request size
+
+server.ssl.enabled=true
+server.ssl.protocol=TLS
+
+server.tomcat.accesslog.enabled=true #access activity logs
+
+
+#2. programmatic approach using WebServerFactoryCustomizer
+By default the WebServerFactoryCustomizerAutoConfiguration class reads the env properties and instantiates the object of WebServerFactoryCustomizer, we can also can define our own Customizer bean definition in the ioc container, so that AutoConfiguration class will not create one by default
+	
+@Component	
+class TomcatEmbeddedServerFactoryCustomizer implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
+	void customize(ConfigurableWebServerFactory factory) {
+		factory.setPort(8088);
+	}
+}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	

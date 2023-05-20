@@ -1,0 +1,172 @@
+YAML stands for "Yet another markup language", it is an another data representation standard used for storing or representing the data. We can write programs using programming languages, which can read the data and perform operations on the data easily.
+There are plenty of advantages with YAML when compared with other data representation standards
+1. less verbosed, so no wastage of memory
+2. the syntax of representing the data is very easy with minimal puntuations, so it is considered as most human friendly data representation standard
+3. supports representing the data in list and maps that makes it friendly for programming languages
+
+An YAML file starts with "---" indicates the start of the document and ends with "..." indicates the end of the document. Within one YAML file we can represent/wrap multiple documents by using "---" and "..."
+	
+YAML supports these basic data types:
+1. number
+2. string
+3. float
+4. boolean = (true/false) (yes/no) 
+
+supported data structures are 
+1. list = is used for representing list of values
+2. map = key/value pair of data
+YAML greatly relies on intendation in representing the data
+
+#1
+represent the school supplies list on the first-day of the school 
+
+schoolsupplies.yml
+---
+- notebooks
+- pens
+- pencils
+- highlighters
+- erasers
+- sharpners
+...
+	
+	
+#2
+represent the information about boarding pass of a passenger during air travel?
+	
+boardingpass.yml	
+---
+pnrno: p03830
+flightno: AN039
+passenger: Stephen
+source: RGI Airport, Hyderabad India
+destination: Newyork, United States
+travelDate: 04/10/2022
+hours: 23 hours
+gateno: B23
+...
+	
+#3 
+represent the information about the mobile phone with the features being listed?
+
+mobile.yml
+---
+model: apple iphone 14
+manufacturer: Apple
+processor: A2 chip
+storage: 512 GB
+battery: 12 hours of talktime
+price: 120000
+colors:
+  - red
+	- green
+	- blue
+	- white
+	- gray
+	- black
+	- gold
+bands:
+	- gsm
+	- cdma
+network:
+	- 5G
+	- LTE
+	- VOLTE	
+...
+
+#4 represent the information about the project with team members and their roles, experience, module
+title, description, businessUnit, clientName, startdate, duration, members, technologies, 
+member: fullname, experience, role, module
+
+project.yml
+---
+title: netbanking system
+description: netbanking application to provide banking and financial services to the customers
+businessUnit: Banking and Financial
+clientName: American Express bank
+startDate: 01/10/1999
+duration: 36
+technologies:
+	- java
+	- struts framework
+	- ejb
+	- itext
+members:
+	- fullname: alex
+		experience: 10
+		role: lead
+		module: transfers
+	- fullname: christain
+		experience: 5
+		role: developer
+		module: dashboard	
+...
+			
+project.json			
+{
+"title": "netbanking system", 
+"description": "netbaking application to provide banking servies", 
+"businessUnit": "banking and financial", 
+"clientName": "American Express bank", 
+"duration": 36, 
+"technologies": ["java", "struts framework", "ejb"],
+"members": [{"fullname": "alex",
+							"experience": 10,
+							"role": "lead",
+							"module": "transfers"},
+						{"fullname": "christain",
+							"experience": 5,
+							"role": "developer",
+							"module": "dashboard"}
+					]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+

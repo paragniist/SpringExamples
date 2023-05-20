@@ -1,0 +1,69 @@
+Working with Nested Bean Factories in Spring Boot Application?
+We can manage the dependencies between the bean definitions across the ioc containers using Nested Bean Factories.	We can place the bean definitions independently in separate ioc containers and can still collaborate them using Nested BeanFactories
+
+When we are working on Nested Bean Factories, one ioc container acts as parent container and another one as child container. 
+The child ioc container bean definitions can use the parent ioc container bean definition. We need to create the parent ioc container first and nest it inside the child container while creating the Child
+
+BeanFactory pf = new XmlBeanFactory(new ClassPathResource("p-b.xml"));
+BeanFactory cf = new XmlBeanFactory(new ClassPathResource("c-b.xml"), pf);
+
+
+package com.sbnbf.beans;
+class Car {
+	private Engine engine;
+	public void setEngine(Engine engine) {}
+}
+
+class Engine {
+	String engineType;
+	int capacity;
+	// setters
+}
+
+
+@Configuration
+class ParentConfig {
+	@Bean
+	public Engine engine(@Value("${engineType}") String engineType,@Value("${capacity}") int capacity) {
+		Engine engine = new Engine();
+		engine.setEngineType(engineType);
+		engine.setCapacity(capacity);
+		return engine;
+	}
+}
+
+@SpringBootApplication
+class NBFBootApplication {
+	
+	@Bean
+	public Car car(Engine engine) {
+		Car car = new Car();
+		car.setEngine(engine);
+		return car;
+	}
+	
+	public static void main(String[] args) {
+		SpringApplicationBuilder builder = new SpringApplicationBuilder();
+		SpringApplication springApplication = builder.parent(ParentConfig.class).sources(NBFBootApplication.class).build();
+		ApplicationContext context = springApplication.run(args);
+		Car car = context.getBean(Car.class);
+		sop(car);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

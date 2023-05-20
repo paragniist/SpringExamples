@@ -1,0 +1,70 @@
+Auto-Configurations
+Auto-Configurations are the classes that are written by the spring boot developers, that takes care of configuring the spring framework classes as bean definitions with default values, that works for most of the applications by default
+	
+But if the requirements starts diverging,for eg.. the spring boot takes care of configuring the DataSource class as bean definition with default configurations pointing to h2 database (in-memory database). but for our application if we are using mysql server, then the default configuration that is applied by the auto-configuration classes will not work
+
+so do we need to configure by our own the framework components? No, if we have to configure by our own, then there is a little use of AutoConfigurations. So even though the requirements are diverging from the default, we can supply the values with which we wanted to configure the framework classes as bean definitions by passing them to AutoConfiguration.
+	
+In addition if the requirements are more diverging, there is a way to override the autoconfiguration behaviour, without loosing the flexibility
+
+There are lot of spring framework components of different modules are there, so we need to configure the framework components relevant to the module we are using. So spring boot developers has written AutoConfigurations and shipped them together along with boot starter dependencies
+
+
+While working with spring boot, we add starter dependencies in using the framework modules to build the application, since starters helps us in quickly setting up the spring framework application. So which modules we are using in our application depends on what boot starters we are using in our application, so based on modules we are using we need respective module components to be available as bean definitions.
+	
+So spring boot developers has built AutoConfigurations and bundled them together with starter dependencies and shipped to us. that means for each starter dependency, the autoconfiguration is an transtitive dependency
+
+spring-boot-starter-webmvc
+|-spring-boot-starter-webmvc-autoconfiguration
+------------------------------------------------------------------------------------------------------------------------
+The auto configurations in spring boot works based on opinionated view.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

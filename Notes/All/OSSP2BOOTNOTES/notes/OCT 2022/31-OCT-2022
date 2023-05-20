@@ -1,0 +1,137 @@
+Auto-Configurations
+auto-configurations takes care of configuring spring framework components as bean definitions with default values that works for most of the applications, so that we can avoid configuring the framework components aspart of our application that speedsup the development and reduces the complexity in using the spring framework
+
+For each spring framework module, pertaining to the framework classes within that module, the boot developers has written relevant auto-configurations and these auto-configurations are shipped aspart of started dependencies by declaring them as transitive dependencies. 
+So when we include an starter-dependency in our project, the relevant auto-configurations also will be added into our project.
+	
+By default the auto-configurations will not configure all the framework components of a module we are using as bean definitions, because adding an starter or a module of the spring framework doesnt mean we are using the classes from that module, the module could have been included into our project aspart of someother transitive dependency as well. So spring boot auto-configurations works based on opinionated view
+
+opinionated means, it derives the usage of a framework class based on various different factors like
+	1. based on the other dependency existing in the classpath
+	2. based on a configuration file
+	3. based on a property defined	
+etc
+
+during the time of startup of the spring boot application, upon creating the ioc container before instantiating the bean definition objects by the ioc container (before prepareContext), the SpringApplication class identifies the auto-configuration classes and registers them with the ioc container, so that these autoconfiguration classes are being executed by the ioc container to configure the framework components as bean definitions
+
+@Configuration
+class JavaConfig {
+  @Bean
+	public A a(){ 
+	  return new A();
+	}
+}
+
+
+ApplicationContext context = new AnnotationConfigApplicationContext();
+// SpringApplication class identifies all the AutoConfiguration classes
+
+context.register(JavaConfig.class);
+------------------------------------------------------------------------------------------------------------------------
+
+
+@Repository	
+class PassengerDao {
+	@Autowire
+	private JdbcTemplate jdbcTemplate;
+	
+	public List<PassengerBo> getPassengers() {
+		return jdbcTemplate.queryForObjects("select * from passengers", (rs, c)->{//logic for converting into object});
+	}
+}
+
+@Configuration
+@PropertySource("classpath:db.properties")
+public JavaConfig {
+	@Bean
+	public DataSource dataSource(@Value("${db.driverClass}") String driverClassname, @Value("${db.url}") String url, @Value("${db.username}")  String username,@Value("${db.password}")  String password) {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource(url, username, password);
+		dataSource.setDriverClassname(driverClassname);
+		return dataSource;
+	}
+	
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+		return new JdbcTemplate(dataSource);
+	}
+	
+	@Bean
+	public PlatformTransactionManager transactionManager(DataSource dataSource) {
+		return new DataSourceTransactionManager(dataSource);
+	}
+}
+
+db.properties
+db.url=jdbc:mysql://localhost:3306/autoleasedb
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.username=root
+db.password=root
+------------------------------------------------------------------------------------------------------------------------
+The above application can be built quite easily using spring boot
+pom.xml
+dependencies:
+ - spring-boot-starter
+ - spring-boot-starter-jdbc
+ - mysql-connector-java-8.x																				
+
+@Repository
+class PassengerDao {
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	// write methods for querying the data or performing operations using jdbcTemplate
+}																			
+
+application.yml
+spring
+ datasource:
+   driver-class-name: com.mysql.cj.jdbc.Driver
+	 url: jdbc:mysql://localhost:3306/autoleasedb
+	 username: root
+	 password: root
+
+@SpringBootApplication																				
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class,args);
+		PassengerDao dao = context.getBean(PassengerDao.class);
+		
+	}
+}																				
+
+																				
+																				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,189 @@
+YAML
+----
+The spring boot supports providing configuration values both in properties and yaml format. whatever the configuration values we supplied, those will be dumped into env object of the ioc container.
+	
+env object supports holding data in key/value pair only, so ioc container indirectly supports holding the data in key/value pair.
+In an YAML file we can represent different data structure of data, so SpringApplication class takes care of parsing the YAML file transform into key/value pair and dumps into the env object of the ioc container.
+	
+so let us understand what is YAML format, how to represent information in YAML format.
+	
+YAML stands for yet another markup language (ani't markup language), 	markup language is something that is build out of tags, but in case of YAML the information is not represented in tags so it is called not a markup language.
+																						 
+YAML is not an programming language, rather it is used for storing or representing the data, the information is represented in structured format with semantics attached to it, so that programs can read and process the data, it is similar to any other data representation formats like XML or JSON
+
+There are lot of data representation standards are there like
+1. XML
+2. JSON
+3. YAML
+what is the difference between YAML and other data representation standards
+
+#1. XML 
+eXtensible markup language, it is an another standard for storing or representing the data in structured format with semantics attached. when we represent the data in XML, we can read and interpret the data aspart of programs to process them.
+																						 
+but there are lot of difficulties with XML
+1. too much verbosed, due to which not suitable for storing large volumes of data
+2. due to its hierarchial nature, it is cpu and memory intensive for performing operations on the data using application languages
+3. XML does support representing the data in lists or maps/object types, but most of the programming languages holds the data in primitive variables, lists or maps or object types so modelling the data between these 2 worlds is very difficult
+4. due the above problem,the complexity in handling the data is very high between these 2 worlds
+
+#2. JSON
+Javascript object notation, which is an text-based human understandable data representation standard, that can be used by both humans and machines aswell in storing and representing the data. it is something that is innovated from javascript language.
+JSON supports representing the data in 2 notations
+1. object
+2. array
+
+#1. object
+{"key": "value", 
+"key": "value"}
+																						 
+#2 arrays
+["v1", "v2", "v3"]
+
+even though JSON supports storing the data in programming language data structure format, it has its own dis-advantages
+1. too many punctutions, due to which many of the people find it tough to understand or represent the data in JSON format
+2. json is still verbosed
+
+to avoid the problems with these 2 data representation standards, the YAML has been introduced.
+YAML supports 4 data types of data
+1. String
+2. number
+3. boolean
+4. float
+for any of these types of data to represent we dont need to sourround the data in double quotes including strings
+
+YAML supports basically representing 2 types of data
+1. LIST/ARRAY
+2. MAP/OBJECTS
+
+1. LIST
+group of values
+
+- value1
+- value2
+- value3
+
+
+2. MAP/OBJECT
+key/value pair data
+
+key1: value1
+key2: value2
+key3: value3
+
+every YAML file starts with --- and ends with ...
+In an YML we can write multiple YAML documents representing different data by using --- and ...
+																						 
+shoppinglist.yml
+---
+- banana
+- apple
+- grapes
+...
+---
+- onions
+- chillies
+- potatoes
+...
+																						 
+																						 
+																						 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+																						 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

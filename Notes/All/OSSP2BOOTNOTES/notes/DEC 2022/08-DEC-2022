@@ -1,0 +1,209 @@
+How does the DispatcherServlet got registered with the servlet container?
+To understand how does the DispatcherServlet is configured in spring boot application, first we need to know how to configure a servlet or a filter in Springboot application
+
+In general we have 2 ways to register a servlet or a filter with the servlet container in a web application
+1. configure in web.xml
+2. programmatic approach
+	1. we can write ServletContainerInitializer in which we can register the servlet/filter in ServletContext object
+	2. if it is an spring mvc application we can write WebApplicationInitializer implementation class, in which we can write the logic for registering our servlets and filters
+	
+while working with spring boot application, most of the time we dont write web.xml, so the only way to register the servlet/filter is through programmatic api
+
+In programatic approach we need to write lot of code in registering an servlet or filter to the underlying the servlet container, Instead springboot has provided an easy way to register servlets and filters with the underlying container
+
+#1. no sourcecode
+if the servlet or filter we want to register doesnt have sourcecode then we need to use this approach in registering them with the underlying container 
+
+For eg.. we dont have sourcecode for DispatcherServlet, so we cannot annotate the Servlet class to register, so we need to use programmatic approach instead spring boot has provided the simple solution in registering them as below
+
+The Springboot has provided 2 classes 
+1. ServletRegistrationBean
+2. FilterRegistrationBean
+
+wrap the information about the servlet or filter we wanted to register with the underlying container inside these classes respectively
+For eg.. we can create the object of a servlet, then wrap into ServletRegistrationBean object by populating ServletName, init-parameters and url pattern
+then configure it as bean definition in ioc container
+
+// no source code
+class PingServlet extends HttpServlet {
+	public void service(HttpServletRequest request, HttpServletResponse response) {
+		response.getWriter().print("Up!");
+	}
+}
+
+@SpringBootApplication
+class BootApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(BootApplication.class, args);
+	}
+	
+	@Bean
+	public ServletRegistrationBean<PingServlet> pingServlet() {
+		ServletRegistrationBean<PingServlet> pingServlet = new ServletRegistrationBean<PingServlet>(new PingServlet(),
+				"/ping");
+		return srBean;
+	}
+}
+
+during the startup of the application, the SpringServletContainerInitializer will invokes the implementation of ServletContextInitializer class, this class searches for the bean definitions in the ioc container of type ServletRegistrationBean and FilterRegistration bean extracts the information and register them with ServletContext of our application programmatically
+
+#2. if we have the sourcecode of the servlet or filter
+we can directly annotation our servlet class with @WebServlet annotation, and in java configuration class we need specify the package name where the annotated servlets are there using @ServletComponentScan
+
+@WebServlet(urlPatterns={"/ping"})
+class PingServlet extends HttpServlet {}
+
+@SpringBootApplication
+@ServletComponentScan(basePackages={"com.sb.servlets"})
+class BootApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(BootApplication.class, args);
+	}	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

@@ -1,0 +1,144 @@
+How to work with spring boot profiles?
+While working with Spring Boot, the environment object will be created and the external configuration will be loaded into the environment object by SpringApplication class itself. So there is no control over which configuration file pertains to which environment since the application.properties is read automatically by the SpringApplication class.
+
+So SpringApplication class to support profiles, it follows standard convention in reading the application properties which is application-profilename.properties
+
+by default it reads application.properties additional it reads application-profile.properties to load the configuration pertaining to the environment.
+	
+application.yml
+---
+spring:
+  profiles:
+    active:
+    - test
+...
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+db:
+  driverClassname: com.mysql.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/db
+  username: root 
+  password:  root
+...  
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+db:
+  driverClassname: oracle.jdbc.driver.OracleDriver
+  url: jdbc:oracle:thin@1521:xe
+  username: sys
+  password:  welcome
+...  
+------------------------------------------------------------------------------------------------------------------------
+Application Properties
+
+There are 2 ways we can pass external configuration as an input to the SpringBoot application
+1. properties
+2. yaml
+
+we need to write these properties/yaml file with standard name as application.properties or application.yaml|yml, so that SpringApplication class detects and reads these properties or yaml and loads into ioc container
+	
+There are lot of spring boot predefined properties are there which are used by the auto-configurations or actuators etc, if we are writing our application components configuration and spring boot standard properties both in application.properties|yml, then the configuration information becomes huge and becomes difficult to understand or differentiate
+
+so always keep spring boot standard properties only in application.properties|yaml and configuration properties pertaining to our application components keep it separately in our own configuration files
+
+@Component
+@ConfigurationProperties(prefix="airTicket")
+class AirTicket {
+	private String pnr;
+	private String source;
+	private String destination;
+	
+}
+
+config.properties
+airTicket.pnr=3
+airTicket.source=hyderabad
+airTicket.destination=Chennai
+
+@SpringBootApplication
+@PropertySource("classpath: config.properties")
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		AirTicet airTicket =context.getBean(AirTicket.class);
+		sop(airTicket);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

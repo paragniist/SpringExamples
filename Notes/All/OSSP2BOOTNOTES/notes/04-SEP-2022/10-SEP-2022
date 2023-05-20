@@ -1,0 +1,217 @@
+1. auto configurations 
+auto configurations: based on the opinionated view identifies which components of the framework are required to be configured to provide functionality to the application and self tune itself in quickly building the application
+
+2. starter dependencies
+by using starter dependencies, developer can quickly jump start in setting up the spring framework application to being the development of the application
+
+3. actuator endpoints
+development to production grade application can be built by using the help of actuator endpoints
+
+4. devtools
+devtools provides all the tools required for the developer in quickly developing the application. for eg.. during debugging several times the developer has to modify the code and redeploy the application which kills the development time of the developer. instead by using the help of devtools without the need of restarting the application we quickly reload the changes into the jvm memory which saves lot of developers time.
+	
+5. embedded servlet containers
+servlet container is shipped as part of the code that eliminates the need to installing/configuring the deploying the application on top the container.
+
+6. spring boot cli
+quick prototyping the application can be done using spring boot cli
+------------------------------------------------------------------------------------------------------------------------
+How to develop a spring boot application?
+#1 create an project 
+even though it is not mandatory to use a build tools like ant+ivy or maven or gradle in developing a spring boot project, it is higly recommended to use any one of the build tools in setting up spring boot project
+
+let us understand how to setup an spring boot project using maven
+mvn archetype:generate -DgroupId=boot -DartifactId=bootcore -Dversion=1.0.0 -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4
+	
+with the above a standalone maven java application will be created.
+	
+#2. Now add the required spring framework dependencies in building a spring framework based project
+we need to add below dependencies to develop a spring core application
+1. spring-core
+2. spring-context
+3. spring-context-support
+4. spring-beans
+5. common-bean-utils
+6. commons-logging
+etc
+Here we need to identify which module jars and third-party jars are required for developing a project using spring framework including their compatible verions as well, which will kills lot of time for the developer in setting up a project
+
+To overcome the above problem spring boot has provided starter dependencies
+For developing an spring core application spring boot has provided a starter dependency called spring-boot-starter,we need to add to the dependencies section in pom.xml
+
+<dependencies>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter</artifactId>
+		<version>2.7.3</version>
+	</dependency>
+</dependencies>
+
+just by adding the above dependency into our project, it pulls core module, its other spring module dependencies, and third-party libraries along with their compatible versions into our project, which makes the developers life easier.
+	
+#3. build your application classes, these can be managed aspart of ioc container
+Note: always create an base package for your application and all the components of your application must/should be under the base package
+for eg.. if we are developer bootcore project we can think of a base package as 
+	com.bootcore
+	|- beans
+	|- test
+under that the rest of the components of your application should be placed (recommendation)
+	
+package com.bootcore.beans;
+@Component
+class Robot {
+	@Value("${model}")
+	String model;
+	@Value("${cpus}")
+	int cpus;
+	@Value("${ram}")
+	int ram;
+	@Autowired
+	Sensor sensor;
+	// accessors
+}
+
+package com.bootcore.beans;
+@Component
+class Sensor {
+	@Value("${sensorType}")
+	String sensorType;
+	@Value("${range}")
+	int range;
+	// accessors
+}
+
+application.properties
+-----------------------
+#global application configuration file in which we can declare the properties pertaining to our components of our application we wanted to use
+model=andriod
+cpus=8
+memory=8072
+sensorType=infra
+range=300
+	
+#4. write the boot application class.
+always write your boot application class under the root package of your project
+---------------------------------------------------------------------------------------------
+@Configuration
+@ComponentScan(basePackages={"com.bootcore.beans"})
+class RootConfig {
+	
+}
+	
+package com.bootcore;	
+class BootCoreApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);	
+	}
+}	
+------------------------------------------------------------------------------------------------
+The above code in creating the ioc container is not required to be written while working with spring boot
+
+
+@SpringBootApplication
+class BootCoreApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootCoreApplication.class);
+		Robot robot = context.getBean("robot", Robot.class);
+		sop(robot);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

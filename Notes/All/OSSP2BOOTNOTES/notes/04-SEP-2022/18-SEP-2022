@@ -1,0 +1,16 @@
+How to distribute a Spring Boot Application?
+	(or)
+Spring Boot executable jar?
+
+How to distribute an java application to the enduser?
+We need to ship or distribute the java application to the customers/enduser in jar distribution only.
+There are 2 types of jars are there
+1. library jar
+2. executable/application jar
+
+1. library jar is nothing but compressing the bytecode of the application and distribute to the others for reusability.
+2. executable jar = to ship the application to the enduser or customer then we need to build an executable jar only. An executable jar contains all the information pertaining to how to execute the application within its manifest file, so that customer/enduser dont need to know how to run the application, he can simply run the jar file to launch the application
+
+java -jar jarName = to launch the application
+To create an jar as an executable jar we need to specify an manifest attribute Main-Class: "fqnMainClass" insde the META/INF of the jar
+

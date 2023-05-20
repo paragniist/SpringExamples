@@ -1,0 +1,42 @@
+Spring Boot
+------------
+Spring Boot is used for addressing non-functional requirements in building an Spring Framework based application unlike the other modules of the Spring Framework. While working with Spring Framework developer has to write huge amount of code/configuration in configuring Framework components as bean definitions to make the framework work for application. The code developer is writing in configuring the framework components seems to be throw away logic which doesnt have any functional value. 
+Spring Boot has been introduced in addressing these non-functional requirement.
+There are 6 features of Springboot are there
+1. Auto-Configurations
+2. Starter dependencies
+3. Actuator endpoints
+4. DevTools
+5. Embeded Servlet Containers
+6. Spring Boot CLI
+
+#2. Starter Dependencies
+#3. Actuator endpoints
+ - endpoint (health) = watch down
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

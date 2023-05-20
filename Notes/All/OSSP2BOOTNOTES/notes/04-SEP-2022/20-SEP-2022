@@ -1,0 +1,93 @@
+How to deliver an java application to the enduser?
+We need to deliver an java application as an self-containing executable jar, which means within the jar file itself we need to write the information about how to run the application inside manifest.mf file and place under META-INF directory within the jar and deliver
+
+Now the customer can directly launch or run the application by passing the jar itself as an input to the jvm
+java -jar jarName.jar
+The jvm picks the information from its manifest and launches/runs the application
+
+In an real-time java applications uses jar dependencies for reusing the functionality in quickly building the application. For eg.. an application can use jdbc api/implementation (jdbc driver) for performing operations on the underlying database
+
+In such case how to delivery the java application along with dependent libraries to the customers, there is no mechanism provided by java platform, there are lot of obstacles or drawbacks in delivering the application along with dependents let us understand them
+
+1. Java platform doesnt support embedding one jar inside the another. none of the classloaders in java language supports loading class files inside the embedded jar files of a jar. so we cannot package an java application along with dependents into single distributable file
+The only way to distribute the application as an single distributable file is by zip/compressing all the files. but again the zip/compressed files are platform dependent and will not works across platform
+
+2. upon delivering the zip file, the client can unzip which results in application jar along with dependent jars. Now inorder to run the application 
+	2.1 the client has to set manually the classpath pointing to all the jars and pass fqnClass as an input to jvm to launch the application. but enduser dont know information about how to run the application
+	
+	2.2 delivery the application as an executable jar but client cannot set the classpath explicitly pointing to the dependent jars to launch the application
+	java -jar jarFile.jar
+	because all the information pertaining to the application should be embedded inside the manifest.mf itself, the jvm will not reads any information externally
+	
+	So within the manifest.mf along with Main-Class attribute, the developer has to include Class-Path attribute pointing to all the dependent jars relative from the application jar directory so that client can launch the application
+	
+travelgo
+|-travelgo.jar
+	|-META-INF
+		|-manifest.mf
+			|-Main-Class: com.travelgo.service.TravelGoService
+			|-Class-Path: ./mysql-connector-java-8.12.jar
+|-mysql-connector-java-8.12.jar
+
+now the enduser should be inside the travelgo/ directory and launch the application using java -jar travelgo.jar. if the client has moved the dependent jars then the classpath would be broken and cannot launch or run the application.
+	
+From the above we can understand there are lot of problems in delivering an jar application with dependent libraries in java, how to overcome the above problems?
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

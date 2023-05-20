@@ -1,0 +1,102 @@
+How to handle the exitcode in spring boot application?
+Spring boot application is also similar to any other java application only, which means if the spring boot application has been completed execution successfully without any exception, then jvm returns zero as an exitcode to the operating system, else in case if the application has been terminated with an exception an non-zero exitcode will be returned to the operating system.
+	
+So we need to customize the exitcode for an spring boot application aswell, how do we need to customize?
+In Spring Framework application, the bean lifecycle management methods will not be called automatically, post creation of the ioc container we need to manually register shutdownHooks to the jvm so that the lifecycle managements methods are called on the bean definition, to gracefully terminate the application
+
+
+In case of Spring boot application, the SpringApplication class has taken care of registering the shutdownhook ontop of the ioc container upon creating the ioc container, this means no matter how our application si being terminated, always the bean lifecycle management methods on the bean definitions will be called and the application would gets terminated gracefully.
+	
+@SpringBootApplication
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		// logic
+		System.exit(22);
+	}
+}	
+
+
+From the above statements it looks like we can call directly System.exit(exitcode) in terminating an SpringBoot application and can return an customized exitcode, because already SpringApplication has registered the shutdown hooks, so always the application will terminate gracefully
+
+But in case of SpringBoot application, it is not recommended to directly call System.exit(exitcode) in customizing the exitcode of the application, because SpringBoot has built an echo system aspart of SpringApplication class in handling the exitcode
+	
+The Spring Boot developers has provided an method called exit(ApplicationContext) within the SpringApplication, that should be called while terminating the SpringBoot Application
+
+@SpringBootApplication
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		try {
+			// application logic goes here
+		}finally {
+			int exitCode = SpringApplication.exit(context); // exit() method of SpringApplication has the logic for handling the termination of SpringBoot application
+			System.exit(exitCode);
+		}
+	}
+}
+
+The SpringApplication.exit(context) = is the method used for gracefully terminating the ioc container in spring boot application. upon calling SpringApplication.exit(context), it performs several operations internally as below.
+	1. it looks for ExitCodeGenerator bean definition within the ioc container and make a collection of them
+	2. it tries to close the ioc container gracefully by calling context.close();
+		2.1 while closing the ioc container, it there is an exception, then the exit() method of the SpringApplication will generate an random number indicating the failure of the termination and returns to us
+		2.2 if there is no exception while closing the ioc container, the SpringApplication class will call ExitCodeGenerator and takes the exitcode and return to us
+	3. indicating the terminate of the application, it publishes an ExitCodeEvent and looks for an listener to be called
+	
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

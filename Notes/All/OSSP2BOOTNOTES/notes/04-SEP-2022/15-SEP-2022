@@ -1,0 +1,120 @@
+#2. creating an spring boot project from spring-boot-starter-parent
+spring boot developers has created lot of starter dependencies each per the technologies we use in project/application development. The starter dependencies are nothing but empty maven artifacts attached with pom.xml
+within the pom.xml they have declared spring modules, dependent spring modules and third-party libraries along with their compatible versions as transitive dependencies specific to technology towards the starter is created.
+Now developers can quickly create the project by adding spring boot starter dependencies of the relevant technology.	
+	
+For each spring framework version, a new spring boot version is released, provided with starter dependencies pertaining to the corresponding spring release.
+unfortunately the spring boot version and spring framework version are different, because spring boot has been introduced at a later stages of spring framework 3
+	
+How to migrate from older version of spring framework to newer version of spring framework while working with spring boot?
+we need to update the boot starter dependencies to the latest release of spring boot version corresponding to the spring framework release version along with plugins
+It takes lot of time to migrate to an newer version of spring boot version (spring framework version), so to overcome the problem spring boot team has provided spring-boot-starter-parent project
+
+
+spring-boot-starter-parent 
+|-pom.xml 
+  groupId=org.springframework.boot
+	artifactId=spring-boot-starter-parent
+	version=2.7.3
+	packaging=pom
+-----------------------------------------	
+  dependencyManagement
+	|-dependencies
+		[all spring boot starter dependencies with version]
+	pluginManagement
+	|-plugins
+		[configured spring-boot-maven-plugin with version & configuration]
+
+
+bootmaven
+|-src
+	|-main
+		|-java
+		|-resources
+|-pom.xml
+	|-parent
+		|-groupId=org.springframework.boot
+		|-artifactId=spring-boot-starter-parent
+		|-version=2.7.3
+	|-groupId
+	|-artifactId
+	|-version
+	|-dependencies
+		|-declare spring boot starter dependencies we want to use without versions
+	|-plugins
+		|-declare spring-boot-maven-plugin without configuration & versions
+		
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

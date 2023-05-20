@@ -1,0 +1,155 @@
+How to setup an spring boot project by using gradle build tool?
+Gradle is an another build tool which is evolved as an alternate to the maven for building java projects. There are few short-falls with maven to overcome them the gradle has been introduced
+1. maven strictly enforces standards in building an project, for eg.. we need to follow standardized directory structure in creating and building an java project 
+2. plugins are the only way through which we can accomplish a build step or build activity, customizing the build process is a difficult job
+
+To overcome the above problems gradle tool has been introduced.
+1. it is recommended to create a project using standardized directory layout, but it is optional and if our requirement are diverging from defaults we can customize them unlike maven.
+2. different projects requires different build activities to be applied, so the concept of maven build lifecycle doesnt apply any more. so gradle has introduced plugins
+Plugins enforces 2 things
+1. standardized directory structure
+2. tasks to be applied on the project to build are defined
+
+Now based on the type of the project we are working on choose and apply an appropriate plugin
+		
+similar to ANT, in gradle we need to build.gradle which is an build script file in which we define
+1. plugins
+2. dependencies
+3. repositories
+4. we can write tasks to applying additional build activities apart from default
+	
+	
+How to create a project in Gradle?
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		similar to ANT, in gradle we need to build.gradle which is an build script file in which we define
+		1. plugins
+		2. dependencies
+		3. repositories
+		4. we can write tasks to applying additional build activities apart from default
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

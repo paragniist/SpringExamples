@@ -1,0 +1,53 @@
+Spring Boot Application events and Application Listeners
+What will happen when we invoke or execute SpringApplication.run(BootApplication.class, args)?
+1. create an empty env object
+2. detects and loads the external configuration of our application into the env object
+3. print banner
+4. identify the WebApplicationType based on which create an appropriate ioc container
+		WebApplicationType=WEB : AnnotationConfigServletWebServerApplicationContext
+		WebApplicationType=REACTIVE: AnnotationConfigReactiveWebServerApplicationContext
+		WebApplicationType=NONE: AnnotationConfigApplicationContext
+5. instantiates and registers the spring factories
+6. invokes the ApplicationContextInitializer
+7. prepareContext
+8. refreshContext
+9. invoke CommandLineRunners and ApplicationRunners to initialize the application before startup
+10. publishes the events and invokes the listeners during the above stages
+
+upon executing the below code
+ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+the SpringApplication performs the #9 activities in bringing up the boot application. once the above activities are finished, then the SpringApplication class returns the ioc container to our program, to perform further operation
+
+From the above we can understand we dont have control of executing the program or performing an action/operation until the above #9 stages of booting up the boot application has been finished
+
+what if, we wanted to perform additional operation/activities during any of the #9 stages of booting up the spring boot application?
+To support  perform additional activities during the above stages of bootup, the SpringApplication class publishes event (representing the stage of bootup), allowing	the programmer to bind an listener for the event in performing additional activities
+That is where Boot ApplicationEvents and Listeners comes into play
+------------------------------------------------------------------------------------------------------------------------
+To further understand the above concept we need to study event-driven programming and how does it works in spring framework applications
+
+event-based programming
+event-driven programming model
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+

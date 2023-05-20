@@ -1,0 +1,158 @@
+Spring DataJpa
+--------------
+Spring DataJpa uses the runtime proxy generation capabilities in applying the persistence logic that is common across all the Daos of our application. The DataJpa relies/uses the cglib and asm proxy generation libraries in creating the Runtime Proxies ontop of the interface to apply the common persistence logic
+	
+If we see any of the Daos in our application the logic that we write for performing save()/update()/delete() or query operations would be same across, the only difference is on the entity object on whom we are applying the persistence logic or the query and the parameters using which we are executing the queries
+
+So rather than we writing the code repeatedly across all of the Dao classes in our application, Spring DataJpa has written this logic in a InvocationHandler that is applied across all the Daos of our application through proxying.
+	
+So we can completely eliminate the Daos in our application can replace them with interfaces which are called Repository interfaces
+------------------------------------------------------------------------------------------------------------------------
+Spring DataJpa has provided an base interface called "Repository", it is an marker interface so it doesnt have any methods inside it. It is provided just for the purpose of TypeSafety. Ontop of the Repository interface there provided an sub interface called CRUDRepository.
+In CRUDRepository interface they have declared the methods representing the common persistence operations we perform on entity objects
+	
+Here the generic types
+	T= represents the Entity Object Type
+	ID= represents the PrimaryKey Attribute Type of the Entity class
+	
+interface CRUDRepository extends Repository <T, ID>{
+	T save(T t);
+	T findById(ID id);
+	Iterable findAll();
+	long count();
+	void delete(T entity);
+	boolean existsById(ID id);
+}
+
+Now instead of writing an DAO class for each entity class, we can write an DAO Repository interface extending from CRUDRepository interface, so that DataJpa applies the persistence logic by proxying our interface
+	
+In addition to the above interface, the Spring DataJpa has provided a sub repository interfaces specific to different persistence technologies
+DataJpa not only works for Jpa api, it supports different persistence technologies like
+Jpa
+Mongo
+Casendra
+etc
+
+Spring Data Module
+|-SpringDataJpa
+|-SpringDataMongo
+|-SpringDataCasendra
+
+To work with Jpa api in performing persistence operations spring data has provided an module called SpringDataJpa and has provided an interface called "JPARepository"
+For working with MongoDb, there is an interfaced called MongoRepository.
+
+Instead of using CRUDRepository for creating proxies, we can use technology specific repository interfaces to perform perssitence technology specific functionality
+
+How to work with persistening entity object Account?
+
+package com.jparepo.repositories;
+interface AccountRepository extends JpaRepository<Account, Integer> {}
+
+@Service
+class AccountService {
+	@Autowired
+	AccountRepository accountRepository;
+	
+	public int newAccount(AccountDto accountDto) {
+		// convert dto into entity
+		accountRepository.save(account);
+		return account.getAccountNo();
+	}
+}
+
+@Configuration
+@PropertySource("classpath:db.properties")
+@EnableJpaRepositories(basePackages={"com.jparepo.repositories"})
+class PersistenceConfig {
+	@Bean
+	public DataSource dataSource(){}
+	
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {}
+	
+	@Bean
+	public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {}
+}
+
+@Configuration
+@Import({PersistenceConfig.class})
+class RootConfig {
+	
+}
+
+
+ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
+
+AccountRepository accountRepositoryProxy = Proxy.newProxyInstance(context.getClassLoader(), new Class[]{AccountRepository.class}, new JpaPersistenceHandler());
+The above proxy object is placed as a bean inside the ioc container
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,2 @@
+Main-Class: com.travelgo.service.TravelGoService
+Class-Path: ./mysql-connector-java-8.0.30.jar

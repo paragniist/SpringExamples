@@ -1,0 +1,131 @@
+What are AutoConfigurations, why do we need them?
+Auto-Configurations are nothing but Configuration classes that takes care of configuring the Spring Framework components as bean definitions within our application. So that programmer dont have to write the code/configuration for configuring the framework components aspart of the application.
+This can save huge amount of development time and cost of development in building the application
+
+How does auto-configurations works?
+The Spring Boot has provided starter dependencies, enabling the programmers in quickly setting up the Spring Framework Application. The Spring boot developers has identified most commonly used technologies together and has created starter dependencies,that can be quickly used in setting up/building the project of that technology
+
+for eg..
+spring-boot-starter-datajpa
+spring-boot-starter-mvc
+etc
+all the boot starters starts with a standard naming convention of spring-boot-starter-*. if we are creating our own starter dependencies avoid using the name spring-boot-starter.
+	
+These starter dependencies are nothing but empty maven artifacts, declared with spring module dependencies, third-party libraries as transitive dependencies (in maven). upon adding starter dependencies in our project, maven automatically pulls all the delcared transitive dependencies into our project
+
+From this we understand, each starter dependencies ships spring modules, for each framework component of the spring modules we need to configure in our application, the spring boot has to provide AutoConfiguration classes. 
+
+From this we can understand spring boot has to provide for each starter dependency, an autoconfiguration as well. for e.g..
+spring-boot-starter-datajpa (module depencies/third-party)
+spring-boot-starter-datajpa-autoconfigurations (autoconfiguration classes to configure the framework components of those modules shipped aspart of starter)	
+For each starter dependency, the autoconfiguration is defined as transitive dependency
+
+By default if the AutoConfiguration classes started defining the framework components of those starter modules as bean definitions with default values, then we endup in having lot of bean definitions of the framework classes within the ioc container (even we dont use them) and endup in wasting huge amount of jvm memory. So AutoConfigurations by default will not configure all of the framework components as bean definitions, rather they work based on opinionated view
+
+These AutoConfigurations works based on Conditional Annotations, those will not be executed by default during the startup of the applications. Each AutoConfiguration class has been annotated with an ConditionalAnnotation indicating under which condition the AutoConfiguration should execute in configuring the framework component
+There are 5 types of conditional annotations are available, these annotations are pre-written ontop of the AutoConfigurations classes by the Spring Boot Developers indicating when these has to be executed
+1. @ConditionalOnClass or @ConditionalOnMissingClass = if the given class is available/not available under the ClassPath, then only execute
+2. @ConditionalOnBean or @ConditionalOnMissingBean = if a given bean definition is found/notfound in the ioc container then exeucte
+3. @ConditionalOnProperty = if a given property is found in the ioc container then only execute
+4. @ConditionalOnResource = if a given file is present under the classpath then only execute
+5. @ConditionalOnWebApplication or @ConditionalOnNonWebApplication or @ConditionalOnJava = based on type of application or version of java execute the auto configuration
+
+These conditional annotations can be placed at class-level or at the individual bean definition method level within auto-configuration class. An autoconfiguration class can be annotated multiple of these annotations, in that case when all of the conditions are passed then only the autoconfiguration will be applied
+
+An AutoConfiguration class can have dependency on another autoconfiguration class to be executed which can be expressed through using
+@AutoConfiguration(after="", before="")
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

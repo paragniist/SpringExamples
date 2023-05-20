@@ -1,0 +1,93 @@
+How to customize the Spring Boot Application?
+There are lot of activities the SpringApplication class performs during the time of starting up the spring boot application, we can modify or add additional activities in bring up the spring boot application, which is called customizing the spring boot application
+
+There are 2 ways we can customize the spring boot application
+1. configuration approach
+2. programmatic customization
+
+
+1. Customize the Spring Boot Application through configuration approach
+1.1 we can change the banner
+	- we can write banner.txt or banner.(img) under classpath of our application, the SpringApplication automatically pickups the file and renders it as the banner during the startup
+	- we can turnoff the banner by writing a property in application.properties
+	spring.main.banner-mode=off/console
+	- we can change the location of the banner file by using spring.banner.location=locationFile
+	
+1.2 
+By default ApplicationContext initializes the bean definitions eagerly, we can change the behaviour to lazyInitialize by configuring a property in application.properties
+spring.main.lazyInitialization=true
+this property will be pickedup by the SpringApplication class and will configures the IOC container appropriately to make it lazyInitialize the bean definitions
+-----------------------------------------------------------------------------------------------------------------------	
+#2. programmatic customization
+Instead of customizing the startup activities that are performed by the SpringApplication class using configuration approach we can do it programmatically as well.
+The programmatic approach has better control and can perform lot of customizations than configuration-driven approach
+
+
+SpringApplication.run(BootApplication.class, args); = we are invoking a static method run() on the SpringApplication class which will startup the application with default configuration 
+Instead of it we need to create the SpringApplication class object, populate configuration into that object using which we need run() the application to customize it.
+	
+To conviniently help us in creating and configuring the SpringApplication class, the spring boot has provided SpringApplicationBuilder class
+Now we need to create the object SpringApplicationBuilder, populate the configuration into it, then using the builder create the object of SpringApplication class. then invoke run() #instanceMethod on that object created
+
+@SpringBootApplication
+class BootApplication {
+	public static void main(String[] args) {
+		SpringApplicationBuilder builder = new SpringApplicationBuilder(BootApplication.class);
+		builder.bannerMode(Banner.Mode.OFF);
+		SpringApplication springApplication = builder.build();
+		
+		ApplicationContext context = springApplication.run(args);
+		
+	}
+}
+ApplicationContext context = new SpringApplicationBuilder(BootApplication.class).bannerMode(Banner.Mode.OFF).build().run(args);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

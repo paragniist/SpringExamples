@@ -1,0 +1,162 @@
+while working with spring boot, how to migrate from one version of the Spring Framework to another version of Spring Framework?
+3rd approach of creating an spring boot project
+In most of the organizations the provide maven parent projects declared with dependencies/plugins so that those can be inherited in creating the projects across within the organization.
+In such case we cannot setup a spring boot project by inheriting or declaring spring-boot-starter-parent as a parent project because our project has already declared with organizational project as parent. So how to setup spring boot project when we have another project declared as parent?
+
+
+hpenforce [defined dependencies and plugins that can be reused by the child projects through inheritance]
+groupId=hp.com
+artifactId=hpenforce
+version=1.0.0
+----------------------
+dependencyManagement
+|-dependencies
+pluginManagement
+|-plugins
+
+hpinknextsol
+|-pom.xml
+	groupId=hp.com
+	artifactId=hpinknextsol
+	version=1.0.0
+	parent
+		- groupId=hp.com
+			artifactId=hpenforce
+			version=1.0.0
+	dependencies
+	plugins
+
+spring-boot-starter-parent
+|-pom.xml
+  |-packaging=pom
+	|-dependencyManagement
+		|-dependencies [starter-dependencies]
+	|-pluginManagement
+		|-plugins [spring-boot-maven-plugin]
+		
+	
+hpinknextsol
+|-pom.xml
+
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>hp.com</groupId>
+	<artifactId>hpinknextsol</artifactId>
+	<version>1.0.0</version>
+	<parent>
+		<groupId>hp.com</groupId>
+		<artifactId>hpenforce</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId> #30
+				<version>2.7.3</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.7.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

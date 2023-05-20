@@ -1,0 +1,113 @@
+How to customize the exitcode in spring boot application?
+we need to write our own implementation class of ExitCodeGenerator and return an exitcode within generateExitCode() and make it as bean definition within ioc container.
+	
+upon calling SpringApplication.exit(context), it takes care of invoking the ExitCodeGenerator in returning an exitcode for our application
+
+#2. ExitCodeExceptionMapper
+ApplicationContext context = SpringApplication.run(Config.class, args);
+1. creates an empty env object
+2. detects and loads the external configuration into the above env object
+3. prints banner
+4. based on the WebApplicationType creates an appropriate ioc container 
+5. instantiates and registers spring factories
+6. invoke ApplicationContextInitializer
+7. prepareContext
+8. refreshContext
+-------  if there is a failure then we can map that exception into custom exitcode using ExitCodeExceptionMapper
+9. invoke commandLineRunners & ApplicationRunners to perform one-time startup activities for an spring boot application
+10. publish events and invoke listeners during these operations above
+
+ExitCodeExceptionMapper is used for mapping the startup failures that we encouter after SpringApplication class has created the ioc container, while executing the CommandLineRunners or ApplicationRunners into our own Custom ExitCode based on the Type of the exception
+
+The ExitCodeExceptionMapper will not be called for mapping our application errors into exitcode, because while executing the application logic, the control flow of execution lies with us, so we need to wrap our code into try/catch block and exit the application with custom exitcode incase if we wanted to customize as shown below.
+
+
+@SpringBootApplication
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		try {
+			// here
+			FileReader reader = context.getBean(FileReader.class);
+			reader.readFile("d:\\nofile.txt"); // throw IOException
+		}catch(IOException e) {
+			e.printstacktrace();
+			System.exit(11);
+		}
+	}
+}
+
+
+
+ExitCodeExceptionMapper will be called only if there are any exceptions are failures encounted during the time of executing CommandLineRunners or ApplicationRunners only
+
+@Component
+class MyApplicationCommandLineRunner implements CommandLineRunner {
+	public void startup(String[] args) {
+		throw new FileNotFoundException("db.properties not found");
+	}
+}
+
+@SpringBootApplication
+class ExitCodeMapperApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(ExitCodeMapperApplication.class, args);
+	}
+}
+
+@Component
+class ApplicationExitCodeExceptionMapper implements ExitCodeExceptionMapper {
+	public int getExitCode(Exception e) {
+		if( e instanceof FileNotFoundException) {
+			return 100;
+		}
+		return 1;
+	}
+}
+
+3. ExitCodeEvent
+while terminating the application, SpringApplication class publishes an event ExitCodeEvent wrapping the exitcode of the application with which it is terminating. we can capture and see the exitcode with which our application is getting terminated by writing our own Listener listening for ExitCodeEvent
+
+@Component
+class ApplicationExitCodeListener implements ApplicationListener<ExitCodeEvent> {
+	public void onApplicationEvent(ExitCodeEvent event) {
+		sop(event.getExitCode());
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

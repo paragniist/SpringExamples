@@ -1,0 +1,25 @@
+derived queries
+----------------
+instead of we writing the jpql queries, the datajpa constructs/creates the queries based on the names of the methods we wrote in Repository interface. There are pre-defined keywords provided by the datajpa using which we need to write the methodnames 
+
+In, NotIn
+And
+Or
+Null, NotNull
+IsNull, IsNotNull
+Between
+GreaterThan
+GreaterThanEqual
+LessThan
+LessThanEqual
+like
+after
+before
+StartingWith
+EndingWith
+Distinct
+Containing
+OrderBy
+True
+False
+ignoreCase

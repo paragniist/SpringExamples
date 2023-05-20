@@ -1,0 +1,33 @@
+/custom-content-handlers/api/mobile 
+|-/recharge [POST]
+	body: #rechargeRequest
+	response: #rechargeStatus
+	
+#RechargeRequest
+{
+	"mobileNo": string
+	"circle": string
+	"rechargeType": string
+	"provider": string
+	"planNo": string
+	"amount": double
+	"payment": {
+		"cardType": string
+		"cardNumber": string
+		"expiryMonth": int
+		"expiryYear": int
+		"cvv": int
+	}
+}
+
+#rechargeStatus
+{
+	"transactionNo": string
+	"transactionDate": LocalDate
+	"mobileNo": string
+	"provider":string
+	"planNo": string
+	amount:double
+	status:string
+	remarks: string
+}

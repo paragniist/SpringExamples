@@ -1,0 +1,51 @@
+How many ways we can load our custom yaml configuration file into the env object of the ioc container?
+There are 2 ways are there
+1. YamlPropertySourceLoader
+2. YamlFactoryBean
+
+YamlFactoryBean is class that helps us in reading an YAML file and creates properties collection by populating YAML data and returns the properties to us
+	
+@PropertySource = @PropertySource takes properties file as an input, reads the Properties file into an Properties collection and creates and PropertySource object with that collection and loads into the env object of the ioc container
+
+From the above we can understand @PropertySource cannot read YAML, but it load Properties into the env, so if we can somehow someway pass the Properties collection that is converted by the YamlFactoryBean as an input to the PropertySource then it can load into env object of ioc container
+
+@SpringBootApplication
+@PropertySource(name="appConfig", value="classpath:appConfig.yml", factory=YamlPropertySourceFactory.class)
+class BootApplication {
+
+}
+
+The PropertySource has provided an standard interface called PropertySourceFactory from which we can write our own implementation class, which contains logic for converting and returning an PropertySource object as an input to @PropertySource annotation, there by which @PropertySource annotation can invoke it while loading
+
+
+class YamlPropertySourceFactory implements PropertySourceFactory {
+	public PropertySource createPropertySource(String name, EncodedResource resource) {
+		YamlPropertiesFactoryBean yamlPropertiesFactoryBean = new YamlPropertiesFactoryBean();
+		yamlPropertiesFactoryBean.setResources(resource.getResource());
+		
+		Properties properties = yamlPropertiesFactoryBean.getObject();
+		PropertiesPropertySource propertySource = new PropertiesPropertySource(properties);
+		return propertySource;
+	}
+}
+
+The PropertySourceFactory has been introduced in spring boot 2.5.4, prior to that this approach is not available
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

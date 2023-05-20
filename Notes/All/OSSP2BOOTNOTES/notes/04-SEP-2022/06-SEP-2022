@@ -1,0 +1,112 @@
+There are 6 features are there in spring boot
+1. auto configurations
+2. starter dependencies
+3. actuator endpoints
+4. devtools
+5. embedded servlet containers
+6. spring boot cli
+
+#1 auto-configurations
+While working with spring framework in building an application, we need to write lot of configuration information pertaining to our application enabling spring framework to work for our application in providing the functionality. its just not that our application components even the framework components also should be configured as part of our application.
+	
+Most of the time we endup in configuring the framework components in our application even though we dont use them aspart of our application directly, even then also we need to configure them within our application, thus making the spring framework difficult to use
+
+since these classes are provided by the spring developers, as they know the details of their classes instead of we configuring them manually, why cant the framework by itself configure their components to work for our application.
+	
+that is where auto-configurations comes into picture
+	
+There are lot of components provided aspart of the framework, if all of the classes of the framework are being configured as bean definitions byitself then we endup in wasting huge memory in having these components within ioc container even though we dont use them
+
+So that is where spring boot auto-configurations works based on opinionated view for eg..
+if we add spring jdbc module dependency in our project along with h2database driver dependency as well, by looking at this the spring boot auto-configurations comes to an opinionated view that our application is using spring jdbc module with database as h2 in-memory database and automatically configures the DriverManagerDataSource, TransactionManager and other spring jdbc components as bean definitions within our application
+
+but if the requirements are diverging from the default for eg.. instead of using h2 database if we are using mysql-connector-java as a driver dependency in our project, then how does spring boot auto-configurations knows the details of our database in configuring the spring jdbc components as bean definitions?
+	
+the developers can pass the configuration values with which these components should be configured as bean definitions to auto-configurations with minimal efforts so that we can quickly fine tune framework components for our application.
+	
+In-short: Instead of we configuring the framework components as bean definitions the spring boot auto-configurations takes care of configuring the framework components as bean definitions based on opinionated view. Now the developer dont need to endup in writing lot of code in tuning the framework to work for the application.
+	
+#2. starter dependencies
+starter dependencies are provided by the spring boot to provide jump start experience in begin development of an application using spring framework. 
+	
+while working with spring framework in building an application we need to add module dependency we wanted to use in building an application, in addition to the module dependency we need to add other dependent modules which are required for the module we are using along with external third-party libraries into our project.
+identifying the list of module dependencies along with their compatible verions seems to be a tedious job and may take lot of time in compiling the right set of dependencies to be used in developing the project.
+Thus developers has to spend lot of time in setting up a project for developing the application using spring framework.
+	
+To overcome the above problem and to give the developers jumpstart experience in building projects using spring framework, spring boot has introduced starter dependencies.
+	
+starter-dependences are nothing but maven artifacts declared with other spring modules and third-party libraries as transitive dependencies
+For example to work with web application using spring framework we need to add spring-boot-starter-web dependency in our project, by which maven pulls all the module dependencies and third-party libraries declared as transitive dependencies for the above dependency and makes you project ready for development.
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

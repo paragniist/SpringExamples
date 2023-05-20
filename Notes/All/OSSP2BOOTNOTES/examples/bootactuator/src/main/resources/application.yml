@@ -1,0 +1,61 @@
+product:
+  productCode: 24
+  description: television
+server:
+  port: 8081
+  
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/datajpadb
+    username: root
+    password: root
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    generate-ddl: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true      
+  application:
+    name: boot actuator
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+info:
+  version: 1.0
+  author: sriman
+  
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include:
+        - "*"      
+      discovery:
+        enabled: true  
+  endpoint:
+    cache:
+      enabled: false
+    health:
+      db:
+        enabled: true
+      show-components: always
+      show-details: always
+      
+        
+        
+        
+        
+        
+        
+        
+        

@@ -1,0 +1,18 @@
+---
+server:
+#  port: 8082
+#  tomcat:
+#    accesslog:
+#      enabled: true
+#      directory: d:/tomcat/
+  error:
+    whitelabel:
+      enabled: true
+    include-exception: true
+    include-stacktrace: on-param
+    path: /errorpage.jsp
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp

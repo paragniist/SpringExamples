@@ -1,0 +1,149 @@
+To overcome the problems with fat/uber jars, spring boot has introduced boot executable jar, the spring boot team has come with 2 aspects in building an boot executable jar to overcome the problems with fat/uber jar
+
+1. customized directory structure for boot executable jar
+2. custom classloaders to support loading the classes based on boot executable jar directory structure
+
+#1. customized directory structure
+unlike the fat/shadded/uber jar, in boot executable jar we can package dependent jars inside our application jar. so springboot has comeup with a different directory structure for jar to place dependent jars along with our application classes inside the jar as below.
+	
+bootexecutable.jar
+|-META-INF
+	|-manifest.mf
+		|-Main-Class: org.springframework.boot.loader.JarLauncher/WarLauncher
+		|-Start-Class: fqnMainClass (application)
+|-BOOT-INF
+  |-classes
+		|-packages
+		 	|-*.class (application class files)
+	|-lib
+		|-*.jar (dependent jars of the application)
+|-org
+	|-springframework
+		|-boot
+			|-loader
+				|-Launcher.class
+				|-JarLauncher.class
+				|-WarLauncher.class
+					
+#2. custom classloaders
+java standard classloaders dont support loading the .class files of jar embedded inside another jar, they can only support loading the .class files only from an jar file. To support loading the classes based on boot executable jar directory structure and even the .class files of a jar embedded inside the boot jar, the spring boot team has comeup with their own custom classloaders
+
+The abstract base classloader for all the boot classloaders is
+1. Launcher.class
+from which 2 more child classloaders are derived
+2. JarLauncher.class
+3. WarLauncher.class
+	
+depends the type of packaging of he application one of these classloaders will be used for loading the classes of our application
+
+if we are packaging our application as a boot executable jar, the JarLauncher classloader is used for loading the classes, else if we are packaging our application as a boot executable war, then WarLauncher classloader is used for loading the classes
+
+These classloaders are the java classes contains the main() method as part of them equipped with the logic for loading the application classes.
+------------------------------------------------------------------------------------------------------------------------
+Based on the boot executable jar directory structure developer has to package the application and distribute it. The standard jar utility doesnt support packaging the application based on spring boot executable jar directory structure, so developer has to manually package the application which is an tedious job
+	
+To overcome the above problem, spring boot has provided spring-boot-maven-plugin.
+The spring-boot-maven-plugin has a repackage goal that is executed aspart of default lifecycle, package phase. if we are creating spring boot project from spring-boot-starter-parent as parent project then it is by default configured to be executed during package phase. 
+otherwise we need to manually configure it in build plugins of pom.xml
+
+
+How does spring-boot-maven-plugin works?
+when we run the maven build during the package phase after maven-jar-plugin has completed execution, maven triggers repackage goal of spring-boot-maven-plugin.
+	
+Now spring-boot-maven-plugin renames the application.jar to application.jar.original and goes to the pom.xml identified all the dependent libraries being use and creates an boot executable jar by placing
+1. application classes under BOOT-INF/classes directory
+2. dependents under BOOT-INF/lib directory
+3. META-INF/manifest.mf = Main-Class attribute as JarLauncher if packaging = jar and WarLauncher if packaging is war
+4. along with that it places Start-Class in manifest.mf based on @SpringBootApplication annotated classname and generates the boot executable jar
+
+Now we can directly distribute the boot executable jar to the customer and launch the application using java -jar jarName.jar
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					

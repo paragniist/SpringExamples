@@ -1,0 +1,201 @@
+Spring Profiles
+spring profiles are used for create configuration per each environment, so that with minimal or no efforts we can deploy an application across the environments/profiles we created.
+	1. no need to modify the configuration values of the application each time while deploying to an environment, because the configurations are pre-configured and created within the application per environment
+	2. build once and deploy on any env without the need of code change, rebuild or repackage the application
+
+@Component
+class DbConnectionManager {
+	@Value("${db.driverClassname}")
+	private String driverClassname;
+	@Value("${db.url}")
+	private String url;
+	@Value("${db.username}")
+	private String username;
+	@Value("${db.password}")
+	private String password;
+	// accessors
+}
+
+db-dev.properties
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/db
+db.username=root
+db.password=root
+
+
+db-test.properties
+db.driverClassname=oracle.jdbc.driver.OracleDriver
+db.url=jdbc:thin:@localhost:1521:xe
+db.username=hr
+db.password=welcome1
+
+@Configuration
+@ComponentScan(basePackages="com.profiles.beans")
+@PropertySource("classpath:db-dev.properties")	
+@Profile("dev")
+class DevConfig {
+
+}
+
+
+@Configuration
+@ComponentScan(basePackages="com.profiles.beans")
+@PropertySource("classpath:db-test.properties")	
+@Profile("test")
+class TestConfig {
+
+}
+
+class Test {
+	public static void main(String[] args){
+		ApplicationContext context = new AnnotationConfigApplicationContext();
+		context.register(DevConfig.class);
+		context.register(TestConfig.class);
+		//((ConfigurableApplicationContext) context).getEnvironments().setActiveProfile("dev");
+		((ConfigurableApplicationContext) context).refresh();
+		DbConnectionManager manager = context.getBean(DbConnectionManager.class);
+		sop(manager);
+		
+	}
+}
+
+-Dspring.active.profiles=dev
+------------------------------------------------------------------------------------------------------------------------
+How to work with spring boot profiles?
+	
+@Component
+@ConfigurationProperties(prefix="db")
+class DbConnectionManager {
+	private String driverClassname;
+	private String url;
+	private String username;
+	private String password;
+	// accessors
+}	
+
+application.properties
+----------------------
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/db
+db.username=root
+db.password=root
+
+applicationtest.properties
+db.driverClassname=oracle.jdbc.driver.OracleDriver
+db.url=jdbc:thin:@localhost:1521:xe
+db.username=hr
+db.password=welcome1
+
+@SpringBootApplication
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		DbConnectionManager dbConnectionManager = context.getBean(DbConnectionManager.class);
+		sop(dbConnectionManager);
+	}
+}
+
+While working with Spring Boot, the SpringApplication class itself will detects and loads the external configuration into env object and creates the ioc container.
+even though we create multiple configuration files pertaining to each env, we cannot tag which configuration file relates to which env to be loaded into the env object based profiles active
+
+From the above we can understand it is big setback (drawback), since spring boot applications doesn support profiles, always we need to modify the application.properties file while switching between environment
+
+
+To overcome the above the spring boot developers has added support for profiles using naming convention
+by default SpringApplication class looks for application.properties only
+Now developers can write still application.properties to active or load common properties irrespective of profile
+
+application.properties
+fuelType=petrol
+capacity=23
+spring.profiles.active=dev
+
+now for each profile or env to support write profile specific configuration file with standard naming convention as application-profilename.properties in which the env specific property values configure
+
+application-dev.properties
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/db
+db.username=root
+db.password=root
+
+application-test.properties
+db.driverClassname=oracle.jdbc.driver.OracleDriver
+db.url=jdbc:thin:@localhost:1521:xe
+db.username=hr
+db.password=welcome1
+
+Now SpringApplication.run(BootApplication.class, args) will along with reading application.properties, it tries to identify which profile is active based on that it reads relevant application-profilename.properties also from pre-defined locations
+project/
+project/config
+classpath:
+classpath:/config
+and loads into the environment object using which it creates ioc container
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,95 @@
+Auto Configuration
+Auto Configurations are the configuration classes, that are provided by spring boot developers which takescare of configuring the framework components as bean definitions with default values.
+	
+How does AutoConfigurations works?
+1. AutoConfigurations are shipped aspart of starter dependencies
+2. AutoConfigurations works based on opinionated view. The AutoConfigurations are annotated with Conditional Annotations enabling them to execute based on trigger points
+There are 5 types of Conditional Annotations are there
+1. @ConditionalOnClass or @ConditionalOnMissingClass
+2. @ConditionalOnBean or @ConditionalOnMissingBean
+3. @ConditionalOnProperty
+4. @ConditionalOnResource
+5. @ConditionalOnWebApplication or @ConditionalOnNoWebApplication or @ConditionalOnJava
+
+In addition the auto-configurations has dependencies between them, which are expressed using an annotation @AutoConfiguration(before = {}, after={})
+	
+How does these autoconfigurations will be registered and executed?
+When we execute the spring boot application, the SpringApplication.run(Config.class, args) will perform various different activities in booting up the Spring boot application.
+The SpringApplication.run(Config.class, args) method upon instantiating the ioc container, it executes the ApplicationContextInitializer, once it has finished execution, it immediately detects and registers the AutoConfigurations into the ioc container
+
+since the ioc container has been created by the SpringApplication class, it holds the reference of it, so it can pick the AutoConfiguration classes and can register with ioc container for eg.. 
+context.register(Config.class);
+
+When SpringApplication prepare and refresh the context, during the time of refresh the ioc container executes the AutoConfiguration classes based on Conditional Annotations 
+
+How does SpringApplication class knows which auto-configuration classes are there?
+usually the AutoConfiguration classes are shipped aspart auto-configuration dependencies.
+for example 
+spring-boot-starter-jdbc-autoconfiguration.jar
+|-META-INF
+  |-spring.factories 
+	  |-org.springframework.boot.autoconfigure.EnableAutoConfiguration=fqnConfigurationClass (separated by ",")
+	
+Now the SpringApplication goes to each jar look under META-INF/ directory for a file spring.factories, if it is found looks for an key "org.springframework.boot.autoconfigure.EnableAutoConfiguration"	and picks the "comma(,)" separated list of AutoConfiguration classnames and register with ioc container.
+	
+so that upon refresh, ioc container executes these autoconfigurations based on the Conditional Annotations	
+------------------------------------------------------------------------------------------------------------------------
+How to create our own autoconfiguration classes?
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

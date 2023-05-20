@@ -1,0 +1,46 @@
+What are embedded servlet containers, what is the advantage of using them?
+Embedded Servlet containers are shipped directly as jar libraries which can packaged into our application and launch them throught the code itself, we dont need to externally download the containers and install them to run the application.
+There are lot of advantages of using embedded servlet containers in running an application
+1. no need to download, install the container to deploy and run the application, the container can be shipped directly by packaging it aspart of the application distributable itself, so seemlessly across the env we can run the application quickly
+2. we dont need to manually configure the resources on the container (like connection pool, jms resources etc) to deploy the application. since the container is lauched through the program itself the configurations also are taken care aspart of programming logic itself, so that with no manual intervention we can quickly launch the application
+3. easy to adopt aspart of ci/cd pipeline deployments, we dont need to write huge amount of automation code in installing/configuring the platform software on the targeted env to run the applications
+4. supports microservices based application delivery and deployments, since each microservice has to be deployed and executed independent of the another, by packging the container within the application and running the application on the embedded container results in independent deployment of the microservice application
+
+By looking at the above we can understand there are lot of advantages of adopting and deploying the applications on embedded servlet containers
+
+While working with springboot mvc application, the spring boot takes care of internally deploying and running the application on the embedded servlet containers, so that we can eliminate the necessacity of installing, configuring and deploying the application on standalone containers
+
+From this we might think that spring boot mvc applications only works on embedded servlet containers, which is wrong based on the nature or type of the application we can package the spring boot mvc application as a boot distributable jar or an standalone war as well.
+
+if we are developing an microservice based application we can package and deploy the application on embedded servlet container itself.
+whereas if we are working on an traditional web-application development where we want to deploy our application on an standlone servlet container or an application server, we can package the spring boot mvc application as a war and deploy it as well.
+
+When we are developing spring boot mvc application we need to include spring-boot-starter-webmvc into our project, when we add the webmvc starter inour project, it transitively adds the embedded servlet container into our project. we dont need to write the code for registering, deploying and running our application on that embedded servlet container, spring boot internally takes care of running the application on the embedded servlet container when we call SpringApplication.run(config, args);
+
+Spring Boot supports 4 embedded servlet containers currently
+1. tomcat (default)
+2. jetty
+3. undertow
+4. netty (reactive stack) (spring webflux)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

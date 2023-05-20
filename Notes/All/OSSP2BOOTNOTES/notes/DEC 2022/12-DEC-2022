@@ -1,0 +1,337 @@
+How to change the port on which the management endpoints are exposed?
+management.server.port=8088
+http://localhost:8088/actuator
+
+when we change the management endpoint port to a different portno other than server.port, then the application will be started on 2 tomcat servers.
+
+How to change the base-path of over which we can access the actuator endpoints?
+management.endpoints.web.base-path=/management
+------------------------------------------------------------------------------------------------------------------------
+when we add the spring-boot-starter-actuator dependency to our project, by default all the endpoints are enabled (except shutdown) and only #2 web endpoints are exposed
+- health
+- info
+
+By default the HealthIndicator endpoints are auto-configured and exposed by spring boot actuator based on the starter-dependencies we added and configurations we wrote in application.yml|properties
+
+For eg.. if we add spring-boot-starter-jdbc or spring-boot-starter-datajpa into our project as starter dependencies and configured database configuration in application env properties, it indicates we are using database in our application. The spring boot actuator understands we are using databse and an HealthAutoConfiguration class configures DataSourceHealthIndicator endpoints automatically
+	
+For each type of external resource our application might integration spring boot has provided predefined HealthIndicator endpoints. For all the Health Check endpoints the base interface from which those are implemented from are HealthIndicator.
+	
+The spring boot actuator has provided bunch of concreate healthIndicator endpoints for each external resource type as below.
+	
+endpointName    HealthIndicator implementation class
+cassendra       CassandraDriverHealthIndicator
+db              DataSourceHealthIndicator
+diskspace       DiskSpaceHealthIndicator
+mail            MailHealthIndicator
+ping            PingHealthIndicator
+mongo           MongoHealthIndicator
+jms             JmsHealthIndicator
+	
+all the above HealthIndicator endpoints are auto configured based on starters and application env configuration
+	
+/actuator/health = checks for webserver health only
+for all the rest of the health checks the sub-component url is provided
+/actuator/health/db
+/actuator/health/mail
+/actuator/health/diskspace
+
+
+
+to make the sub-components exposed we need to enable each of them
+management.endpoint.health.db.enabled=true
+management.endpoint.health.show-components=always
+management.endpoint.health.show-details=always
+
+
+instead of verifying each healthendpoint for each of the component, we can group them and create an health-group and check the overall health using the group
+management.endpoint.health.group.group1.include=db,diskspace,ping,mail
+http://localhost:8081/actuator/health/group1
+
+For most of the external resources we typically use in our application, spring boot has provided its own HealthIndicator implementations which are auto-configured based on their usage in our application. But few times we might need to write our own custom HealthIndicator implementations to check the external system or applications which our system is dependent on
+
+For eg.. our application might be using a payment gateway system called "BillDesk", The billdesk provides an endpoint through which we process the payments in our application, we wanted to check whether the BillDesk gateway is up or not so that incase if the endpoint is down we can make an alternate solution of processing the payments through our application.
+	
+This can be done by writing our own HealthIndicator endpoint.
+The BillDesk team might have provided an endpointUrl to verify their endpoint is working or not, which could be something like http://www.billdesk.com/health/check
+
+Now we need to create our own endpoint to verify the billDesk endpoint is working or not as below.
+
+@Component("billdesk")	
+class BillDeskHealthIndicator implements HealthIndicator {
+	private final String BILL_DESK_ENDPOINT = "http://billdesk.com/health/check";
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	public Health health() {
+		ResponseEntity<String> response = null;
+		response = restTemplate.get(BILL_DESK_ENDPOINT, String.class);
+		if(response.getStatus() == 200) {
+			return Health.up().build();
+		}else {
+			return Health.down().build();
+		}
+	}
+}
+	
+http://localhost:8081/actuator/health/billdesk
+------------------------------------------------------------------------------------------------------------------------
+Info Endpoint:-
+by default info endpoint is also enabled and exposed, the purpose of info endpoint is to provide information about our 
+application to the external world.
+For eg..
+	applicationName
+	version
+	author
+	releasedDate
+	license
+	etc
+	
+by default the info endpoint displays empty, since it doesnt know the information about our application, we need to supply the data we want to display aspart of info endpoint either through
+1. configuration
+2. programmatically
+
+@Component("info")
+public class InfoEndpoint implements InfoContributor {
+
+	@Override
+	public void contribute(Builder builder) {
+		builder.withDetail("version", "1.0").withDetail("author", "sriman").withDetail("releaseDate", "2022-12-12")
+				.build();
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------
+In some cases we might want to add our own custom actuator endpoints for our application 
+for eg..
+1. we want to monitor the cache system that we have build in our application and might want to perform operations like evict or reload through actuator
+2. we want to monitor a jms queue of our application to know the statics of message consumption
+
+For such requirements we can write our own acutuator endpoints by using spring boot actuator api and can expose them
+There are plenty of advantages of build our own actuator endpoints through actuator api rather than writing controller classes to manage, monitor or administor the internal components of our application
+1. we can enable/disable these endpoints based on actuator eco system 
+2. the endpoints we build becomes agnostic to the technology, the same endpoints are exposed both via jmx and http also
+3. we can easily secure them along with rest of the actuator endpoints by implementing spring security on them
+
+
+Spring boot 2.0 has provided support for building our own custom actuator endpoints which are agnostic to the technology 
+1. Endpoint(id="endpointName") = The actuator Endpoint class should be annotated with @Endpoint annotation binded with an id, the endpoint becomes accessible with the id we have binded
+
+through these endpoints we perform
+1. reading
+2. modifying
+3. deleting
+
+so for performing each operation we need to write one method in the endpoint class and these methods must be annotated with relevant annotations based on the nature of operation these methods are performing using
+	@ReadOperation
+	@WriteOperation
+	@DeleteOperation
+	
+@Component
+@Endpoint(id="cache")
+class CacheEndpoint {
+	
+	@DeleteOperation
+	public void evict() {
+		// clearing cache
+	}
+}	
+------------------------------------------------------------------------------------------------------------------------
+Spring Boot DevTools
+DevTools provides required features that helps the developers in improving their producting while developing the application.
+	
+How to enable devTools for a project?
+we just need to add devTools dependency to our project, which will enable devtools module for our project
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-devtools</artifactId>
+</dependency>
+
+Note: all the features of devtools are related for development only and should not be enabled for production usage
+
+The devtools will be auto-disabled by itself when we are running our application in production environment. how does devtools detects our application is running production env?
+1. when we package our application as spring boot jar and runs using java -jar boot.jar, the devtools detects considers our application is running in production and auto-disable
+2. when we package our application as war and deploy it on standalone server, then also devtools will turn-off automatically considering as production usage
+
+
+Features:
+1. automatic restart of the application
+while developing the application, developer might modify the sourcecode and want to check whether the changes he has made are working properly or not, for this he/she has to re-build, repackage, redeploy and restart the application on the server, this kills huge amount of development time and reduces the productivity of the developer.
+devtools has provided automatic restart, when we have modified any resources under the predefined directories of our project like
+1. classpath
+2. static/
+3. templates/
+the devtools automatically restart the application, we dont need to manually restart it
+
+There is a key different between devtools restart and manually restart of an application, devtools will not restart the jvm, rather it reloads the modified .class files of the classes quickly into the jvm memory by using special classloaders
+	
+The devtools maintains 2 different classloaders for an application to optimize the restart behaviour
+1. autorestart classloader = when the application classes are modified, the devops quickly picks the changes and reloads using autorestart classloader
+
+2. permanent classloader = all the jar module classes are loaded through permanent classloader
+
+#2. livereload server
+The livereload server is configured and available by default aspart of devtools module, we need to install a livereload plugin in firefox/chrome browser
+The plugin will connect to livereload server orf our application, so that whenever there is a change in a html/jsp pages of our application the livereload server will send a push notification asking the plugin to reload the browser page
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

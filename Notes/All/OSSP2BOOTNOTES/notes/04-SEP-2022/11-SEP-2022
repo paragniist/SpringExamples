@@ -1,0 +1,226 @@
+How to develop an Spring boot application?
+#1. create an maven project depends on the type of application choose an appropriate archetype
+#2. we need to add spring dependencies into the project, instead of adding spring dependencies we can add starter-dependencies 
+#3. write the components which wanted to manage using spring framework
+make sure we have an root package under which all the components of our application are placed 
+#4. define the configuration values required for your components in application.properties
+#5. write application class in which create the ioc container using SpringApplication.run(...)
+------------------------------------------------------------------------------------------------------------------------
+How does spring boot application works?
+When we are working with spring framework application we define the classes as bean definitions through stereotype annotations along with java configuration classes. We pass JavaConfig as an input in creating the ioc container using AnnotationConfigApplicationContext as below.
+	
+@Component	
+class Machine {
+	public void on() {}
+}
+
+class Truck {
+	String model;
+	int capacity;
+}
+	
+@Configuration
+@ComponentScan(basePackage="com.coreioc.beans")
+class JavaConfig {
+	@Bean
+	public Truck heavyTruck() {
+		Truck truck = new Truck();
+		truck.setModel("benz c938");
+		truck.setCapacity(10000);
+		return truck;
+	}
+	@Bean
+	public Truck mediumTruck() {
+		Truck truck = new Truck();
+		truck.setModel("Ashoka truck");
+		truck.setCapacity(5000);
+		return truck;
+	}
+}
+
+class Test {
+	public static void main(String[] args) {
+		ApplicationContext context = new AnnotationConfigApplicationContext(JavaConfig.class);
+	}
+}
+
+Instead of writing an Configuration class separately we can mark the Test class in which we are creating the ioc container itself as a Configuration class, so that we can eliminate writing one more class additionally. Along with that to make the stereotype annotated classes as bean definitions we need to use @ComponentScan	
+	
+package com.bootcore.beans;
+class Truck {}
+class Motor {}
+
+package com.bootcore;
+//@SpringBootApplication
+@Configuration
+@ComponentScan(basePackages={"com.bootcore.*"})
+@EnableAutoConfiguration
+class BootApplication {
+	@Bean
+	public Truck heavyTruck() {
+		Truck truck = new Truck();
+		truck.setModel("benz c938");
+		truck.setCapacity(10000);
+		return truck;
+	}
+	@Bean
+	public Truck mediumTruck() {
+		Truck truck = new Truck();
+		truck.setModel("Ashoka truck");
+		truck.setCapacity(5000);
+		return truck;
+	}
+	public static void main(String[] args) {
+		ApplicationContext context = new AnnotationConfigApplicationContext(BootApplication.class);
+	}
+}
+
+Instead of that spring boot has provided an annotation @SpringBootApplication it is equivalent to 3 annotations of Spring Framework
+1. @Configuration = SpringBootApplication class itself acts as Configuration class
+2. @ComponentScan = annotation is applied with basePackages as the package.* under which we wrote the BootApplication class 
+3. @EnableAutoConfiguration = AutoConfiguration are not by default enabled, unless we write @EnableAutoConfiguration which will be added by default when we write @SpringBootApplication
+	
+Now developers instead of writing 3 annotations can replace with one single annotation which is "@SpringBootApplication" on the Test/BootApplication class
+	
+Within the main method we need to create the ioc container, instead of we creating the ioc container directly we are using SpringApplication.run(Config.class, args).
+Let us understand what will happens when we invoke SpringApplication.run(..) method:
+
+The whole spring boot echo system has been wrapped into SpringApplication class, the static run method performs the below operations in running your spring boot application internally.
+
+ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+1. creates an empty environment object
+The Environment object of the ioc container is used for holding the configuration values, these values can be injected as depends into the Target classes for instantiating the objects for bean definitions
+2. detects/identifies the external configuration of our application and gathers and loads the configuration into the Environment object created above
+3. prints the spring boot banner
+4. detects/identifies the type of the application by looking into the classpath of the project
+	4.1 it checks under the classpath of the application, the spring mvc jar is found or not, if spring mvc jar is found, it treats the ApplicationType as WebApplication and creates the ioc container of type
+	AnnotationConfigServletWebServerApplicationContext
+	4.2 if Spring WebFlux dependecy is found under the classpath of the application, it treats the applicationType as REACTIVE and instantiates the ioc container of Type
+	AnnotationConfigReactiveWebServerApplicationContext
+	4.3 else it treats the WebApplicationType as None and instantiates the ioc container of type
+	AnnotationConfigApplicationContext
+5. It instantiates the spring factories (AutoConfiguration classes) and registers them with ioc container
+6. Invokes the ApplicationContextInitializer
+7. prepareContext()
+8. refreshContext() = instantiates the objects for the bean definitions
+9. executes the commandLineRunners and applicationRunners and returns the reference of the ioc container to us
+10. during the above stages of operations, the SpringApplication class publishes different events and triggers the Listener classes for handling the events
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

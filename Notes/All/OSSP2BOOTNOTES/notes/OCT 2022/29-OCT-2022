@@ -1,0 +1,13 @@
+Auto-configurations
+--------------------
+
+
+java jdbc
+1. load the driver
+2. create connection using DriverManager
+3. Statement
+4. execute the statement and grabbing the result of data
+5. closing the resources
+we endup in writing huge amount of boiler-plate logic in building an database application using java jdbc api
+instead use spring jdbc 
+

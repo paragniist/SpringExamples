@@ -1,0 +1,62 @@
+spring boot web mvc
+-------------------
+when we are working on spring mvc application we package our application as ".war" and deploy on standalone servlet containers. but while working with spring boot mvc application application we dont have to package our application as ".war" and dont need to deploy on standalone servlet containers.
+The springboot takes care of deploying and running the mvc application on an embedded servlet container internally
+
+What are embedded servlet containers?
+Instead of download, installing and configuring the standalone servlet containers on a computer/machine, the container vendors has shipped them as an jar dependency out of their code itself. These embedded servlet container libraries can be added into the classpath of our project and can deploy and run our application on these containers through code itself.
+	
+There are lot of features or benefits of running an application out of an embedded servlet container are there 
+advantages:
+1.
+The Embedded Servlet containers are shipped as a jar dependencies by the container vendor/provider. These container libraries can be added into the classpath of our project through build systems, so that containers are shipped aspart of the sourcecode of the application itself.
+When we clone the project repository and build the code using a build management tool, all the container binaries are downloaded and available under the classpath of the project. 
+The project is deployed and executed on the container through the code written aspart of the project itself.
+	
+From the above we can understand all we need to run the application is the source code or distributable artifact of our project, we dont need to install or configure anything on the machine to run the application. 
+	
+2. In a traditional application deployment we need to download the servlet container, install and configure it on the computer. ontop of it we need to manually configure required configurations on the container like datasource connection pool, jms queues/topics or security related configurations that are required on the container to deploy and run our application.
+The job of configuring these resources on container will be taken care manually by the deployer, in addition the whole process of install & applying project specific configurations on the container has to be done across multiple environments (eg.. dev, test,stage & prod etc)
+	
+performing these configurations manually takes huge amount of time across the envs and might endup in failure due to human errors
+
+but instead of standalone containers, if we use embedded servlet containers, since the container is shipped aspart of code and executed through codeitself, configuring the required resources on the container to deploy the application is also takencare through the code itself. So that the efforts of rolling the application on any environments will be zero since we just need to run the binary of the application
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

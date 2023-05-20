@@ -1,0 +1,118 @@
+How to manage application properties/configuration while working with Spring Boot?
+While working with Spring Boot application, the SpringApplication class takes care of creating an empty env object, detects and loads the external configuration into env object and creates the ioc container with it.
+	
+The SpringApplication class reads the application.properties|yaml and loads into the environment object of the ioc container, so that these values can be used for configuring the components of our application
+
+The application.properties|yaml is the standard spring boot configuration file, in which we generally define only spring boot properties, it is not adviced to write our own application properties inside them.
+	
+If we want to use an configuration values for our application components, place them in our own custom configuration files load them into ioc container and inject them
+
+
+@Component
+@ConfigurationProperties(prefix="airTicket")
+class AirTicket {
+	private String pnrNo;
+	private String source;
+	private String destination;
+	private String flightNo;
+	private double price;
+	
+	// accessors
+}
+
+application.properties
+------------------------
+	
+@SpringBootApplication
+@PropertySource("classpath:config.properties")	
+class BootApplication {
+	public static void main(String[] args) {
+		ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+		AirTicket airTicket = context.getBean(AirTicket.class);
+		sop(airTicket);
+	}
+}	
+
+If we write our own application components configuration values in application.properties/yaml then it would become difficult to differentiate from standard spring boot properties from our application component configuration, so it is always adviced to write our own component configuration values separately in another configuration
+
+config.properties
+----------------------
+airTicket.pnrNo=PA93404
+airTicket.source=Hyderabad
+airTicket.destination=New Jersey
+airTicket.flightNo=f93893
+airTicket.price=145000
+
+Instead of writing properties file in passing the configuration values can we use yaml as well?
+config.yml
+---
+airTicket:
+	pnrNo: P38348Ndj
+	source: Hyderabad
+	destination: New Jersey
+	flightNo: f038
+	price: 145000
+...		
+		
+
+@SpringBootApplication
+@PropertySource("classpath:config.yml")
+class BootApplication {
+	
+}
+
+when we are using our own custom yml file for passing configuration values, we cannot use @PropertySource annotation for loading yaml configuration into ioc container, because YAML format is not supported by PropertySource/ioc container
+
+In case of application.yml, the SpringApplication takes the responsibility of transforming the YAML format into key/value pair and loads into environment object of the ioc container
+
+How to use our own custom yaml file in passing the configuration values for our components of the application?
+There are 2 ways are there
+1. YamlPropertySourceLoader
+2. YamlFactoryBean
+
+#1. YamlPropertySourceLoader
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

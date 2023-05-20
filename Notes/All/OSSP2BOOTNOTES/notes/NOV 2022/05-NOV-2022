@@ -1,0 +1,3 @@
+Auto-Configuration
+AutoConfigurations are the configuration classes annotated with conditional annotations which are executed by the ioc container that takes care of configuring framework components as bean definitions
+

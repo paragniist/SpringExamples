@@ -1,0 +1,105 @@
+How to distribute an java application with dependencies to the enduser?
+We need to distribute our application as an fat/uber/shadded jar to the enduser. In a fat/uber/shadded jar we package the application and all the libraries by combining them into one single jar file. there are problems with fat/uber jar distribution
+1. each time to build and distribute the application we need to unpack all the dependent jars of our application and repackage them into single fat jar which takes lot of time
+2. we cannot identify what dependencies are being used/shipped aspart of the application
+3. we cannot identify the versions of the dependencies easily
+4. by unpacking the vendor dependencies we might broke the signed jars shipped by the vendors, so that the authenticity of the jars are lost
+
+To overcome the above problems spring boot has introduced spring boot executable jar/war.
+The spring boot has comeup with a customized packaging structure for a jar file in which we can embed or include dependent jars inside the application jar, so that all the problems we discussed earlier will be resolved
+
+1. we dont need to unpack all the dependents to package the application as a single distributable file, so it doesnt takes lot of time in building and delivering the application
+2. now we can easily identify which dependent jars are being used aspart of our application
+3. along with that we can tell which versions of them being used
+4. no need of unpacking the vendor jars, so that no issued with jar signing
+
+when we package a jar inside another jar, the java standard classloaders doesnt support loading a class in a jar which is part of another jar. so spring boot has provided its own classloaders to support loading a class in a jar which is part of another jar
+	
+In-short
+to solve the problem in distributing a java application with dependent libraries, spring boot introduced spring boot executable jar which has 2 things
+1. spring boot customized jar layout into which we package dependent jars inside the spring boot application jar
+2. to support loading the classes inside the embedded jar, it has provided custom classloaders
+
+
+#1. How does the directory layout of the spring boot executable jar looks like
+application.jar
+|-META-INF
+  |-manifest.mf
+|-packages
+  |-.class
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,45 @@
+What are the advantages of using embedded servlet containers?
+1. the containers are shipped aspart of the code, so no need to download, install/configure to use them
+2. In an traditional application deployment, after install the container, the deployer has to perform necessary configurations on the container manually like
+- connection pool configuration
+- jms queues/topics
+- security configurations
+There are problems in manually configuring them
+1. human errors
+2. lot of time
+3. should be applied repeatedly across the env 
+
+while working with embedded containers, the server and project specific configurations are applied through the code itself due to which we can avoid manualy configurations on the server env
+
+3. easy to adopt in CI/CD
+The continous integration and delivery tools like
+1. jenkins
+2. hudson
+3. bamboo
+4. concourse
+5. teamcity
+etc
+using the ci/cd tools we create 3 piplelines for facilitating the release of the application
+ci (continous integration) pipeline
+cd (continous deployment) pipeline
+cd (continous delivery) pipeline
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,249 @@
+actuator endpoints
+-------------------
+upon developing an application, post completion of testing, we cannot deliver the application into production env, because to manage and monitor the application in production we need bunch of utilities or endpoints like
+1. health
+2. metrics
+3. threaddumps
+4. logs
+5. info
+etc
+
+unless we build these endpoints and expose them in our application to collect the realtime data regarding our application we cannot monitor, manage the application in production
+
+So post completion of the development of the application, the developer has to spend lot of time on building these additional utilities or endpoints and integrate them into the application to make it production ready. building these additional utilities has lot of drawbacks
+1. the developer has to spend additional time in making the application production ready
+2. delay in delivering the application
+3. again upon integrating these utilities we need to test the system is working as expected
+
+To overcome the above problems in making an application production ready, spring boot has introduced actuator endpoints
+Actuator endpoints are nothing but pre-built and pre-packaged endpoints that can be added and configured directly into a spring boot application, to make the application ready for production right after the development
+
+Which means we can build development production-grade appliation using spring boot actuator endpoints
+
+How to work with spring boot actuator endpoints?
+To use the actuator endpoints in a spring boot application we need to add spring-boot-starter-actuator dependency in to our project
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+by the above we included actuator endpoints into our project, but those are not available for accessing, we need to configure/enable these endpoints for exposing them 
+There are lot of endpoints provided by spring boot actuator module
+1. /info = provides information about the application
+2. /health = to check the health of the application
+3. /env = to see all the env variables of our application/env
+4. /beans = list down all the bean definitions within the ioc container of our application
+5. /configprops = all the configuration properties part of the env object of our ioc container of our application
+6. /threaddump = shows the jvm threaddump
+7. /metrics = memory, cpu usage metrics
+8. /loggers = to see the loggers enabled and their logging levels
+9. /logfile = shows the application log file
+10. /shutdown = to showtdown the application remote, by default shutdown endpoints is disabled for security reasons
+11. /conditions = shows the auto-configuration conditions 
+13. /caches = displays all the available caches
+14. /httptrace = displays all the http trace
+15. /mappings = displays all the requestURL of our application which are exposed
+16. /quartz = displays all the quartz beans
+17. /startup = shows the startup steps data
+
+all these endpoints are accessible with a prefix /actuator/endpointName
+
+These endpoints are exposed in 2 ways
+1. jmx endpoints (java management extension)
+jmx is an protocol used for administring and managing the jee application servers. 
+	
+2. http (web) endpoints
+These endpoints can be accessed by sending http requests
+
+To make use of these endpoints we need to enable them and expose them. by default all the endpoints are enabled expect shutdown endpoint. which means that endpoint is shipped or included aspart of our application, but it is not available for access
+
+we can enable an endpoint explicity by writing an property in application.yml|properties as below
+management.endpoint.endpointName.enable=true/false
+for eg if we want to enable shutdown endpoint we need to write the below property
+
+management.endpoint.shutdown.enable=true
+	
+by default all the endpoints are enabled except shutdown, lets say we want to disable all the endpoints and want to enable specific endpoints only, which can be done as below
+
+management.endpoints.enabled-by-default=false // all endpoints will be disabled
+management.endpoints.info.enabled=true
+management.endpoints.healthcheck.enabled=true
+	
+with the above we enabled the endpoints, but those are not exposed, unless those are exposed they will not be available for accessing. We can expose the endpoints using 2 protocols either jmx or http/web endpoints
+
+by default all the endpoints are exposed through jmx technology or protocol. but when it comes to web/http endpoints, only 2 are exposed by default
+	1. healthcheck
+	2. info
+	
+if we want to expose webendpoints we need to manually expose them by writing the below property
+
+management.endpoints.jmx.exposure.include=endpointNames (separated by comma)
+management.endpoints.jmx.exposure.exclude=
+	
+management.endpoints.web.exposure.include=
+management.endpoints.web.exposure.exclude=
+	
+for eg.. if we want to expose metrics and configprops endpoint through web we need to add below configuration
+
+management.endpoints.web.exposure.include=metrics,configProps
+if we want to expose all the endpoints we need to write below property
+management.endpoints.web.exposure.include=*
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

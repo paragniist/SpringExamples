@@ -1,0 +1,13 @@
+How to implement event-driven programming in Spring Framework?
+
+#event
+class AccountStatementEvent extends ApplicationEvent {
+  private LocalDate fromDate;
+  private LocalDate toDate;
+  private String emailAddress;
+  public AccountStatementEvent(Object source) {  
+    super(source);
+  }
+  // accessors
+}	
+

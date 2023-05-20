@@ -1,0 +1,6 @@
+How can we handle exitcode in spring boot application?
+Spring boot application is also an Java Application only, so the default behaviour of java application will be applicable to spring boot application as well, which means successful terminate of the spring boot application returns an zero exitcode and in case if the application was terminated with an exception, then it returns non-zero.
+	
+So incase of springboot application we well, we need to customize the exitcodes of the application.
+Unlike the SpringFramework application in case of Spring boot	
+

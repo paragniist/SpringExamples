@@ -1,0 +1,69 @@
+#1. How to switch from tomcat embedded servlet container to another supported servlet container?
+#2. How to deploy a spring boot mvc application as a war deployment on an standalone application server or a servlet container?
+	
+#2. standalone servlet container
+
+dispatcherServlet (web.xml or WebApplicationInitializer)
+|-ioc container
+	|-HM
+	|-Controller
+	|-ViewResolver
+	
+-> Servlet container -> 1.1 look for web.xml [instantiate dispatcherServlet -> ioc container]
+                        1.2 look for ServletContainerInitializer implementation 
+														(SpringServletContainerInitializer) -> WebApplicationInitializer -> DispatcherServlet ->ioc
+														
+-> Spring boot mvc -> SpringApplication (echo)
+													-> ioc container 
+													   |-DispatcherServlet (Servlet Container)
+													   |-Spring mvc components
+														 
+when we develop springboot mvc application and package it as an war and deploy it on standlone servlet container, the servlet container treats as an war deployment and scans for servlets, filters, listeners. Since we havent configured DispatcherServlet or ContextListener either through web.xml or programmatic approach, the spring mvc echo system will not be effective
+
+The whole magic of creating the ioc container, DispatcherServlet, registering the DispatcherServlet with the underlying servlet container lies in SpringApplication class
+when we run SpringApplication.run(Config.class, args); it takes care of creating an AnnotationConfigServletWebServerApplicationContext and registers DispatcherServlet into the Servlet container.
+	
+So when we want to deploy the springboot mvc application on a standlone container, we have 2 options;
+1. convert into spring mvc application by manually configuring DispatcherServlet in web.xml or programmatic approach
+2. let the servlet container during the bootup invoke SpringApplication.run(Config.class, args), so that the SpringApplication takes care of creating ioc, DispatcherServlet and registers them accordingly
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

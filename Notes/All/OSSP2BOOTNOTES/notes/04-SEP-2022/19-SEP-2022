@@ -1,0 +1,317 @@
+How to distribute an spring boot application to the enduser?
+Let us understand how to distribute or deliver an java application to the enduser. An application comprises of multiple resources to be put together to execute, so we need to package all the resources into an single distributable file to be transfered and delivered to the enduser
+	
+To package all the resources of the application into a single file we can use zip/compression, there are problems with zip/compression
+1. different platforms has different zipping/compression standards, so we lose platform portability
+2. the client/enduser has to unzip the file to execute the application
+
+to overcome the above problems, java has introduced jar packaging standard. jar stands for java archive which is a standard of compressing the java application resources and can be distributed to the client as a single-file distributable. The advantages with jar
+1. platform portable
+2. no need to manually unzip to run the application/program inside the jar, the jvm can directly execute the application straight from jar itself.
+	
+Let us try to understand how to run a typical java application
+d:\work:/>
+travelgo
+|-src
+	|-com
+		|-travelgo
+			|-service
+				|-TravelGoService.java
+|-bin
+	|-com
+		|-travelgo
+			|-service
+				|-TravelGoService.class
+
+d:\work\travelgo:/> javac -d bin src\com\travelgo\service\TravelGoService.java
+d:\> set classpath=d:\work\travelgo\bin
+d:\> java com.travelgo.service.TravelGoService
+
+To run an java application
+1. we need to set the CLASSPATH env variable pointing to the directory location under which the .class files exists
+2. run the java class by passing fqn of the class to the jvm
+	
+we cannot delivery the application to the enduser, as discused earlier we need to package the application into an jar to delivery it. To package the application into an jar java has provided jar utility
+	
+d:\work\travelgo:/> jar -cvf travelgo.jar bin\* 
+now the contents inside the bin directory are packaged into the jar file, now delivery the packaged jar application to the enduser
+
+How do we execute the application from the jar file?
+In order to execute the class inside the jar 
+	1. we need to set the classpath to the jar file
+	2. pass fqn class as an input to jvm asking to execute
+		
+d:/> set classpath=d:\work\travelgo\bin\travelgo.jar
+d:/> java com.travelgo.service.TravelGoService
+
+if the above jar file has been delivered to the customer or enduser, then enduser also has to 
+1. set the classpath pointing to the jar file
+2. pass fqn Main class of the program to run the application
+	
+The enduser is not an java developer or a technical guy, he dont know CLASSPATH env variables and he dont know what is an fqnClass. he even dont know how to run a java program even, so enduser finds complex in using java applications
+
+so to make the enduser easy to use our java application we need to package the application into a special jar file called executable/application jar
+
+
+Executable Jar = the information required for jvm to run the application is packaged inside the jar file itself aspart of manifest.mf (information file), so that jvm can extract the information about the application directly from manifest file and can launch or run the application
+The developer is responsible for packaging the application along with information about how to run the application inside manifest.mf and deliver it to the customer. 
+if an jar file contains information about how to execute, then it is called self-executable jar file
+Now developer has to write an attribute called "Main-Class" inside the manifest.mf and package it under /META-INF directory inside the jar file
+
+1. to add manifest.mf with main class entry inside the jar file, the developer has to write an textfile (something like manifest.txt) with manifest attributes [Main-class: fqnClass] and package the contents of the text file inside the manifest file using jar utility
+	
+jar -cvfm travelgo.jar manifest.txt bin\*
+with the above command the contents of the manifest.txt are added into manifest.mf of the jar file. now developer can deliver the jar file to the enduser
+
+as the information in running the application is self-container inside the jar, now customer can directly launch the application using 
+java -jar travelgo.jar
+
+
+always in an real-world and real-time applications requires dependent libraries to be available to execute them. for eg.. if our application is using database as persistence-tier then we need jdbc driver (mysql-connector-java-8.12.jar) to be used in running the application
+
+Now how to run an application which has dependent libraries also?
+	
+
+d:\work:/>
+travelgo
+|-src
+	|-com
+		|-travelgo
+			|-service
+				|-TravelGoService.java
+|-lib
+	|-mysql-connector-java-8.12.jar
+|-bin
+	|-com
+		|-travelgo
+			|-service
+				|-TravelGoService.class
+
+we need to set the classpath pointing to the application jar and even its dependent jars to launch the application
+d:\> set classpath=d:\work\travelgo\bin\travelgo.jar;d:\work\travelgo\lib\mysql-connector-java-8.12.jar
+d:\> java com.travelgo.service.TravelGoService
+
+To deliver the application we need to package into executable jar
+travelgo (directory)
+travelgo.jar
+|-META-INF
+	|-manifest.mf
+		|-Main-Class: com.travelgo.service.TravelGoService
+|-*.class
+mysql-connector-java-8.12.jar
+
+
+How to deliver application jar and dependent jars to the customer?
+#1
+zip all of the jars of our application into a zip file and delivery
+Now the enduser has to extract the zip file manually into a directory and has to execute the application
+
+travelgo (directory)
+travelgo.jar
+|-META-INF
+	|-manifest.mf
+		|-Main-Class: com.travelgo.service.TravelGoService
+|-*.class
+mysql-connector-java-8.12.jar
+
+set classpath=d:\travelgo\mysql-connector-java-8.12.jar
+java -jar travelgo.jar
+
+
+	
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

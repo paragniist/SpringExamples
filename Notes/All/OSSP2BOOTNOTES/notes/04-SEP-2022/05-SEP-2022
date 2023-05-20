@@ -1,0 +1,90 @@
+Spring boot is a module provided by the spring team to address the non-functional requirements of building an spring framework based application.
+	
+For eg.. while developing an application using the spring framework, we need to pour lot of configuration information pertaining to our application inorder make the spring framework work for our application. Even though spring provides lot of functionality to avoid boiler-plate logic in building an application, to make the spring framework work for our application we end up in spending lot of time in configuring/fine tunning the spring framework work for our application. This makes most of the developers find it very complex and time consuming in building an application using spring framework, and most of the code we have written seems to be of no meaning or fuss logic which doesnt have any functional value.
+	
+To overcome the above problem in configuring or fine tunning the spring framework to work our application, the spring boot has been introduced.
+The Spring Boot is an module that eliminates most of the fuss or throw way logic that we need to write while building the application using Spring Framework. Thus it reduces the complexity of using the Spring Framework in building an application and it reduces the time/cost of building an application using Spring Framework by using Spring boot
+
+There are 6 features of the spring boot that helps us in building the spring framework based application quick
+1. Auto-Configurations
+2. Starter Dependencies
+3. Actuator Endpoints
+4. DevTools
+5. Embedded Servlet Containers
+6. Spring Boot CLI
+
+#1. Auto-Configurations
+DriverManagerDataSource
+DataSourceTransactionManager
+JdbcTemplate
+
+Spring Framework has provided lot of classes with rich functionality with them, but to use those components in building the application we need to configure the framework components in our application. 
+For eg.. to work with Spring Jdbc we need to use JdbcTemplate, but JdbcTemplate internally requires the other Spring Framework components as dependencies like DataSource and TransactionManager.
+	
+even though we dont use those 2 classes in our application directly, since JdbcTemplate requires them we need to understand these classes and their attributes in configuring them as bean definitions in building our application. It would always makes the application developer puzzled and feels complex in understanding the components even though we dont use them directly
+
+The Framework classes are designed and developed by the Spring developers, so the framework developers knows the details of these classes and the configuration values with which these classes should be configured as bean definitions, then why dont the Framework developers by themself enable the classes as bean definitions 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

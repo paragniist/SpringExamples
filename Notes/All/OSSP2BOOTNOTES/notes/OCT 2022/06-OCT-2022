@@ -1,0 +1,80 @@
+Event-driven programming
+There are 2 types of programming models are there
+1. linear programming / synchronous programming
+2. concurrent / asynchronous programming
+
+#1. linear programming
+The default programming model in which a program is executed in any programming language is linear programming model, where the control flow of execution of the program is from top to the bottom. There is always a single path of execution will be there, where at any point of time only one block of code will be executed
+
+#2. concurrent / asynchronous programming
+There can be multiple paths of execution either simultaneously or in parallel thus by effectively utilizing the cpu/memory of the computer.
+we can achieve concurrent programming through multiple programming mechanisms
+1. Threading
+2. Concurrent api (Callable, Future)
+3. Observer api (event-driven programming model)
+	
+	
+Event-driven programming model
+Event driven programming is an another way of achieving concurrent programming / asynchronous programming technic of executing a program
+There are several benefits are there in using event-driven programming model over other apis in implementing asynchronous programming
+
+1. No 2 programs in our application talks directly with each other by refering the interfaces of them, so that the programs are completely loosely coupled
+2. we can use event-driven technic for communicating across the applications by exchanging messages as well
+
+In event-driven programming model there are 4 actors are there
+1. source = source is the originator of event, whenever the source wanted to perform an operation, he wraps the data in an event object indicating the type of the operation to be performed and publishes the event.
+	
+2. event = event is an object in which we encapsulate the data we wanted to pass as an input to the handler which is required for performing the operation along with information about the source who has published the event
+
+3. handler = is a component that is capable of performing an operation for a specific type of event
+
+4. listener = listener listens for incoming events, and identifies the handlers based on the type of event and dispatches/invokes the handler for execution by passing event
+
+
+How to implement even-based programming model in java?
+java has provided an api called "observer api", using which we can implement event programming model. but the problem is observer is too low-level api, where the programmer has to implement lot of code in achieving the event programming
+
+in jee we have jms api using which we can implement distributed event-driven programming. components across the applications can communicate with each other in dis-connected model by publishing/subscribing for the events.
+The jms technology is an heavy weight solution which is not suitable for core/moderate application
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

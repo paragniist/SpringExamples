@@ -1,0 +1,43 @@
+What is proxy design pattern, why do we use it?
+proxy acts as an substitute or surrogate of original class. Both the proxy class and the original class look alike, the outcome of talking to proxy or to the original will be same. 
+When we talk to the proxy, it internally goes and talks to the original class in providing the functionality.
+	
+We wanted to add additional functionality ontop of the existing class in our application.	we can add the additional functionality directly into the original class, yes but when the additional functionality should be applied always.
+	
+But the additional functionality we wanted add should not be applied always, few clients wants the additional functionality few others dont want. but adding the additional functionality onto the original class will makes it applied to everyone
+	
+How to apply additional functionality on demand?
+There are many ways to accomplish
+1. write conditional logic inside the original class
+We can add conditional statement in determining whether the additional functionality should be applied to that client or not,but there is a problem with this approach
+For a client given client always the conditional check will be evaluated unnecessarily for each call that impacts the performance of the system.
+	
+2. use proxy class
+Per each additional functionality we wanted to apply create a proxy class. To abstract the client from whether he is talking to original or proxy, create the proxy extending from the original class itself, so that the object of the proxy can be kept in original class reference variable.
+Now the proxy to apply additional functionality first it needs to talk to original class, so it holds the reference of original object within it using which it access the original functionality
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

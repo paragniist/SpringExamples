@@ -1,0 +1,58 @@
+SpringApplication.run(Config.class, args), the below activities will be performed to bring up the application
+1. create an empty environment object
+2. detects and loads the external configuration of the application into the environment object created above
+3. print spring boot banner
+4. detects the WebApplicationType and creates an appropriate ioc container
+	if webmvc jars are under classpath, then WebApplicationType=WEB, and creates AnnotationConfigServletWebServerApplicationContext
+	if webflux jars are under classpath, then WebApplicationType=REACTIVE and creates AnnotationConfigReactiveWebServerApplicationContext
+	else WebApplicationType=NONE and creates AnnotationConfigApplicationContext
+5. instantiates and registers spring factories
+6. invoke ApplicationContextInitializers
+7. prepareContext()
+8. refreshContext()
+9. invokes CommandLineRunners and ApplicationRunners to perform startup activities in running the application, upon completion returns the reference of the ioc container to us
+10. during the above stages the SpringApplication.run() method publishes events and invokes the listeners
+
+ApplicationContext context = SpringApplication.run(BootApplication.class, args);
+------------------------------------------------------------------------------------------------------------------------
+During the startup of the Spring boot application, the SpringApplication class detects and loads the external configuration into the environment object of our application, what are the possible ways it identifies and loads the external configuration?
+	
+1. if we enable devtools module, it looks for a file under userhome directory called "spring-boot-devtools.properties" and loads the properties into the env object
+2. it looks for an environment variable with name SPRING_APPLICATION_JSON containing a Json object of key/value, if found parses the json key/values and loads into environment object
+3. if it is an web application, the SpringApplication.run() method loads the init-params and context params into the env object
+4. env variables are loaded into environment object
+5. jvm system properties are loaded into environment object
+6. RandomValueSourceProperty we declared in application.properties
+7. detects and loads application.properties or application.yml from any of the below locations
+	7.1 directly under the project directory
+	7.2 under config subdirectory of your project
+	7.3 directly from classpath of our application (maven project: resources directory)
+	7.4 config subdirectory of the classpath of our application (maven project: resources/config directory)
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

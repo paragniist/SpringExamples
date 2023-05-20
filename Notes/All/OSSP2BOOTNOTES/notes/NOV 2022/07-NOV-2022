@@ -1,0 +1,14 @@
+How to create our own custom auto-configuration classes?
+while developing applications we dont need to create our own custom auto-configurations. When we are working on product development or libraries, we distribute to the world, so that people reuse our libraries in building their solutions
+
+In such case if others has to use our library or product, they have to do 2 things:
+1. inorder to use our library or product they need to know which 3rd party dependencies our product requires to use it
+2. if there are building their application using spring framework/spring boot, they need to take care of configuring the our product/library classes as bean definitions with in their application
+
+look like integrating our product/library into their solutions is an time-taking job since they need to identify the transitive dependencies and has to configure our library components in their application which takes lot of time and complexity.
+	
+Instead to make our library/product to be easily integretable into their solution while developing using spring boot we can distribute our library with starter/autoconfigurations by ourself.
+	
+Now people around the world, to use our library in building the solutions they can quickly import starter dependency and auto-configurations through which the 3rd party libraries are resolved easily and inaddition our product components are configured as bean definitions by auto-configurations through which they can build their application quickly 
+
+In that case only we need to build our own auto-configuration classes to integrate our libraries / products with the world

@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.spacial.gps.beans.autoconfigure.GeoConfigurationAutoConfiguration,com.spacial.gps.core.autoconfigure.TrackerAutoConfiguration

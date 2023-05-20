@@ -1,0 +1,79 @@
+Why do we need to use embedded servlet containers for running an web application, what are the advantages we get by using them?
+1. we dont need to download or install the servlet container inorder to run the application. The servlet containers are included aspart of the code through build tools and are shipped aspart of application distributions by packaging the containers as a library in our application
+due to which we can distribute/ship and run the application easily on the targeted environments
+
+2. In a traditional application deployment, the deployer has to manually configure the required configurations on the servlet container like jms queues, connection pool and security configurations to deploy and run the application which has lot of drawbacks
+1. manual configurations are errorneous
+2. need to recreate the configurations across several environments
+3. takes lot of time
+
+by using embedded servlet containers we can configure the necessary resources/configurations the container through the code itself since we ship the container as library due to which we can avoid all the above problems and can improve the delivery rate of the application
+
+3. while adopting the devops ci/cd pipleline we need to write lot of code in building and running the application on the target environment
+upon provisioning the infrastructure we need to install platform software like language libraries, application servers / servlet containers and configure them inorder to deploy the application
+The devops engineers or ops engineers has to write lot of code using shellscript or software configuration management tools like (chef, puppet, ansible or saltstack) in installing and configuring the platform software
+This is an labourious job and takes huge amount of time for adoption/implementation for great level of automation
+
+Instead if we ship our application to run it on the embedded servlet container, all that it needs to run the application is the infrastructure. one we build the application, the application binary self-contains everything that is required for running the application  so that we dont need to install/configure the platform software, there by which we can easily achieve ci/cd
+
+4. The embedded servlet containers fully supports development and delivery of microservices based applications. In a microservices application, each microservice should be developed out of its own codebase, should loosely-coupled and independently deployable (Each microservices in its own container). 
+If our application comprises of 8 microservices, then we need to setup 8 containers on the machines and configure them to run each microservice application, which is going to take huge amount of time in deploying and running the microservice application.
+Instead of that if we can run the microservices applications out of an embedded servlet containers, we dont need to install/configure container for each service separately that makes the deployment and delivery of the microservices very easy
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

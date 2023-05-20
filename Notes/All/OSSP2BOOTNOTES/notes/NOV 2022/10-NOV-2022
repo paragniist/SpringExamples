@@ -1,0 +1,116 @@
+#1. Exception Testing
+
+class NumberUtils {
+	double divide(int a, int b) {
+		return b/a;
+	}
+}
+
+class NumberUtilsTest {
+	NumberUtils numberUtils;
+	
+	@BeforeEach
+	public void before() {
+		numberUtils = new NumberUtils();
+	}
+	
+	@Test
+	void testDivide() {
+		int a = 0;
+		int b = 10;
+		Exception exception = assertThrows(ArithmeticException.class, ()->{
+			numberUtils.divide(a, b);
+		});
+		assertEquals("divide by zero", exception.getMessage());		
+	}
+}
+-----------------------------------------------------------------------------------------------------------------------
+Features of JUnit5
+1. TestInstance Lifecycle
+2. Test Fixture Methods @BeforeEach, @AfterEach, @BeforeAll, @AfterAll
+3. @DisplayName & DisplayNameGenerator
+4. TestMethodOrder & MethodOrderer.* (DisplayName, MethodName, Random, OrderAnnotation)
+5. RepeatedTest, RepeatitionInfo
+6. TestInfo
+7. NestedTest
+8. Tag
+9. Timeout
+10. Exception Testing
+11. Parameterized Testing
+		1. csvsource
+		2. methodsource
+12. Conditional Testing		
+	1. EnvironmentVariable
+	2. SystemProperties
+	3. Custom Conditions
+	4. operating system
+	5. java
+	6. Enabled/Disabled
+-----------------------------------------------------------------------------------------------------------------------
+Mockito
+
+Bidding
+productName: BiCycle
+bid: 100 INR
+quantity: 3
+	
+101, 105, 102, 130, 101.2, 140, 145, 135, 122
+	
+145, 140, 135
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

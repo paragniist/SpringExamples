@@ -1,0 +1,185 @@
+actuator endpoints
+actuator endpoints enables us build development to production grade applications directly, upon developing an application inorder to deploy the application on production env we need to have few additional utilities are tools like
+1. healthcheck
+2. info
+3. metrics
+4. threaddumps
+etc
+
+instead of developers building them additionally for each application, the spring boot has pre-coded these endpoints and packaged and shipped to us as part of spring boot actuator module, which can be directly configured and can be used aspart of our applications
+
+
+How to use the actuator endpoints in an application?
+#1. 
+we need to add the actuator endpoints dependency into our project
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+	
+There are 17 endpoints shipped aspart of actuator module
+1. /info
+2. /healthcheck
+3. /env
+4. /beans
+5. /configmaps
+6. /threaddump
+7. /metrics
+8. /shutdown
+9. /loggers
+10. /logfile
+11. /sessions
+12. /conditions
+13. /caches
+14. /httptrace
+15. /mappings
+16. /quartz
+17. /startup
+
+by adding the actuator dependency into the project, these endpoints will not become available for accessing. Inorder to make these endpoints available and accessible we need to do 2 things
+1. enable
+2. expose
+
+These endpoints can be exposed based on 2 protocol stack
+1. jmx
+2. web/http 
+
+by default all the endpoints are enabled except /shutdown endpoint for security reason. To enable or disable a specific endpoint we need to write the configuration in application.yml|properties as below.
+	
+management.endpoints.endpointName.enable=true/false
+if we dont want to enable all the endpoints by default, we can write below configuration for disabling them
+management.endpoints.enable-by-default=false
+
+by enabling the endpoints, those endpoints are available within our application, but those are not exposed to access.
+by default all the endpoints are exposed through jmx protocol but only 2 endpoints are exposed over http
+1. info
+2. healthcheck
+
+to expose and endpoint we need to write below configuration
+management.endpoints.jmx.exposure.include=
+management.endpoints.jmx.exposure.exclude=
+	
+management.endpoints.http.exposure.include=
+management.endpoints.http.exposure.exclude=
+	
+	
+Endpoint cache
+--------------
+By default spring boot actuator caches the response for read operations of these endpoints which doesnt have any parameter for 10 seconds of time to improve performance. we can change duration of cache by writing the below property
+management.endpoint.endpointName.cache.time-to-live=10s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

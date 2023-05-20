@@ -1,0 +1,71 @@
+Proxy design pattern
+we wanted to add additional functionlity ontop of the original class without modifying the original class.
+	
+Why dont you want to add the additional functionality directly into the original class?
+The additional functionality we wanted to add is not commonly required by all the clients who are using the original class. few people want the additional functionality few other clients dont want the additional functionality. In such case adding the additional functionality directly into the original will affect all the clients who are using the class, so to avoid this problem we need use proxy design pattern
+
+There are many ways in adding additional functionality to the original class without affecting all the clients
+	1. through conditional approach
+	2. proxy approach
+	
+1. through conditional approach
+Each client wanted to use the class with same set of functionality, by adding an conditional logic for each invocation on the original object, an additional conditional check will be performed which will degrades the performance of the system.
+
+	
+interface ImageHelper {
+	byte[] getImage(String imageName);
+	int uploadImage(byte[] imageBytes, String imageName, String mimeType);
+}	
+
+class ImageHelperImpl implements ImageHelper {
+	public byte[] getImage(String imageName) {}
+	public int uploadImage(byte[] imageBytes, String imageName, String mimeType) {}
+}
+
+class RGBImageHelperImpl implements ImageHelper {}
+
+	
+The proxy should also serve the same functionality of the original so that proxy acts as substitute or surrogate of original. Here the original class is serving the contract of the interface ImageHelper,so proxy should also be created from same interface to look alike
+	
+class ImageCompressHelper implements ImageHelper {
+	private ImageHelper imageHelper;
+	
+	public ImageCompressHelper(ImageHelper imageHelper) {
+		this.imageHelper = imageHelper;	
+	}
+	
+	public byte[] getImage(String imageName) {
+		// imageHelper.getImage(imageName); #original 
+		// adds compression logic
+		return compressedImage;		
+	}
+	public int uploadImage(byte[] imageBytes, String imageName, String mimeType) {
+		
+	}
+} 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

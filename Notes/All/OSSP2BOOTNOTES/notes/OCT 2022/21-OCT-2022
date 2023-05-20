@@ -1,0 +1,91 @@
+Command-Line Runners / Application Runners
+-------------------------------------------
+
+<servlet>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<url-pattern>*.htm</url-pattern>
+</servlet-mapping>
+------------------------------------------------------------------------------------------------------------------------
+Spring Boot Exit Code
+Every program upon completing the execution, it is going to return an exitcode to the operating system indicating the success or failure of execution
+zero = program completed execution successfully
+non-zero = if a program returned an non-zero exitcode indicates an error during execution and terminated abnormally
+
+In case of java program also they need to return the exitcode indicating the status of the program execution. By default the jvm takes care of reporting the exitcode of our program to the underlying operating system,based on the nature of our program execution.
+	
+If a java program has finished executing all the lines of code within the main method without any exceptions and returned the control to the jvm, then the jvm returns an 0 exitcode to the operating system indicating the successful execution
+
+if the java program during the execution has caught into an un-handled exception and reported to the jvm, then the jvm marks the program for termination and reports an non-zero (failed) exitcode to the operating system indicating the failure of execution
+That is how the default behaviour of reporting the exitcode status of an java application works!
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+   SSSSSSSSSSSSSSS RRRRRRRRRRRRRRRRR   IIIIIIIIIIMMMMMMMM               MMMMMMMM               AAA               NNNNNNNN        NNNNNNNN
+ SS:::::::::::::::SR::::::::::::::::R  I::::::::IM:::::::M             M:::::::M              A:::A              N:::::::N       N::::::N
+S:::::SSSSSS::::::SR::::::RRRRRR:::::R I::::::::IM::::::::M           M::::::::M             A:::::A             N::::::::N      N::::::N
+S:::::S     SSSSSSSRR:::::R     R:::::RII::::::IIM:::::::::M         M:::::::::M            A:::::::A            N:::::::::N     N::::::N
+S:::::S              R::::R     R:::::R  I::::I  M::::::::::M       M::::::::::M           A:::::::::A           N::::::::::N    N::::::N
+S:::::S              R::::R     R:::::R  I::::I  M:::::::::::M     M:::::::::::M          A:::::A:::::A          N:::::::::::N   N::::::N
+ S::::SSSS           R::::RRRRRR:::::R   I::::I  M:::::::M::::M   M::::M:::::::M         A:::::A A:::::A         N:::::::N::::N  N::::::N
+  SS::::::SSSSS      R:::::::::::::RR    I::::I  M::::::M M::::M M::::M M::::::M        A:::::A   A:::::A        N::::::N N::::N N::::::N
+    SSS::::::::SS    R::::RRRRRR:::::R   I::::I  M::::::M  M::::M::::M  M::::::M       A:::::A     A:::::A       N::::::N  N::::N:::::::N
+       SSSSSS::::S   R::::R     R:::::R  I::::I  M::::::M   M:::::::M   M::::::M      A:::::AAAAAAAAA:::::A      N::::::N   N:::::::::::N
+            S:::::S  R::::R     R:::::R  I::::I  M::::::M    M:::::M    M::::::M     A:::::::::::::::::::::A     N::::::N    N::::::::::N
+            S:::::S  R::::R     R:::::R  I::::I  M::::::M     MMMMM     M::::::M    A:::::AAAAAAAAAAAAA:::::A    N::::::N     N:::::::::N
+SSSSSSS     S:::::SRR:::::R     R:::::RII::::::IIM::::::M               M::::::M   A:::::A             A:::::A   N::::::N      N::::::::N
+S::::::SSSSSS:::::SR::::::R     R:::::RI::::::::IM::::::M               M::::::M  A:::::A               A:::::A  N::::::N       N:::::::N
+S:::::::::::::::SS R::::::R     R:::::RI::::::::IM::::::M               M::::::M A:::::A                 A:::::A N::::::N        N::::::N
+ SSSSSSSSSSSSSSS   RRRRRRRR     RRRRRRRIIIIIIIIIIMMMMMMMM               MMMMMMMMAAAAAAA                   AAAAAAANNNNNNNN         NNNNNNN

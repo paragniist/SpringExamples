@@ -1,0 +1,74 @@
+Spring Framework Profiles
+---------------------
+
+@Component
+class DbConnectionManager {
+	@Value("${db.driverClassname}")
+	String driverClassname;
+	@Value("${db.url}")
+	String url;
+	@Value("${db.username}")
+	String username;
+	@Value("${db.password}")
+	String password;
+	
+	// setters
+	public Connection getConnection() {}
+}
+
+db-dev.properties
+--------------
+db.driverClassname=com.mysql.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/db1
+db.username=root
+db.password=welcome1
+
+db-test.properties
+-------------------
+db.driverClassname=com.oracle.jdbc.OracleDriver
+db.url=jdbc:thin:@localhost:1521:xe
+db.username=root
+db.password=welcome1
+
+@Configuration
+@PropertySource("classpath:db-dev.properties")
+@Profile("dev")	
+@ComponentScan(basePackages={"com.profiles.beans"})
+class DevConfig {
+
+}
+
+@Configuration
+@PropertySource("classpath:db-test.properties")
+@Profile("test")
+@ComponentScan(basePackages={"com.profiles.beans"})
+class TestConfig {
+	
+}
+
+class Test {
+	public static void main(String[] args) {
+		ApplicationContext context = new AnnotationConfigApplicationContext(DevConfig.class, TestConfig.class);	
+		DbConnectionManager dbConnectionManager = context.getBean(DbConnectionManager.class);
+		
+	}
+}
+
+java -Dspring.profiles.active=dev Test
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

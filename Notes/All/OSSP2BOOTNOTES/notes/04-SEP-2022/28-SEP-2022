@@ -1,0 +1,204 @@
+Fluent Builder api
+
+There are 2 most popular design patterns under the creational design patterns of GOF are
+1. factory design pattern
+2. builder design pattern
+
+Factory design pattern:
+Factories are used for creating the object of another class. There are 2 reasons or benefits we get by using an factory design pattern
+1. to abstract the complexity in creating the object of another class
+2. to decouple the classname of another class, in creating the object of another class so that we can achieve loose-coupling
+
+Factories always instantiates the other class objects as empty without populating the data, but sometimes, along with the above 2 benefits we wanted the object of another class to be instantiated with the pre-populated data, this can be achieved by using builder design pattern
+
+Builder Design Pattern:
+Builders are also similar to factory, but incase of builder it creates the object of the Target with data. So the client has to create the object of builder, populate the data into the builder object and ask builder to build the object of the Target with that data
+
+class Doctor {
+	int doctorNo;
+	String doctorName;
+	String qualification;
+	int experience;
+	String specialization;
+	
+	public Doctor(int doctorNo) {}
+	// accessors
+}
+
+class DoctorBuilder {
+	int doctorNo;
+	String doctorName;
+	String qualification;
+	int experience;
+	String specialization;
+
+	public DoctorBuilder(int doctorNo) {
+		this.doctorNo = doctorNo;
+	}
+	
+	public DoctorBuilder doctorNo(int doctorNo) {
+		this.doctorNo = doctorNo;
+		return this;
+	}
+	public int doctorNo() {
+		return this.doctorNo;
+	}
+	
+	public DoctorBuilder doctorName(String doctorName) {
+		this.doctorName = doctorName;
+		return this;
+	}
+	public String doctorName() {
+		return this.doctorName;
+	}
+	public DoctorBuilder experience(int experience) {
+		this.experience = experience;
+		return this;
+	}
+	public int experience() {
+		return this.experience;
+	}
+	
+	
+	public Doctor build() {
+		Doctor doctor = new Doctor(doctorNo);
+		doctor.setDoctorName(doctorName);
+		doctor.setQualification(qualification);
+		doctor.setExperience(experience);
+		doctor.setSpecialization(specialization);
+		return doctor;
+	}
+}
+
+
+Fluent builder api
+Doctor doctor = new DoctorBuilder(10).doctorName("Bob").experience(10).qualification("MBBS").specialization("Nero science").build();
+-----------------------------------------------------------------------------------------------------------------------
+How to customize the spring boot application with Fluent Builder api?
+	
+SpringApplication.run(BootApplication.class, args);
+1. create an empty environment object
+2. detects and loads the external configuration into the env object of our application
+3. print spring boot banner = 
+4. identify and instantiate the ioc container based on WebApplicationType 
+5. instantiate and register spring factories
+6. invoke ApplicationContextInitializer
+7. prepareContext
+8. refreshContext
+9. invoke CommandLineRunners and ApplicationRunners
+10. publish events and listen
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,81 @@
+How many ways we can setup an spring boot application while working with maven?
+There are 3 ways we can setup an spring boot application using maven
+
+#1. directly by using spring boot maven starters
+While developing the spring boot application using maven we need 2 things to setup in a maven project
+1.1 add starter dependencis in the pom.xml
+The spring boot has provided lot of starter dependencies each per the technology we wanted to use in developing the project. For all the spring boot starter dependencies the gav cooridinates are
+groupId=org.springframework.boot
+artifactId=spring-boot-starter-*
+version: versionNo
+Now identify the technologies we wanted to use in developing the project and add them into the pom.xml under dependencies section
+
+1.2 spring boot maven plugin
+spring boot has provided a plugin artifactId:spring-boot-maven-plugin which is an build plugin we need to add into the pom.xml of our project. The spring boot plugin builds the boot jar for our application
+
+#2. using spring boot starter parent
+We need to under maven multi-module project
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+The SpringApplication class during the startup publishes 6 different types of events indicating the stages of startup of an application.
+1. ApplicationStartingEvent = after calling the SpringApplication.run(Config.class, args) before the SpringApplication performs any operation it publishes the ApplicationStartingEvent
+2. ApplicationEnvironmentPreparedEvent = after the Environment object is created, after detecting and loading the external configuration into the Environment object it publishes the ApplicationEnvironmentPreparedEvent
+3. ApplicationStartedEvent = after the ioc container created, after loading the bean definitions, before instantiating them it published ApplicationStartedEvent
+4. ApplicationPreparedEvent = after instantiating all the bean definitions, before invoking the CommandLineRunners / ApplicationRunners the ApplicationPreparedEvent will be published
+5. ApplicationReadyEvent = After executing the CommandLineRunners and ApplicationRunners successfully the ApplicationReadyEvent is published
+6. ApplicationFailedEvent = during any of the stages of bootup, if it encounters failures, indicating the reason for the failure the ApplicationFailedEvent is published
+
+If we want to perform additional activities during any of the stages within the bootstrapping, we can identify the event of the stage we want to perform additional activity and write our own listener class which listens for that event and performs additional activity.
+	
+register the Listener class with SpringApplication class using fluent builder api, so that SpringApplication class can invoke the Listener during the stage of bootstrapping dependson the Event we are listening for
+	

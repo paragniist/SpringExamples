@@ -1,0 +1,9 @@
+---
+parcel:
+  parcelNo: p9383
+  source: hyderabad
+  destination: banglore
+  weight: 20
+  description: documents & files
+  charges: 240
+...

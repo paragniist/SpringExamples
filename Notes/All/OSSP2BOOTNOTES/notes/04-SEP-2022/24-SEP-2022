@@ -1,0 +1,94 @@
+How does SpringApplication.run(Application.class, args) begins execution of the application?
+To run an spring framework based application we need to host all our application classes as bean definitions within the ioc container and load all the configurations into Environment object of the ioc container, so that these values can be injected as primitive dependencies within our bean definitions
+
+All these activities of bringing up the application while working with spring framework are taken care by SpringApplication. So the run() method takes care of handling all the responsibilities in bringing up an Spring Framework application
+There are several activities being performed by SpringApplication.run(..) method as below
+1. creates an empty environment object
+2. detects and loads the external configuration of our application into the environment object created above
+3. prints the spring boot banner
+4. detects or identify the type of the application based on the dependencies we added under the classpath and instantiate appropriate ioc container
+	if Spring WebMvc dependencies are found under the classpath, treat the WebApplicationType=WEB
+		instantiates AnnotationConfigServletWebServerApplicationContext 
+	else if Spring WebFlux dependencies are found under the classpath, treats the WebApplicationType=REACTIVE
+		instantiates AnnotationConfigReactiveWebServerApplicationContext
+	else treats the WebApplicationType = NONE
+		instantiates AnnotationConfigApplicationContext
+5. instantiates and registers spring factories (autoconfiguration)
+6. invokes ApplicationContextInitializers 
+7. prepareContext() = loads all the bean definitions 
+8. refreshContext() = instantiate the objects of the bean definitions
+9. invokes the CommandLineRunners & ApplicationRunners
+upon successful execution of CommandLineRunners & ApplicationRunners, the reference of ioc container will be  returned to us
+10.during the above stages of bringing up the spring boot application, the SpringApplication publishes events and triggers the listeners in performing additional activities
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+1. creates an empty environment object
+2. detects and loads external configuration into the env object
+3. print banner
+4. identity type of application based on which create an ioc container
+	if webmvc dependencies are found, treat WebApplicationType=WEB
+		AnnotationConfigServletWebServerApplicationContext
+	if webflux dependencies are found, treat WebApplicationType=REACTIVE
+		AnnotationConfigReactiveWebServerApplicationContext
+	else WebApplicationType=NONE
+		AnnotationConfigApplicationContext
+5. instantiates and registers spring factories
+6. invokes ApplicationContextInitializers
+7. prepareContext()
+8. refreshContext()
+9. invokes command-line runners and ApplicationRunners
+10 publish events and triggers listeners
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

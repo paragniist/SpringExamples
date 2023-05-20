@@ -1,0 +1,8 @@
+---
+airticket:
+  source: hyderabad
+  destination: new york
+  pnr-no: p3893
+  flight-no: f3933
+  price: 145000
+...

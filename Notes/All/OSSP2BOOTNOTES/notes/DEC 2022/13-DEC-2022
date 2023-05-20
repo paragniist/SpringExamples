@@ -1,0 +1,49 @@
+How does DispatcherServlet is configured in springboot mvc application?
+	
+SpringApplication.run(Config.class, args)
+1. creates an empty ioc container
+2. detects and loads all the external configuration of our application into the env object
+3. print banner
+4. detect the WebApplicationType and instantiate appropriate ioc container
+	if WebMvc jars found under the classpath, treats the WebApplicationType == WEB and instantiates 
+		AnnotationConfigServletWebServerApplicationContext 
+	else if WebFlux jars are found under the classpath, then treats the WebApplicationType = REACTIVE and instantiates
+		AnnotationConfigReactiveWebServerApplicationContext
+	else treats the WebApplicationType = NONE and instantiates
+		AnnotationConfigApplicationContext
+In our case since we are building webmvc application we added spring-boot-starter-web so that it treats the WebApplicationType = WEB and instantiates AnnotationConfigServletWebServerApplicationContext
+5. invokes ApplicationContextInitializer
+6. instantiates and registers spring factories to the ioc container (auto-configuration classes)
+7. prepareContext
+8. refreshContext
+   8.1 executes BeanFactoryPostProcessors on top of the ioc container
+	 8.2 loads and instantiates all the bean definitions including auto-configuration classes
+	 At this stage, the ioc container invokes
+	 DispatcherServletAutoConfiguration, this class instantiates DispatcherServlet and DispatcherServletRegistrationBean and configures them as bean definition within the ioc container
+	 8.3 onRefresh()
+		 - it creates WebServer implementation object by using the ServletWebServerFactory and registers and deploys the application on the WebServer and starts
+		 
+9. during the time of starting the servlet container, it looks for ServletContextInitializer implementation class and invokes it.
+10. The ServletContextInitializer looks for ServletRegistrationBean & FilterRegistrationBean from ioc container and picks them and registers them as Servlets & Filters in ServletContainer
+
+hence DispatcherServlet will be configured in Servlet container and made it accessible
+
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		

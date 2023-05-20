@@ -1,0 +1,72 @@
+interface WebServer {
+	void start();
+	void stop();
+	void shutDownGracefully(GracefulShutdownCallback callback);
+}
+
+
+For each embedded servlet container spring boot supports they have provided implementations in abstracting the container.
+1. TomcatWebServer
+2. JettyWebServer
+3. UndertowWebServer
+4. NetttyWebServer
+
+Now the AnnotationConfigServletWebServerApplicationContext internally uses the implementation of WebServer interface to start, stop the servlet container, so that it can work with any of the supported embedded servlet containers
+
+The AnnotationConfigServletWebServerApplicationContext requires the implementation of WebServer interface, but if the ioc container is directly creating the object of WebServer interface implementation it will become tightly coupled, so to abstract the underlying implementation of the WebServer the WebServerFactory has been provided
+
+The WebServerFactory is an marker interface which has 2 sub-interfaces are there
+1. ServletWebServerFactory
+2. ReactiveWebServerFactory
+
+
+interface ServletWebServerFactory extends WebServerFactory {
+	WebServer getWebServer(ServletContextInitializer initializer);
+}
+
+// common ServletWebServerFactory
+abstract class AbstractServletWebServerFactory implements ServletWebServerFactory {}
+
+class TomcatServletWebServerFactory extends AbstractServletWebServerFactory {}
+
+The AnnotationConfigServletWebServerApplicationContext internally uses ServletWebServerFactory implementation class to instantiate the object of WebServer and start
+
+How does the AnnotationConfigServletWebServerApplicationContext gets the object of ServletWebServerFactory implementation?
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

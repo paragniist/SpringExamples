@@ -1,0 +1,128 @@
+*** What are projections why do we use it?
+By default the repository interface fetch all the columns of data from database populates into the entity object and returns the data, but if we wanted to fetch few columns of data only from the database and wanted to return then we need to use projections
+
+There are 3 types of projections supported by DataJpa
+1. interface-based projection
+	1.1 closed projection
+	1.2 open projection
+2. class-based projection
+3. dynamic projection
+
+#2. class-based projection
+Instead of using an interface to return the data we can declare a class with attributes of data we wanted to fetch and return. the class should have constructor taking the attributes as parameters.
+
+class HolidayTrip {
+	String source;
+	String destination;
+	int days;
+	HolidayTrip(String source, String destination, int days) {}
+	// getters
+}	
+
+interface TripRepository extends JpaRepository<Trip, Integer> {
+	List<HolidayTrip> findByEstimatedCostGreaterThan(double estimatedCost);
+}
+
+#3. Dynamic Projection
+Dynamic projection is about choosing what data we wanted to fetch from the repository method dynamic while calling the method.
+
+interface BasicTrip {
+	String getSource();
+	String getDestination();
+	int getDays;
+}	
+
+interface DetailedTrip {
+	String getSource();
+	String getDestination();
+	int getDays;
+	double estimatedAmount;
+}
+
+interface TripRepository extends JpaRepository<Trip, Integer> {
+	<T> T findByTripNameLike(String tripName, Class<T> classType);
+}
+
+tripRepository.findByTripNameLike("paris%", BasicTrip.class);
+------------------------------------------------------------------------------------------------------------------------
+@EnableJpaRepositories(basePackages="com.tourplanner.repositories")	
+	
+#10 interface 
+
+@NoRepositoryBean
+interface TripRepository extends JpaRepository<Trip, Integer> {}
+
+For the above interface the ioc container will not create the proxy and place it as a bean definition within the container.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

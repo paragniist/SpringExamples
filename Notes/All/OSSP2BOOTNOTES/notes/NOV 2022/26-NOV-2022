@@ -1,0 +1,125 @@
+How does spring boot mvc application works?
+when we call SpringApplication.run(Config.class, args):
+1. it creates an empty ioc container
+2. detects and loads the external configuration of our application into the environment object
+3. prints banner
+4. detects WebApplicationType based on the dependency under the classpath and instantiates an appropriate ioc container
+	4.1 if webmvc jars are found under the classpath, treats WebApplicationType = WEB and instantiates AnnotationConfigServletWebServerApplicationContext
+	4.2 if webflux jars are found, treats the WebApplicationType = REACTIVE and instantiates
+	AnnotationConfigReactiveWebServerApplicationContext
+	4.3 otherwise treats the WebApplicationType = NONE and instantiates
+	AnnotationConfigApplicationContext
+	
+since we added spring-boot-starter-web as dependency, it instantiates the AnnotationConfigServletWebServerApplicationContext
+5. registers spring factories to the ioc container
+6. invokes ApplicationContextInitializer
+7. prepareContext
+8. refreshContext
+
+upon refreshing the ioc container, it takes care of instantiating all the bean definitions we declared, once the bean definitions are instantiated means our application ready to be accessible, since the ioc container knows when the application is ready for accessing, it takes care of deploying the application on the EmbeddedServlet container 
+
+The job of deploying the application on an embedded servlet container is specific to an webmvc or webflux application only, the spring boot has comeup with specialized ApplicationContext implementations to take these responsiblities which are AnnotationConfigServletWebServerApplicationContext and AnnotationConfigReactiveWebServerApplicationContext
+
+
+From the above we can understand the job of deploying the application on embedded servlet container is carried by AnnotationConfigServletWebServerApplicationContext
+
+If AnnotationConfigServletWebServerApplicationContext is taking the responsibility of deploying the application on a embedded Servlet container,then it will be tighly coupled with specific embedded servlet container and will not support deploying the application on a different container
+
+Spring boot webmvc supports 4 types of embedded Servlet containers
+1. Tomcat
+2. Jetty
+3. Netty (Reactive)
+4. Undertow
+
+To allow extensibility and decouple ioc container from a specific embedded servlet container, the WebServer interface with multiple implements each per the ServletContainer has been provided
+
+interface WebServer {
+	void start();
+	void stop();
+	void shutDownGracefully(GracefulShutdownCallback);
+}
+
+for this interface, there are 4 implementations are there
+1. TomcatWebServer
+2. JettyWebServer
+3. NettyWebServer
+4. UndertowWebServer
+
+These implementation classes has abstracted the underlying details of how to manage the respective servlet containers like starting, stoping etc. The AnnotationConfigServletWebServerApplicationContext dont need to worry about how to start, stop or manage the specific WebServer, instead it holds the implementation object of WebServer interface and invokes the start() or stop() etc.
+	
+Now to start(), stop() or manage the WebServer the AnnotationConfigServletWebServerApplicationContext requires the implementation object of the WebServer interface, if AnnotationConfigServletWebServerApplicationContext is instantiating the implementation object, then again it becomes tighly coupled with that specific WebServer.  To help in decoupling the ApplicationContext from specific webserver, the WebServerFactory has been introduced
+
+WebServerFactory is an interface and it has 2 implementations of it
+1. ServletWebServerFactory
+2. ReactiveWebServerFactory
+
+The above 2 are the child interfaces of the WebServerFactory for the respective webserver types. The process of instantiating the WebServers and configuring them differs from one webserver to another, so the Spring boot has provided
+ServletWebServerFactory as an interface for which we have separate implementations for each web server factory
+For eg..
+To intantiate and configure TomcatWebServer we have ConfigurableTomcatWebServerFactory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

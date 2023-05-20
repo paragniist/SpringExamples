@@ -1,0 +1,70 @@
+Spring DataJpa
+----------------
+How to work with Spring Framework + Hibernate?
+	
+package com.ecommerce.entities;
+@Entity
+@Table(name="product")
+class Product {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="product_no")
+	int productNo;
+	@Column(name="product_nm")
+	String productName;
+	String description;
+	String manufacturer;
+	double price;
+	
+	// accessors
+}
+
+@Configuration
+@PropertySource("classpath:db.properties")
+class PersistenceConfig {
+	@Bean
+	public DataSource dataSource() {}
+	
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {}
+	
+	@Bean
+	public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {}
+	
+	@Bean
+	public JpaTemplate jpaTemplate(EntityManagerFactory emf) {}
+}
+
+@Repository
+class ProductDao {
+	@Autowired
+	private JpaTemplate jpaTemplate;
+	
+	public int saveProduct(Product product) {
+		jpaTemplate.persist(product);
+		return product.getProductNo();
+	}
+	
+	public Product getProduct(int productNo) {
+		jpaTemplate.find(Product.class, productNo);
+	}
+}
+
+JpaTemplate is an wrapper class that spring orm has provided on top of EntityManager that takes care of delegating the operations on the underlying EntityManager object, so programmer can avoid lot of boiler-plate logic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

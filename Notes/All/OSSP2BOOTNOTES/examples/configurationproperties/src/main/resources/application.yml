@@ -1,0 +1,9 @@
+---
+policy:
+  policyNo: 92
+  policyHolderName: Rod
+  tenure: 93
+  insurredAmount: 700000
+  planName: universal plan
+  planType: medical
+...  

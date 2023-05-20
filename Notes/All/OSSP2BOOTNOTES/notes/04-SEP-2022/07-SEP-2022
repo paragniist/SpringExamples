@@ -1,0 +1,54 @@
+There are 6 features are there in spring boot
+1. auto-configurations
+2. starter dependencies
+3. actuator endpoints
+4. devtools
+5. embedded servlet containers
+6. springboot cli
+
+#1. auto-configurations
+instead of we configuring the spring framework components as bean definitions within our application, the framework by itself will tune to work for our application through the help of auto-configurations. The auto-configurations works based on opinionated view in configuring the framework components in our application
+
+#2. starter dependencies
+the starter dependencies are provided by spring boot for giving jump start experience in creating an application while working with spring framework. 
+The starter dependencies are nothing but maven artifacts created by spring boot developers. For each technology/type of project being developed, they idenfied the spring modules, third-party libraries required and declared them as transitive dependencies in maven artifacts and published into central repository
+
+To build an project of that technology using spring, we just only need to identify the relevant starter and add to the project so that all the required dependencies along with their compatible versions will be included into the project automatically, so that developers can quickly start building the application rather than spending time on setting up the project
+
+#3. actuator endpoints
+we can build development to production grade deployable application quickly by using spring boot actuator endpoints.
+An application that is developed to make it production deployable we need additional components to be included/shipped along with application like
+1. health endpoints
+2. metrics endpoints
+etc
+
+these requires considerable amount of development/testing time in making an application production deployable and an additional cost and delay in delivery of the application will be encountered.
+	
+Instead of this spring boot has provided acutuator endpoints which are nothing but pre-built components that can be packaged into our application quickly through which we can monitor/manage and draw performance metrics for our application.
+So with no time an application that is being developed can be deployed into production.
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
