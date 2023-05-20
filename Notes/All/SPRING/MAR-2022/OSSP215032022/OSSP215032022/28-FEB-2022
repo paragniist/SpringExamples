@@ -1,0 +1,133 @@
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	private Cache() {dataMap = new ConcurrentHashMap<>();}
+	public static synchronized getInstance() {}
+	public void put(String key, Object val){}
+	public Object get(String key){}
+	public boolean containsKey(String key) {}
+}
+
+interface IAccessor {
+	void setKey(String key);
+	String getKey();
+	Object getData();
+}
+
+class CityRIPropsAccessor implements IAccessor {
+	private String key;
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public String getKey() {
+		return key;
+	}
+	public Object getData() {
+		Properties props = null;
+		props = new Properties();
+		props.load(this.getClass().getClassLoader().getResourceAsStream("city-ri.properties"));
+		return props;
+	}
+}
+
+class CacheManager {
+	private Cache cache;
+	private List<IAccessor> accessors;
+	
+	public CacheManager(Cache cache, List<IAccessor> accessors) {
+		this.cache = cache;
+		this.accessors = accessors;
+		init();
+	}
+	
+	public void init() {
+		for(IAccessor accessor : accessors) {
+			String key = accessor.getKey();
+			Object data = accessor.getData();		
+			cache.put(key, data);
+		}
+	}
+}
+
+class LoanManager {
+	private Cache cache;
+	
+	public double interestAmount(long principle, int tenure, String city) {
+		float ri = 0.0;
+		Properties props = null;
+		double interestAmount = 0.0;
+		
+		if(cache.containsKey("ri") == false) {
+			throw new Exception("data not loaded into ache");
+		}
+		props=(Properties)cache.get("ri");
+		
+		if(props.containsKey(city) == false) {
+			throw new Exception("city not supported");
+		}
+		ri = Float.parseFloat(props.get(city));
+		interestAmount = (principle * tenure * ri)/100;
+		return interestAmount;		
+	}
+	public void setCache(Cache cache) {
+		this.cache = cache;
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="cache" class="Cache" factory-method="getInstance"/>
+<bean id="cityRIPropsAccessor" class="CityRIPropsAccessor">
+	<property name="key" value="ri"/>
+</bean>
+
+<bean id="cacheManager" class="CacheManager">
+	<constructor-arg ref="cache"/>
+	<constructor-arg>
+		<list>
+			<ref bean="cityRIPropsAccessor"/>
+		</list>
+	</constructor-arg>
+</bean>
+
+<bean id="loanManager" class="LoanManager" depends-on="cacheManager">
+	<property name="cache" ref="cache"/>	
+</bean>
+
+city-ri.properties
+------------------
+hyd=9.0
+chennai=9.9
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+LoanManager loanManager = beanFactory.getBean("loanManager", LoanManager.class);
+double ia = loanManager.interestAmount(100000, 12, "hyd");
+sop("interest amount : " + ia);
+
+
+What is depends-on?
+depends-on is used for managing the in-direct dependencies between the bean definitions. here in-direct refers to creational dependencies, if we want to control or manage the order of instantiation of the bean definitions, we can do that by using depends-on
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

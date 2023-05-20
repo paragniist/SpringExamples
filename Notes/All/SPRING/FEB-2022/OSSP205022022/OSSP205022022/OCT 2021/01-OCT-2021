@@ -1,0 +1,100 @@
+There are 3 principles of Stragey Design Pattern
+1. Favor composition over inheritance
+2. always design to interfaces, never design to concreate classes
+3. code should be open for extension and closed for modification
+
+#1 Favor composition over inheritance
+If we want to reuse the functionality of another class in our class, use composition rather than inheritance.
+
+When we should use Inheritance and when we need to use Composition?
+Inheritance:
+If we want to reuse all the traits of another class, in our class 
+If child can expressed interms of parent
+  
+Composition:
+If we want to reuse few of the behaviours of another class in our class
+  
+There are certain problems we run into if we use Inheritance, to overcome them Strategy Design Pattern is suggesting us to use Composition only.
+Problems in using Inheritance:
+1. Most of the realtime usecases are solvable through composition rather than inheritance because many of the times a class want to reuse partially the functionality of another class only.
+  
+2. There are cases where even we want to use Inheritance also we cannot and should gofor composition only. If a class wants to reuse the functionality of multiple other classes we cannot, because most of the programming languages including java doesnt support multiple inheritance. The only way to reuse the functionality of multiple other clases is through Composition.
+  
+3. The classes will be come fragile if we go for inheritance, if we use composition those are less fragile.
+
+  
+class A {
+  int m2(int i) {
+    // operation
+    return 23;
+  }
+}  
+  
+class B extends A {
+  int m2(int i) {
+    int j = super.m2(i);
+    // perform some additional operation
+    return 24;
+  }  
+}  
+  
+A a = new B(); 
+always to the parent class reference variables we can assign any of the child class objects, through which we can achieve runtime polymorphism.
+  
+int k = a.m2(10);
+  
+In general java determines the method to be called on a class based on the reference type we are using in calling the method.
+But whenever we assign a derived class object to a base class reference variable, java will not call the method based on the reference type, rather it checks to see the reference variable is pointing to which class object and calls the method on that corresponding class, this is called "Runtime Polymorphism". Here the method to be called on which class whether it is "A" or "B" class is determined only at runtime because objects are instantiated and assigned to variables at runtime only.
+  
+Without modifying the code inside m2() method of class A, we can replace the logic or method m2() of class A through overriding. If we see even though we are calling m2() method using reference variable A still the method of B class m2(){} method is called, which looks like we are invoking new m2() using variable A (indirectly means replacements);
+  
+  
+class A {
+  double m2(int i) {
+    // operation
+    return 23.23;
+  }
+}  
+  
+class B extends A {
+  int m2(int i) {
+    int j = super.m2(i);
+    // perform some additional operation
+    return 24;
+  }  
+}    
+  
+class C {
+  void m3(int j) {
+    B b = new B();
+    int k = b.m2(j);
+  }
+}
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

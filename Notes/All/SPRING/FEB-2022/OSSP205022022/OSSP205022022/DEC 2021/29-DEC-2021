@@ -1,0 +1,85 @@
+Instance Factory Method Instantiation
+--------------------------------------
+
+#BSE/NSE Stock Exchange
+AgentTradingSystem
+---------------------------
+interface StockTradeManager {
+	double getStockPrice(String stockName);
+}
+// assumption: ejb technology
+class BSEStockTradeManager implements StockTradeManager {
+	double getStockPrice(String stockName) {
+		// goto database, execute query 
+		// retreive price of the stock
+		return 1093.3;
+	}
+}
+
+#upstox.com
+------------
+interface StockTradeManager {
+	double getStockPrice(String stockName);
+}
+
+class StockPriceController {
+	private StockTradeManager stockTradeManager;
+	
+	public double findStockPrice(String stockName) {		
+		double price = stockTradeManager.getStockPrice(stockName);
+		return price;
+	}
+	
+	public void setStockTradeManager(StockTradeManager stockTradeManager) {
+		this.stockTradeManager = stockTradeManager;
+	}
+}
+
+class AgentTradingSystemServiceLocator {
+	public Object lookupAgentTradingSystemService(String jndiName) {
+		HashTable ht = new HashTable();
+		ht.put("jndiFactoryUrl", "http://192.293.29.29:9990/");
+		ht.put("username", "weblogic");
+		ht.put("password", "welcome1");
+		ht.put("jndiFactoryClass", "com.weblogic.jndi.factory.WeblogicJndiFactoryImpl");
+		
+		
+		InitialContext ic = new InitialContext(ht);
+		// stub/proxy
+		Object remoteObject = ic.lookup(jndiName);
+		return remoteObject;
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="stockPriceController" class="StockPriceController">
+	<property name="stockTradeManager" ref="stockTradeManager"/>
+</bean>
+<bean id="agentTradingSystemServiceLocator" class="AgentTradingSystemServiceLocator"/>
+
+<bean id="stockTradeManager" factory-bean="agentTradingSystemServiceLocator" factory-method="lookupAgentTradingSystemService">
+	<constructor-arg value="java://bseStockTradeManager"/>
+</bean>
+
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+StockPriceController spc = beanFactory.getBean("stockPriceController", StockPriceController.class);
+double price = spc.findStockPrice("cipla");
+System.out.println("price : " + price);
+
+
+
+
+
+
+
+
+
+
+
+
+
+

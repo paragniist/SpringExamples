@@ -1,0 +1,316 @@
+What are annotations, what is the purpose of annotations?
+Annotations are the other way of attaching/defining configuration information about	the java classes. annotations are even called as source code metadata, because we attach configuration information describing the java classes directly at the source code of the java class
+	
+why do we need to use annotations rather than defining the information about java classes interms of xml based configuration?
+There are lot of challenges in working with xml-based configuration to overcome them sun-microsystems has introduced annotations
+problems with xml:
+1. xml is too verbosed, we end up in writing more amount of configuration describing the details of the class than the actual class information we define, so it is very difficult for the developer to memorize such length xml tags and write it as part of xml configuration file and it is even time taking
+2. the tags are quite length and case-sensitive and we should memorize the order in which the tags has to be written that makes most of the developer complex to work with xml
+3. xml is not an java language and it has no resemblence with java technology so most of the developers find it hard to learn another language called xml which is noway to java to configure information about java classes
+4. there is no intermediate compilation process in verifying whether the configuration we have written is valid or not, so developer has to go in iterations in deploying the application and identifying the errors in xml during runtime and fix them which kills the develpers productivity
+5. always the configuration information about the java class is written in an external xml configuration file, so developer find it hard to switch between xml and java class to understand configuration information of class
+6. no java ide support is there to work with xml 
+7. by considering all the above problems we can understand xml doesnt support rapid application development
+
+to overcome the above problems in working with xml, annotations are introduced
+what are the advantages of using annotations over xml?
+advantages of annotations:-
+1. annotations are short in nature and spans in a word at max and easy to memorize and write them, always developer find it easy to memorize and quick to write them in providing the configuration information about a class then xml
+2. annotations are nothing but another java types which has close resemblence with java language and follows java syntaxes and semantics, so developer dont have to learn something other than java to use annotations. so developer often find very easy in using annotations and they dont need any new learning curve in working with annotations
+3. as annotations are directly written as part of the source code of the java class, during the compilation java compiler validates the configuration information we expressed in-terms of annotations so that we can easily identify mis-configuration issues rather than going in iterations in deploying and debugging the configuration errors we would face while working with xml, so it saves lot of developer time in developing the application
+4. The configuration information about the java class has been directly written on the source code of the java class, so developer find it easy to understand the configuration information of the class and he dont need to switch to any other external configuration file to understand it
+5. most of the java ides supports working with annotations since those are also java types
+6. by considering all of the above we can easily understand annotations supports rapid application development
+so developers often use annotations rather than xml to write configuration information.
+	
+it looks like from the above there are dis-advantages in working with xml and lot of advantages in using annotations, but there are advantages in using xml and dis-advantages in working with annotations as well, let us explore now
+
+advantages of using xml:-
+1. as the entire configuration information about all of the classes of our application has been described centrally in one-single xml configuration file, the developers often find it easy derive holistic picture of the application quickly that is an biggest advantage of working with xml
+
+so by centralizing the configuration information about my classes the developer can quickly derive the information about the components and debug them easily
+
+2. The configuration information can be attached/defined to a class irrespective of whether the class has source or not
+	
+dis-advantages of annotations:-
+1. the configuration information about the java classes are scattered across various different classes of our application since those are written directly at the source code of the class level. while working with annotations we cant derive holistic information about the complete application easily
+the developer has to navigate across all of the classes within our application to derive complete components and their information of the application
+this makes new developers who joins in the team to find hard/difficult to understand the appliation and debugging becomes difficult job
+
+2. we can only attach configuration information to a java class given if it has source code with us, otherwise we need to look for alternate in attaching configuration information which is an biggest limitation with annotations
+
+From the above we understand both of them has their own advantages and dis-advantages then when to use what?
+	
+#1. when the application is huge in size and the no of components of your application are more and the functional implementation of these components are very complex, so to avoid adding more complexity in definiting configuration information using annotations it is recommended to use xml, so that developers can quickly derive information about your components	and debug them easily
+
+if the appliation is moderate or small in nature and the functional complexity of the application is less then to quickly support rapid application development annotations are recommended
+
+#2. when the team is dis-jointly located and scattered across geographies in working on a project, co-oridnating and understanding the components of our application becomes quite complex while working with annotations, which classes are using which other classes of our application and what the implementations are being used is very difficult
+instead if we use xml, we can quickly derive all of the components of our application by looking at single file easily
+
+it doesnt mean annotations are not suitable for enterprise appliation development, we can use annotations in developing large scale applications as well but we need to follow standard package hierarchies and naming conventions and best-practises in writing the code to work with annotations
+------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

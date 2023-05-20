@@ -1,0 +1,174 @@
+How many types of jar distributions are there?
+There are 2 types of jar distributions are there
+1. distributable jar (java libraries)
+2. executable jar (java applications)
+	
+What is an executable jar?
+If the jar contains Main-Class manifest attribute defined inside it then it is called "executable jar". 	
+java -jar pathToJar
+-----------------------------------------------------------------------------------------------
+d:\work\frauddetector:/>
+package com.fd.analyzer;
+public class TrustAnalyzer {
+	public long getTrustLevel(String uniqueIdentificationNo) {
+		return 89;
+	}
+}
+#1. compile
+d:\work\frauddetector:/> javac -d . *.java
+#2. package it as a jar for distributing
+d:\work\frauddetector:/> jar -cvf frauddetector.jar ./com
+--------------------------------------------------------------------------------------------
+d:\work\quickloans:/>
+
+package com.ql.processor;
+import com.fd.analyzer.*;
+
+public class LoanManager {	
+	TrustAnalyzer trustAnalyzer;
+	
+	public boolean approveLoan(String loanNo, String uniqueIdentityNo) {
+		trustAnalyzer = new TrustAnalyzer();		
+		long trustLevel = trustAnalyzer.getTrustLevel(uniqueIdentityNo);
+		if(trustLevel>60) {
+			System.out.println("approved");
+			return true;
+		}
+		System.out.println("denied");
+		return false;
+	}
+}
+
+package com.ql.main;
+public class QuickLoansApplication {
+	public static void main(String[] args) {
+		LoanManager loanManager = new LoanManager();
+		boolean loanStatus = loanManager.approveLoan("LS02983903", "UN029398");
+		System.out.println("loan approved status : " + loanStatus);
+	}
+}
+#1 compile the application
+d:\work\quickloans:/>set CLASSPATH=d:\work\frauddetector\frauddetector.jar
+d:\work\quickloans:/> javac -d . *.java
+
+d:\work\quickloans:/> manifest.txt
+Main-Class: com.ql.main.QuickLoansApplication
+Class-Path: ./frauddetector.jar
+
+d:\work\quickloans:/> jar -cvfm quickloans.jar manifest.txt ./com
+
+d:\work\quickloans:/>set CLASSPATH=d:\work\frauddetector\frauddetector.jar
+d:\work\quickloans:/> java -cp d:\work\frauddetector\frauddetector.jar  -jar quickloans.jar
+When we are running an executable jar we cannot set the CLASSPATh environment variable externally for referring its dependencies
+
+
+d:\quickloansapplication
+frauddetector.jar
+quickloans.jar
+java -jar quickloans.jar
+----------------------------------------------------------------------------------------------
+There are 3 classloaders provided as part core jdk distribution
+1. Bootstrap classloader
+native classloader and loads the core jdk classes that are distributed as part $JAVA_HOME\lib\rt.jar
+
+2. Extension classloader
+child/desedent of bootstrap classloader, it loads the classes from 2 different locations
+1. The jars placed under $JAVA_HOME\lib\ext directory
+2. java.ext.dirs system property pointed directory location jar classes will be loaded
+
+3. System/Application classloader
+It is an immediate decendent of Extension classloader, it loads the classes from 3 different locations
+1. CLASSPATH env variable pointed directory/jar classes will be loaded
+2. -cp or -classpath java switches pointed directory location classes will be loaded
+3. Class-Path attribute in manifest.mf pointed jar classes will be loaded 
+-----------------------------------------------------------------------------------------------
+How does these classloaders loads the classes into jvm memory? Why we need 3 classloaders to load?
+	
+These 3 classloaders loads the classes into jvm memory by working in hierarchial and they follow classloader principles in loading the classes.
+What are the principles of classloaders?
+There are 3 principles based on which the classloaders are going to load the classes into jvm memory
+1. principle of delegation
+2. principle of visibility
+3. principle of uniqueness
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,271 @@
+Why are using spring jdbc as part of your project, why not hibernate framework?
+	(or)
+When we should use jdbc and when to use hibernate framework?
+To understand the above let us explore broadly the types of the applications.
+We can classify the applications into 3 types
+1. standalone or desktop applications
+data volumes and persistence operations we carry are very low: jdbc technology
+
+2. distributed web applications
+	2.1 self-servie or customer managed application
+	data volumes are quite low and complexity in carrying the persistence operations are also less: jdbc technology
+	
+	2.2 ecommerce or general purpose business application
+	data volumes: moderate to high
+	persistence operations: complex
+	requires: enterprise persistence features (concurrency, transactionality, caching etc)
+	: orm technology frameworks/api like Hibernate Framework
+
+	2.3 intra-network or back-end/office applications
+	people within the organization will use these applications to carry out day-to-day activities as part of the business 
+	The requirements varies based on group or purpose of these applications
+	
+	few backoffice applications are data intensive : jdbc technology
+                                  low to moderate: hibernate framework
+
+3. batch processing applications
+They deal with volumneous amount of data and perform bulk operations. Most of the time the data has to be fetches, transformed, validated, filtered, messaged and processed to load the data. so rather than handling these volumes of data in java we can process them in stored procedures 
+java jdbc + pl/sql
+
+high performance: 
+1. java jdbc + pl/sql = best in performance
+2. java jdbc
+3. orm frameworks
+-----------------------------------------------------------------------------------------
+#2. justification
+legacy project where in it has been designed and implemented using jdbc technology
+
+in this case if we choose hibernate framework there are:
+1. we need to destroy all the code and domain objects in which we carrying the data in our existing application, and need to comeup with new entity classes and mapping files in fetching the data which is a huge rework (which is already in place)
+	
+2. but in our case we dont need database portability, because the database of our application is used by other internal applications of our organization. now if I switch the database of my application, all the other applications will fail. so we never wanted to change the underlying database of our application. So what is the point of using Hibernate when we dont need database portability and scarfising the performance of our application.
+	
+
+spring jdbc
+- no database portability
+-no orm-support directly we need to manually map the data
+
+- caching
+- global transactions
+-no boiler plate logic
+-un-checked exceptions
+
+
+hibernate
+-database portability
+-cache
+-global transactions
+-no boilter-plate logic
+-un-checked exceptions
+-object-relational mapping (? not required)
+------------------------------------------------------------------------------------------
+What are the actions/operations do we have to takecare while executing sql query and what things are taken care by spring jdbc?
+	
+#1. load the driver = spring jdbc
+#2. create the connection = spring jdbc
+#3. create sql query = programmer
+#4. create statement with sql query = spring jdbc
+#5. supply the substitute parameters  = programmer
+#6. execute the sql query and grab the resultset = spring jdbc
+#7. iterate over the result = spring jdbc
+#8. extract the data = programmer
+#9. close the resources = spring jdbc
+
+#1 write query
+#2 pass parameters
+#3 grab data
+only application related logic only we are writing rest of the boiler-plate logic is taken care by spring jdbc
+------------------------------------------------------------------------------------------
+What are the different types of operations we perform on a database?
+1. ddl = data definition language
+	 [create, alter, truncate, drop]	 
+2. dml = data manipulation language
+		[insert, update, delete]		
+3. dql = data query language
+		[select]		
+4. dcl = data control language (adminstration activities)
+		[grant, revoke]		
+5. dtl = data transaction language (no, we have api support)
+		[savepoint, rollback, commit]
+
+pl/sql programming in java		
+
+note: we dont create tables through application logic, before the commencement of the application development, the data model and data design will be completed and database tables are created and exported as sql scripts. 
+while setting up the project for development, we execute these scripts for creating database manually on the machine.
+	
+database 
+	username/password (root) = will not be used in java application (production deployments)
+	separate user/password (java application) = restricted previliges
+	select, insert, update 
+	create, drop,truncate, delete, alter, grant,revoke = removed
+-----------------------------------------------------------------------------------------
+How many approaches are there in working with spring jdbc?
+There are 5 approaches are there in working with spring jdbc
+1. JdbcTemplate approach
+2. NamedParameterJdbcTemplate approach
+--------------------------------------------
+3. SimpleJdbcTemplate Approach (removed in spring 4.0)
+4. SimpleJdbcCall or SimpleJdbcInsert
+5. Mapping Sql Operations as Subclasses
+
+
+#1 JdbcTemplate Approach | NamedParameterJdbcTemplate
+	1. dql (select)
+		- aggregate queries
+		- 1 column
+		- 1 record
+		- multiple records
+	2. dml
+		- insert
+		- update
+		- delete
+------------------------------------------------------------------------------------------
+#1. JdbcTemplate approach
+JdbcTemplate a core object in spring jdbc api that is abstracted with persistence logic within it
+
+The JdbcTemplate supports 2 approaches of working
+1. classic approach (resembles like our legacy java jdbc)
+2. query-based approach (advanced)
+	
+product
+product_no product_nm  description  manufacturer_nm  price
+	
+	
+#1. classic approach 
+
+There are few common objects and template code we need to write while working with spring jdbc irrespective of the approach we are working let us explore:
+
+// data access object
+class ProductDao {
+	private JdbcTemplate jdbcTemplate;
+	
+	public ProductDao(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+}
+
+javax.sql.DataSource (interface) (Connection Pooling)
+|-jee containers 
+looks like DataSource connection pooling is implemented by jee application servers, so without jee container we cannot use spring jdbc
+
+but there are third-party DataSource connection pool implementation libraries are there that works without jee container like
+1. C3P0
+2. Proxool
+3. dbcp
+4. Harika db
+In addition to the above spring jdbc has provided their own dummy implementation for DataSource interface called "DriverManagerDataSource", that has to used only for development purpose only and cannot go into production using this implementation.
+	
+javax.sql.DataSource
+|-DriverManagerDataSource
+
+application-context.xml
+------------------------
+<bean id="dataSource" class="DriverManagerDataSource">
+	<property name="driverClassname" value="com.mysql.cj.jdbc.Driver"/>
+	<property name="url" value="jdbc:mysql://localhost:3306/springdb"/>
+	<property name="username" value="root"/>
+	<property name="password" value="root"/>
+</bean>
+
+<bean id="jdbcTemplate" class="JdbcTemplate">
+	<property name="dataSource" ref="dataSource"/>
+</bean>
+
+<bean id="productDao" class="ProductDao">
+	<constructor-arg ref="jdbcTemplate"/>
+</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

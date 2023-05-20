@@ -1,0 +1,75 @@
+ioc principle is about collaborating the objects and managing the lifecycle of the objects
+There are 2 ways of collaborating the objects are there
+1. dependency pulling
+	1.1 dependency lookup
+	1.2 contextual dependency lookup
+	
+2. dependency injection
+	2.1 setter injection
+	2.2. constructor injection
+	
+#1. dependency pulling
+1.1 dependency lookup
+The dependent objects required for our class are being lookup into a public registry and pulled into our application class is called dependency lookup.
+eg.. we connect to the jndi registry and perform a lookup for retrieving the DataSource object from jndi registry of the jee container so that we can get the connection object from it. In our class we write jndi logic to fetch the DataSource object from jndiRegistry so we call it as "dependency lookup". 
+	
+1.2 contextual dependency lookup
+A class will acquire its dependent objects by getting into an contractual agreement with the underlying container or runtime, as the dependents are acquired through contracts we call it as "contextual dependency lookup"
+eg.. A Servlet class will acquire its dependent object ServletConfig from ServletContainer by getting into an agreement with Servlet Container. A Servlet has to implement an Servlet interface and override init(ServletConfig) so that container during the time of instantiating the Servlet object will invoke init() method on the Servlet by passing the dependent object ServletConfig, which is nothing but "contextual dependency lookup".
+	
+Both dependency lookup and contextual dependency lookup or old methodologies of collaborating the objects and are supported by jee from early stages itself.
+	
+#2 dependency injection
+we dont write the code in our class for getting/pulling/acquiring the dependent object, because if we write the code in our class we will be tightly coupled either through concreate classname or logical classname of another class in our class, instead let the other person itself pass the dependent object into our class
+Since we dont write any code referring the dependent object in our class, we always will become loosely coupled with dependents.
+	
+There are 2 forms of dependency injection are there
+1. setter injection 
+The dependent object will be injected into our class via setter method, so it is called setter injection
+
+2. constructor injection
+The dependent object will be injected into our class by passing it as parameter to the constructor of our class, so it is called constructor injection
+----------------------------------------------------------------------------------------------------
+How does Spring core/ioc container makes our classes loosely coupled?
+	
+
+what is ioc stands for?
+ioc stands for inversion of control.
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

@@ -1,0 +1,39 @@
+Spring is a Framework, Struts is also a Framework. Using Struts we can build only web applications, and we can only build presentation-tier aspects of build an web application we cannot build end-end application using the Struts Framework.
+  
+Unlike Struts, Spring Framework supports multiple types of application development types like Standalone applications, distributed web applications, enterprise applications and Integration-Tier solutions as well. Using Spring Framework we can build almost all the application development types, and more over it supports building end-end application, So Spring Framework is considered as complete application development framework.
+  
+How many types of applications we can build using Spring Framework?
+Whatever the type of applications we can build with Jee api, all those application development types are supported by the Spring Framework. In such case why do we need to learn Spring Framework, when we can do the same thing using JEE Api.
+  
+JEE (Java Enterprise Edition) is an Standard Api. Api stands for application programming interface. Java Standard apis provides interfaces/abstract classes only, there will not be concreate classes. So we cannot directly work with api, we need to use implementation for that api to work with, this seems to be a very complex for a novoice or a beginner to understand.
+  
+By nature api will be huge in nature, they provide lot of classes as apart of them, since we have more number of clases, learning the api takes lot of time. These classes provided by the api are inter-linked with each other, to use a class we need to know the information abouts its depend, thus making the api more complex to learn and use it.
+  
+From the above we can understand the api are very complex to understand and takes more time in learning them because of huge in nature and their inter-dependencies. We cannot learn an api partially and we cannot jump start in building an appplication, because of inter-dependencies between the classes.
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+  

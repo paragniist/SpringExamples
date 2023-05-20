@@ -1,0 +1,182 @@
+What is the purpose of singleton class? 
+(or)
+When do we create a class as singleton class?
+There are 3 circumstances under which we go and create a class as singleton class.
+	
+#1
+In a class, we dont have any attributes which means that objects of the class doesnt hold any state. There are member methods defined within the class, but the methods are not using the state of the object because there are no attributes defined.
+The member methods are taking the data interms of parameters and performing the operation and returning the return value.
+The outcome out of executing the member methods will not be dependent on the object we are using in calling them, rather it depends on the parameters we passed in calling the method. In such case creating multiple objects of the class is of nouse, since all the objects hold zero-state. 
+Instead of creating multiple objects, only one object of the class is sufficient, so make the class as singleton.
+	
+	
+class Math {
+	int a;
+	int b;
+	int add() {
+		return a+b;
+	}
+}	
+
+Math math1 = new Math();
+math1.setA(10);
+math1.setB(20);
+int sum1 = math1.add();
+
+Math math2 = new Math();
+math2.setA(30);
+math2.setB(40);
+int sum2 = math2.add();
+-----------------------------------------
+class Math {	
+	int add(int a, int b) {
+		return a + b;
+	}
+}
+
+Math math1 = new Math();
+int sum1 = math1.add(10, 20);
+
+Math math2 = new Math();
+int sum2 = math2.add(10, 20);
+-----------------------------------------------------------------------------------------------
+#2. 
+In a class, we have attributes and member methods, the member methods are using the state of the object but the object contains completely readonly state.
+	
+class Circle {
+	private final double PI=3.1412;
+	public double area(int radius) {
+		return PI * (radius * radius);
+	}
+}	
+
+Circle circle1 = new Circle();
+double area1 = circle1.area(4);
+
+Circle circle2 = new Circle();
+double area2 = circle2.area(4);
+
+Here both circle1 & circle2 holds same state and is read-only, irrespective of the object we are using in calling the method area() the outcome will be same, unless the parameters of different.
+So we dont need to have multiple objects of the class, instead allow to create only one object.
+So make the class as Singleton.
+-----------------------------------------------------------------------------------------------#3 
+In a class, we have member variables and member methods. the member methods are using the state of the object. Here the state of the object is completely sharable, in such case we dont want to create multiple objects of the same class keeping the duplicate state rather we would wanted to allow only one object of the class by making it as singleton.
+	
+signup.jsp
+-------------
+<html>
+	<head>
+		<title>signup</title>
+	</head>
+	<body>
+		<form name="signupForm" action="signup">
+			email address: <input type="email" name="emailAddress"/>
+			mobile no: <input type="text" name="mobileNo"/>
+			password: <input text="password" name="password"/>
+			re-enter password: <input text="password" name="rePassword"/>
+			address: <textarea name="address"/>
+			city:
+			<select name="city">
+				<option value="hyderabad">hyderabad</option>
+				<option value="banglore">banglore</option>
+				<option value="chennai">chennai</option>
+				<option value="delhi">delhi</option>
+			</select>
+			state:
+			<select name="state">
+				<option value="ts">telangana</option>
+				<option value="ka">karnataka</option>
+				<option value="tn">tamilnadu</option>
+				<option value="dl">delhi</option>
+			</select>
+			country:
+			<select name="country">
+				<option value="IN">India</option>
+			</select>
+		</form>		
+	</body>
+</html>
+
+SignupServlet.java
+--------------------
+@WebServlet(urlPatterns={"/signup"})
+class SignupServlet extends HttpServlet {
+  public void service(HttpServletRequest req, HttpServletResponse resp) {
+		emailAddress = req.getParameter("emailAddress");
+		mobileNo = req.getParameter("mobileNo");
+		password = req.getParameter("password");
+		rePassword = req.getParameter("rePassword");
+		address = req.getParameter("address");
+		city = req.getParameter("city");
+		state = req.getParameter("state");
+		country = req.getParameter("country");
+		// do the data validation
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "root");
+		PreparedStatement pstmt = con.preparedStatement("insert into user values(?,?,?,?,?,?,?)");
+		// substitute parameters
+		pstmt.executeUpdate();
+		
+		req.getRequestDispatcher("/registration-success.jsp").forward(req, resp);
+  }
+}	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,96 @@
+// no source code
+class PowerStation {
+	Turbine turbine;
+	
+	public PowerStation(Turbine turbine) {
+		this.turbine = turbine;
+	}
+	
+	public void on() {
+		turbine.produce();	
+	}
+	
+}
+
+// no source code
+class Turbine {
+	private Transformer transformer;
+	private Motherboard motherboard;
+	
+	public void produce() {
+		sop("turbine producing power");
+	}
+}
+
+@Configuration
+class JavaConfig {
+	
+	@Bean
+	public Turbine turbine() {
+		Turbine turbine = new Turbine();
+		return turbine;
+	}
+
+	@Bean
+	public PowerStation powerStation(Turbine turbine) {
+		PowerStation powerStation = new PowerStation(turbine);
+		
+		return powerStation;
+	}
+}
+
+While working with Java Configuration approach for a bean definition the dependents can be declared as parameters for bean method, so that ioc container takes care of passing the dependent objects while calling @Bean method of the Java Configuration class
+	
+	
+@Qualifier we can use in 3 combinations
+#1. @Autowired + @Qualifier
+#2. @Autowired + @Bean
+#3. directly as part java config method parameter to resolve ambiguity
+------------------------------------------------------------------------------------------
+
+// source code
+@PropertySource("classpath:application.properties")
+@Component
+class Book {
+	@Value("${isbn}")
+	int isbn;
+	@Value("${title}")
+	String title;
+	@Value("${authorName}")
+	String authorName;
+	
+}
+
+application.properties
+-----------------------
+isbn=102
+title=Let us c
+authorName=Yaswanth Kanethkar
+
+#{} = resolves to bean definition object in ioc container
+${} = resolves to environment object
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+

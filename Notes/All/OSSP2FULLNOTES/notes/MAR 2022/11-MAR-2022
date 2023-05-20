@@ -1,0 +1,178 @@
+What is BeanPostProcessor? Why do we need to use it?
+If we want to apply some common post processing logic across all the bean definitions of the ioc container after instantiating the bean definitions before using the object of them within our application then we need to use BeanPostProcessor
+
+
+whereas incase of bean lifecycle management, we apply the specific post processing logic that is applied only for that bean definition rather than common post processing logic
+
+How to work with BeanPostProcessor?
+We need to write the post processing logic within a class which has to be implemented from an interface 
+	
+interface BeanPostProcessor {
+	Object postProcessBeforeInitialization(String beanId, Object obj);
+	Object postProcessAfterInitialization(String beanId, Object obj);
+}	
+
+When does the BeanPostProcessor methods will be called?
+after writing the implementation of BeanPostProcessor we need to register the BeanPostProcessor with ioc container, so that whenever ioc container instantiates the object for a bean definition it invokes the BeanPostProcessor there after it places the object in ioc container and will returns to the application
+
+postProcessBeforeInitialization: after ioc container instantiated the object for the bean definition after performing dependency injection (constructor/setter/aware injection), before ioc container performs lifecycle management (init-method) it passes the bean definition object to postProcessBeforeInitialization method
+
+postProcessAfterInitialization():- after the bean lifecycle init-method on the bean definition object has been completed then ioc container will call postProcessAfterInitialization and then it places the returned object in ioc container
+
+class Garage {}
+class GasStation {}
+class Toolbox {}
+
+class ObjectTracker {
+	private static AtomicInteger counter = new AtomicInteger(0);
+	
+	public static void increment() {
+		counter.incrementAndGet();
+	}
+	public static int getCounter() {
+		return counter.intValue();
+	}	
+}
+
+class ObjectTickerBeanPostProcessor implements BeanPostProcessor {
+	public Object postProcessBeforeInitialization(String beanId, Object obj) {
+		return obj;
+	}
+	public Object postProcessAfterInitialization(String beanId, Object obj) {
+		ObjectTracker.increment();
+		return obj;
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="garage" class="Garage"/>
+<bean id="gasStation" class="GasStation"/>
+<bean id="toolbox" class="Toolbox"/>
+
+<bean id="objectTickerBeanPostProcessor" class="ObjectTickerBeanPostProcessor"/>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+
+BeanPostProcessor bpp = beanFactory.getBean("objectTickerBeanPostProcessor", BeanPostProcessor.class);
+
+((ConfigurableListableBeanFactory)beanFactory).addBeanPostProcessor(bpp);
+
+Garage garage = beanFactory.getBean("garage", Garage.class);
+sop(ObjectTracker.getCounter());
+
+
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+In case of ApplicationContext, after the metadata has been loaded, before it begins instantiating the objects for the bean definitions, it checks are there are any BeanPostProcessor/BeanFactoryPostProcessor class types defined as bean definitions or not, if found it instantiates those bean definition objects and automatically registers them with ioc container. there after it begins instantiating singleton bean definitions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

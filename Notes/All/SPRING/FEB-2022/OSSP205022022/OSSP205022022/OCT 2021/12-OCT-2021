@@ -1,0 +1,167 @@
+#2 Always design to interfaces, never design to concreate classes
+when we are using composition in reusing the functionality of another class, the class will become tightly coupled with each other, to avoid coupling between the classes design to interface.
+  
+class A {                     class B {
+  B b;                          int m2(int i) {    
+  void m1(int i) {                // logic 
+    b = new B();                  return 39;
+    int j = b.m2(i);            }
+    /* logic*/                 }
+  }
+}  
+Here in the above eg. A class is directly talking to the B class via composition, so any change in class B would effect the class A which is nothing but coupling.
+Here we should interpret change in requirement differently from coupling
+  
+change in requirement/request:
+let us say we added an additional parameter in m2() method of B class as below
+class B {
+  int m2(int i, int j) {
+    // logic 
+    return 49;
+  }
+}
+
+with the above changes in B class, it would effect A class, but this is not considered as coupling between the classes. we design the parameters and returnTypes of a method based on the functional implementation of the method, if we are changing the parameters or returnTypes indicates a change in requirement/functionality, we cannot considered the change as coupling as we want to change in functionality.
+  
+coupling:
+
+class A {                     class B {
+  B b;                          int m2(int i) {    
+  void m1(int i) {                // logic 
+    b = new B();                  return 39;
+    int j = b.m2(i);            }
+    /* logic*/                 }
+  }
+}  
+
+we want to optimize the algorithmic implementation of class B, so want to replace B with C class as below.
+  
+class C {
+  int m3(int i) {
+    // new implementation logic
+    return 38;
+  }
+}  
+
+Now we want A class to talk to C instead of B, the change in B to C cannot be considered as change in functionality, but because of this change of B to C, A class would be impacted all the lines of code in class A wherever we are reffering to B has to be rewritten to C class, which is called coupling.
+  
+class A {
+  C c;
+  void m1(int i) {
+    c = new C();
+    int j = c.m2(i);
+    // logic
+  }
+}  
+
+So to avoid the coupling between the classes we need to design to interfaces.
+
+class A {                    interface IB {           class B implements IB {
+  IB ib;                       int m2(int i);           int m2(int i) {
+  void m1(int i) {           }                            // logic
+    ib = new B();                                         return 35;
+    int j = ib.m2(int i);                               }
+    /* logic */                                       }
+  }
+}  
+  
+In the above eg. A class is talking to the B class through the help of interface IB, now we can say A is loosely coupled from B class, because A can not only talk to B, it can talk to any of the implementations of IB interface. 
+For eg.. if we come up a new implementation of IB interface as below.
+  
+class C implements IB {
+  int m2(int i) {
+    // new logic
+    return 39;
+  }
+}  
+Now to switch from B to the C class we dont have to modify the code inside the class A, only change is instead of instantiating B instantiate C 
+
+class A {
+  IB ib;
+  int m1(int i) {
+    ib = new C();
+    int j = ib.m2(i);
+    // logic
+  }
+}
+--------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         

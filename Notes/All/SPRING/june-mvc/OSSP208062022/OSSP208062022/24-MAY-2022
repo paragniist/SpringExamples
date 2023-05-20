@@ -1,0 +1,193 @@
+Spring Boot with MicroServices
+Duration: 3 Months
+Fee: 8k
+Timings: 
+Monday-Saturday: 7:05 am ist - 8:05 am ist
+Sunday:          6:30 am ist - 8:30 am ist
+No recordings, no youtube and students are not allowed to record the sessions, if found will cancel admission without fee refund.
+Live classroom notes will be provided with examples at the end of every week.
+-------------------------------------------------------------------------------------------	
+Pre-requisite:
+What you should know to join this course?
+1. Spring Framework
+	- core module (mandatory)
+	- aop
+	- jdbc
+	- tx
+2. Hibernate Framework (optional)	
+if you dont know hibernate framework you will not understand
+	- spring orm
+	- spring datajpa
+3. Restful Services (mandatory) (to learn microservices)	(45 days)
+If you dont know Restful Services,a new batch will start in a month of time, you can join the course separately for learning restful services
+--------------------------------------------------------------------------------------------
+Syllabus
+#1. Spring WebMvc Module (25 days)
+1. Why Spring Web mvc, why not servlet/jsp to build web application
+2. architecture of spring mvc
+3. How to configure Dispatcher Servlet in an mvc application (configuration/annotation-driven)
+4. HandlerMapping
+5. HandlerInterceptors
+6. Controllers
+7. ViewResolvers
+8. Views
+9. Java Bean Validation Integration
+10. Exception Handling
+
+#2. Spring ORM integration with
+	1. Hibernate Framework
+	2. Jpa api
+	
+#3. Spring DataJpa
+#4. Spring Security (Web Application Security)
+	
+#5. Spring Boot
+1. Introduction to Spring Boot
+2. Your First Spring Boot Application
+3. Creating an Executable Jar and directory structure inspection
+4. Dependency Management and Inheritance with bootstarter parent
+5. Using @SpringBootApplication Annotation
+6. Customizing the Spring Boot Application Running with Fluent Builder API
+		a. Channing Banner
+		b. Turn off Banner
+7. Application Events and Listeners in Spring Boot
+		a. ApplicationStartingEvent
+		b. ApplicationEnvironmentPreparedEvent
+		c. ApplicationPreparedEvent
+		d. ApplicationStartedEvent
+		e. ApplicationReadyEvent
+		f. ApplicationFailedEvent
+8. Command-Line Runners / Application Runners
+9. Spring Boot Application Exit
+		a. ExitCodeGenerator
+		b. ExitCodeExceptionResolver
+		c. SpringApplication.exit()
+10. Accessing Application Arguments
+11. Application properties
+		a. Properties File
+		b. Yaml File
+12. Configuration Properties in Spring Boot
+13. Spring Boot Profiles
+14. Spring Web MVC Application Flow in Spring Boot
+		a. WAR Packing and Deployment
+		b. Embedded Servlet Container Support
+		c. Registering Filters and Servlets in Spring Boot Application
+		d. Customizing the Embedded Servlet Containers
+		e. Programmatic Customization
+15. Creating Your own Auto-configurations
+		a. Conditional Annotations
+		b. Creating Starter dependencies
+16. Spring Boot Actuator Endpoints
+
+#6. Spring Boot Java MicroServices
+How to develop microservices application using Spring Boot and Spring Cloud and Spring microservices modules
+	1. What are microservices, why do we need to use them?
+	2. monolithic application architecture
+	3. microservices based application architecture
+	4. patterns (theoritically) :
+			1. domain-driven development
+			2. single-responsibility principle
+			3. database per service
+			4. database per application
+			5. api composer
+			6. cqrs
+			7. saga
+5. Microservices Tools (Practical)
+	1. Eureka Discovery Server
+	2. Ribbon/Spring Cloud Load Balancer
+	3. Spring Cloud Gateway
+	4. Spring Circuit Breaker (Resilience4j)
+	5. Feign Client Api
+	Spring Cloud
+	6. Spring Cloud Config Server
+	7. Spring Cloud Config Client
+	8. Example demonstrating kafka
+Spring OAuth2
+ELK = Elastic Search, LogStash and Kibana
+
+
+New Batch of AWS Cloud Platform 8th Jun at morning 6:00 am ist
+--------------------------------------------------------------------------------------------
+
+Spring Mvc + Spring Boot = 6k
+MicroServices = 5k
+Spring Boot = 5k
+Spring Mvc + Spring Boot + Microservices = 8k
+
+reach me@: tech.sriman@gmail.com
+
+spam/junk = kindly check for an email from durgasoft people in spam/junk for course details/syllabus and admission details
+Demo classes will be there till Friday, next monday onwards the link will change.
+--------------------------------------------------------------------------------------------
+Spring Web Mvc Module
+----------------------
+We can develop web applications in java language using Servlet/Jsp api, then why do we need Spring Mvc Module for building web application?
+	
+The Servlet/Jsp are api provided by Sun Microsystems to build web applications in java language, The apis will not provide boiler-plate logic in developing application. While building Web Application using Servlet/Jsp the boiler-plate logic has to be written by the developer
+
+While developing an web application there are 2 most common requirements we need to build in the application.
+	1. request wrapping
+	2. form handling
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,70 @@
+Java is an platform independent programming language, which means the programs written in java can run on any operating system/hardware without modifying the code along with that the same binary produced out of java compilation process can be carried across any platform as well, due to this is called "Platform independent programming language"
+	
+Java is able to achieve platform independent nature through 2 things
+1. The programming apis in java language are designed in such away those works across any platform by abstracting the low-level api of the platform.
+	
+For eg.. while working with languages like c or c++ they encourage us to write the code referring to low-level api of the platform like calloc, malloc or interrupt programming or graphical userinterface which are specific to the platform. so, that the program written in c or c++ will not works across the platform
+	
+So that the programs written using java language apis for across any platform, so we can call java programs as "write once run anywhere".
+	
+2. The java programs upon compiling produces the bytecode, which is an 	intermediate executable code. we can ship the same bytecode across any of the platforms, so that the jvm of that platform will convert the code into platform specific executable and executes on that platform.
+So that the java programs are "compile once run anywhere"
+	
+Due to the above 2 features java programs became platform independent.
+----------------------------------------------------------------------------------------------
+What is java classloader, what is the purpose of it?
+Java classloader is an another java class which takes care of loading the bytecode of a java class into jvm memory, so that jvm can execute your bytecode quickly by going to the jvm memory
+
+By the above it looks like for any class in java to be executed, it has to be loaded into jvm memory, to load a class into jvm memory we need Java Classloader, looks like loading a java class into jvm memory is a common requirement for executing any of the java classes written by any programmers, so instead of programmers writing classloaders to load their java class, the jdk itself has provided inbuilt classloaders to load the java classes from physical location of the computer.
+	
+There are predefined or inbuilt classloaders that are shipped as part of jdk/jre install using which the java classes are loaded into jvm memory for execution, so we dont need to write our own classloaders for loading the java classes most of the time.
+	
+There are 3 in-built classloaders provided by the java platform
+1. Bootstrap Classloader
+2. Extension Classloader
+3. System/Application Classloader
+
+
+
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,116 @@
+
+class ProgWebApplicationInitializer implements WebApplicationInitializer {
+	public void onstart(ServletContext servletContext) {
+		XmlWebApplicationContext rootApplicationContext = null;
+		XmlWebApplicationContext servletApplicationContext = null;
+		DispatcherServlet dispatcherServlet = null;
+		ContextLoadListener contextLoaderListener = null;
+		
+		rootApplicationContext = new XmlWebApplicationContext();
+		rootApplicationContext.setConfigLocation("/WEB-INF/application-context.xml");
+		
+		contextLoaderListener = new ContextLoaderListener(rootApplicationContext);
+		servletApplicationContext = new XmlWebApplicationContext();
+		servletContext.addListener(contextLoaderListener);
+		
+		servletApplicationContext.setConfigLocation("/WEB-INF/dispatcher-servlet.xml");
+		
+		dispatcherServlet = new DispatcherServlet(servletApplicationContext);
+		ServletRegistration.Dynamic dynamic = servletContext.addServlet("dispatcher", dispatcherServlet);
+		dynamic.addMappings("*.htm");		
+	}
+}
+
+by looking at the above code we can understand in every application, we wanted to configure ContextLoaderListener and DispatcherServlet in our application, the way we wanted to configure them would be same for all the applications, the only change is
+#1 Type of ioc containers
+#2 url pattern
+
+So to avoid repeatedly writing the same code across all of the projects of spring mvc spring has provided an abstract class called AbstractDispatcherServletInitializer
+
+interface ServletContainerInitializer {
+	void onstartup(Set<Class<?>> handerTypes, ServletContext context);
+}	
+	
+@HandlerTypes(WebApplicationInitializer.class)	
+class SpringServletContainerInitializer implements ServletContainerInitializer {
+	public void onstartup(Set<Class<?>> handerTypes, ServletContext context) {}
+}
+	
+interface WebApplicationInitializer {
+	void onstartup(ServletContext servletContext);
+}	
+
+abstract class AbstractDispatcherServletInitializer implements WebApplicationInitializer {
+	public void onstartup(ServletContext servletContext) {
+		WebApplicationContext rootApplicationContext = null;
+		WebApplicationContext servletApplicationContext = null;
+		ContextLoaderListener contextLoaderListener = null;
+		DispatcherServlet dispatcherServlet = null;
+		
+		rootApplicationContext = getRootApplicationContext();
+		contextLoaderListener = new ContextLoaderListener(rootApplicationContext);
+		servletContext.addListener(contextLoaderListener);
+		
+		servletApplicationContext = getServletApplicationContext();
+		dispatcherServlet = new DispatcherServlet(servletApplicationContext);
+		ServletRegistration.Dynamic dynamic = servletContext.addServlet("dispatcher", dispatcherServlet);
+		dynamic.addMappings(getServletMappings());				
+	}
+	
+	abstract WebApplicationContext getRootApplicationContext();
+	abstract WebApplicationContext getServletApplicationContext();
+	abstract String[] getServletMappings();
+}
+
+class ProgDispatcherServletInitializer extends AbstractDispatcherServletInitializer {
+	public WebApplicationContext getRootApplicationContext() {
+		XmlWebApplicationContext rootApplicationContext = null;
+		rootApplicationContext = new XmlWebApplicationContext();
+		rootApplicationContext.setConfigLocation("/WEB-INF/application-context.xml");
+		return rootApplicationContext;
+	}
+	public WebApplicationContext getServletApplicationContext() {
+		XmlWebApplicationContext servletApplicationContext = null;
+		servletApplicationContext = new XmlWebApplicationContext();
+		servletApplicationContext.setConfigLocation("/WEB-INF/dispatcher-servlet.xml");
+		return servletApplicationContext;
+	}
+	public String[] getServletMappings() {
+		return new String[] {"*.htm"};
+	}
+}
+--------------------------------------------------------------------------------------------
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

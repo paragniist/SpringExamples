@@ -1,0 +1,147 @@
+How many ways we can configure the information about our classes in Spring Framework?
+There are 5 ways are there
+1. xml-based configuration approach
+ioc container: ClassPathXmlApplicationContext(xml)
+
+2. stereotype annotation approach
+ioc container: AnnotationConfigApplicationContext(packageName)
+
+3. xml-based configuration approach + stereotype annotation approach
+ioc container: ClassPathXmlApplicationContext(xml)
+	                         +
+	             <context:component-scan base-package=""/>
+
+4. java configuration class + stereotype annotation approach
+ioc container: AnnotationConfigApplicationContext(javaconfig)
+	                           +
+	                    @ComponentScan
+	
+5. xml-based configuration + java configuration + stereotype annotations
+------------------------------------------------------------------------------------------
+// source code
+@Component
+class Job {
+	@Value("#{applicationProperties.jobNo}")
+	int jobNo;
+	@Value("#{applicationProperties.jobTitle}")
+	String jobTitle;
+
+	@Autowired
+	Company company;
+	
+}
+
+// no source code
+class Company {
+	String companyName;
+	String location;
+	
+	public Company(String companyName) {
+		this.companyName = companyName;
+	}
+	public void setLocation(String location) {}
+}
+
+application-context.xml
+------------------------
+<bean id="company" class="Company">
+	<constructor-arg value="google"/>
+	<property name="location" value="California"/>
+</bean>
+<util:properties id="applicationProperties" location="classpath: application.properties"/>
+
+application.properties
+----------------------
+jobNo=10
+jobTitle=Senior java developer
+-----------------------------------------------------------------------------------------
+
+// no source code
+class Tab {
+	public void on() {
+		System.out.println("turning on...");
+	}
+}
+
+@Configuration
+class JavaConfig {
+
+	@Bean(name="samsungTab")
+	public Tab tab() {
+		Tab tab = new Tab();
+		return tab;
+	}
+}
+
+Test.java
+----------
+ApplicationContext context = new AnnotationConfigApplicationContext(JavaConfig.class);
+Tab tab =context.getBean("samsungTab", Tab.class);
+tab.on();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

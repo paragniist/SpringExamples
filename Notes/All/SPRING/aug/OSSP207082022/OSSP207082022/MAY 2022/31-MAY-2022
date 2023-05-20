@@ -1,0 +1,208 @@
+Instead of writing the validation logic in each servlet of our application, we can modularize into a separate validator class.
+	
+interface Validator {
+	List<String> validate(Object formObject);
+}
+Per each RequestType of each form object we can write one Validator implementation.
+	
+class NewDoctorFormValidator implements Validator {
+	List<String> validate(Object formObject) {
+		List<String> errors = null;
+		
+		errors = new ArrayList<>();
+		doctorForm = (NewDoctorForm) obj;
+		errors = new ArrayList();
+		
+		if(doctorForm.getDoctorName() == null || doctorForm.getDoctorName().trim().length==0) {
+			errors.add("doctor name is blank");
+		}
+		if(doctorForm.getAge() < 0 || dotorForm.getAge()>100) {
+			errors.add("age should be between 0 to 100");
+		}
+		if(doctorForm.getGender() == null || doctorForm.getGender().trim().length==0) {
+			errors.add("gender is blank");
+		}
+		if(doctorForm.getQualification() == null || doctorForm.getQualification().trim().length==0) {
+			errors.add("qualification is blank");
+		}
+		if(doctorForm.getExperience() < 0 || dotorForm.getExperience()>80) {
+			errors.add("experience is not valid");			
+		}
+		if(doctorForm.getSpecialization() == null || doctorForm.getSpecialization().trim().length==0) {
+			errors.add("gender is not valid");
+		}
+		if(doctorForm.getMobileNo() == null || doctorForm.getMobileNo().trim().length==0) {
+			req.setAttribute("error", "mobile no is not valid");
+			req.getRequestDispatcher("/validate-error.jsp").forward(req, resp);
+			return;
+		}
+		if(doctorForm.getEmailAddress() == null || doctorForm.getEmailAddress().trim().length==0) {
+			errors.add("email address is not valid");			
+		}
+		
+		return errors;
+	}
+}	
+
+
+
+class NewDoctorServlet extends HttpServlet {
+	public void service(req, resp) {
+		DoctorService doctorService = null;
+		NewDoctorForm doctorForm = null;
+		List<String> errors = null;
+		Validator validator = null;
+		
+		doctorForm = (NewDoctorForm) RequestWrapper.wrap(req, NewDoctorForm.class);
+		validator = new NewDoctorFormValidator();
+		
+		errors = validator.validate(doctorForm);
+		if(errors.size() > 0) {
+			req.setAttribute("errors", errors);
+			req.setAttribute("form", doctorForm);
+			req.getRequestDispatcher("/new-doctor.jsp").forward(req, resp);
+			return;
+		}
+		doctorService = new DoctorService();
+		int doctorNo = doctorService.addDoctor(doctorForm);
+		req.setAttribute("doctorNo", doctorNo);
+		req.getRequestDispatcher("/success.jsp").forward(req, resp);
+	}
+}
+
+From the above we can understand per each request that is coming into our application there is some common processing logic that should be applied for all the requests. if we write the common processing logic in each Controller/Servlet of that request, then we endup in duplicating the code across all the servlets of our application.
+	
+How can we avoid duplicating the common processing logic being written in all the Servlets of our application?
+One of the solution for the above problem is takeout the common processing logic that has to be applied for each request or should be written in each Servlet of our application and write in another class
+	
+class PreRequestHandler {
+	Object preHandle(req, resp, Class<?> formClass, Class<Validator> validatorClass, List<String> errors) {
+		Object formObject = null;
+		Validator validator = null;
+		
+		formObject = RequestWrapper.wrap(req, formClass);
+		validator = validatorClass.newInstance();
+		errors = validator.validate(formObject);
+		if(errors.size() > 0) {
+			req.setAttribute("errors", errors);
+			req.setAttribute("form", formObject);
+		}
+		return formObject;
+	}
+}	
+	
+
+class NewDoctorServlet extends HttpServlet {
+	public void service(req, resp) {
+		DoctorService doctorService = null;		
+		List<String> errors = null;
+		
+		errors = new ArrayList();
+		doctorForm = PreRequestHandler.preHandle(req, resp, NewDoctorForm.class, NewDoctorFormValidator.class, errors);
+		if(errors.size() > 0) {
+			req.getRequestDispatcher("/new-doctor.jsp").forward(req, resp);
+			return;
+		}
+		doctorService = new DoctorService();
+		int doctorNo = doctorService.addDoctor(doctorForm);
+		req.setAttribute("doctorNo", doctorNo);
+		req.getRequestDispatcher("/success.jsp").forward(req, resp);
+	}
+}
+
+Now in each servlet we are writing the code for invoking the component in which we wrote the common processing logic, this solution has solved the problem to the great extent
+
+but it has few dis-advantages or limitations as well.
+1. The code for invoking the common processing logic component (PreRequestHandler) has been duplicated across all the servlets of our application, so that we run into maintainability problems. in future we introduced a new PreRequestHandler2 and want to switch to the new component, then we need to re-write the code across all the classes.
+	
+2. We cannot enforce or ensure that always the common PreRequestHandler is being used for handling the common processing logic
+
+
+To overcome the above problems we need to use FrontController
+FrontController is a design pattern that is adopted as part of web application development.
+
+Front Controller acts as an single entrypoint into the application or it acts as an common gateway of receiving the requests into the application.
+
+#1 since all the requests that are send to our application are received by the front controller,we can have better control over the requests. we can validate the requests and allow them or deny at the front controller 
+
+#2. There is certain common processing that should be applied mandatorily for each request that is comming to the application, before the actual request is being performed.
+Instead of writing such common processing logic in each Servlet of our application which leads to the duplication of code, we can centrally apply that by writing it as part of front controller
+
+#3 There are few auxillary services or plubming services that has to applied for each request that is comming to the application, which can be better managed at front controller
+
+These are few of the responsibilities of the Front controller design pattern
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

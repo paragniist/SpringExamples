@@ -1,0 +1,65 @@
+
+class ProgWebApplicationInitializer implements WebApplicationInitializer {
+	public void onstartup(ServletContext context) {
+		
+	}
+}
+#during the deployment of the application
+1. ServletContainer #deployment phase
+		> it calls the implementation of ServletContainerInitializer class which is nothing but here SpringServletContainerInitializer
+		it looks for /META-INF/services/javax.servlet.ServletContainerInitializer file in jar modules to identify the implementation class
+		
+2. SpringServletContainerInitializer#onstartup(ServletContext, Set<Class<?>> handlers)
+		> WebApplicationInitializer#onstartup(ServletContext)
+			
+XmlWebApplicationContext rootApplicationContext = new XmlWebApplicationContext();
+rootApplicationContext.setConfigLocation("/WEB-INF/application-context.xml");
+
+ContextLoaderListener contextLoaderListener = new ContextLoaderListener(rootApplicationContext);
+context.addListener(contextLoaderListener);
+
+XmlWebApplicationContext servletApplicationContext = new XmlWebApplicationContext();
+servletApplicationContext.setConfigLocation("/WEB-INF/dispatcher-servlet.xml");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

@@ -1,0 +1,92 @@
+sdpattern (maven project)
+|-src
+  |-main
+    |-java (java sourcecode) (compilable sourcecode) (ide/maven tool)
+      |-com
+        |-sdp
+          |-beans
+            |-MessageWriter.java
+            |-HTMLMessageFormatterImpl.java
+            |-PDFMessageFormatterImpl.java
+          |-helper
+            |-AppFactory.java
+          |-test
+            |-SDPTest.java
+    |-resources (non-java sourcecode) (non-compilable sourcecode)
+      |-appClasses.properties (sourcecode)
+  
+|-pom.xml
+|-target
+  |-classes (hidden)
+    |-*.class
+    |-appClasses.properties  
+|-sdpattern.jar
+
+      
+sourcecode = anything that acts as an input during/for executing the program is called sourcecode
+
+
+  
+
+
+app-classes.properties
+messageWriter.class=com.sdp.beans.MessageWriter
+messageFormatter.class=com.sdp.beans.PDFMessageFormatterImpl
+
+class AppFactory {
+  public static Object createObject(String lclassname) {
+    Properties props = new Properties();
+        
+    props.load(new FileInputStream(new File("d:\\app-classes.properties")));
+    
+    String fqnClass = props.getProperty(lclassname);
+    Class clazz = Class.forName(fqnClass);
+    Object obj = clazz.newInstance();
+    return obj;
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = (MessageWriter) AppFactory.createObject("messageWriter.class");
+    IMessageFormatter messageFormatter = (IMessageFormatter) AppFactory.createObject("messageFormatter.class");
+    messageWriter.setMessageFormatter(messageFormatter);
+    messageWriter.writeMessage("sdp");    
+  }
+}
+
+
+
+
+class A {
+  public void m1() {
+    B b = new B();
+    int i = b.m2();
+  }
+}
+
+class B {
+  public int m3() {}
+}
+
+A.class
+B.class
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,82 @@
+Pointcut:
+Pointcut is used for advicing an aspect on the set of joinpoints. it is often recommended to use pointcut in advicing the aspect on the specific set of joinpoints since it generates the proxy by advicing those specific methods only and we an achieve performance optimization
+
+There are 2 types of pointcuts are there
+1. static pointcut
+2. dynamic pointcut
+
+In Spring aop it has provided an interface called "Pointcut" we can write a class implementing from Pointcut interface in creating our own pointcut.
+few abstract classes and few concrete classes are provided
+1. StaticMethodMatcherPointcut (static)
+2. DynamicMethodMatcherPointcut (dynamic)
+3. NamedMatchMethodPointcut
+4. RegexMethodMatcherPointcut
+	
+class LoggingStaticPointcut extends StaticMethodMatcherPointcut {
+	public boolean matches(Method method, Class<?> classType) {
+		if(classType == Calculator.class && (method.getName().equals("add") || method.getName().equals("substract"))) {
+			return true;
+		}
+		return false;
+	}
+}
+
+class Calculator {}
+class LoggingAdvice implements MethodInterceptor {}
+
+ProxyFactory pf = new ProxyFactory();
+pf.setTarget(new Calculator());
+
+Advisor (interface)
+|-DefaultPointcutAdvisor(Pointcut, Advice)
+	
+DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(new LoggingStaticPointcut(), new LoggingAdvice());
+pf.addAdvisor(advisor);
+
+Calculator proxy = (Calculator) pf.getProxy();
+------------------------------------------------------------------------------------------
+
+class LoggingDynamicPointcut extends DynamicMethodMatcherPointcut {
+	public boolean matches(Method method, Object[] args, Class<?> targetClass) {
+		if(targetClass == Calculator.class && method.getName().equals("add")) {
+			if((Integer)args[0]> 100 && (Integer) args[1] > 100) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

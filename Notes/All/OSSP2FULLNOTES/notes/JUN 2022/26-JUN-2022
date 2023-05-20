@@ -1,0 +1,79 @@
+AbstractController:
+It is an abstract implementation of Controller interface, which should be used for handling the request, perform operation with the request data as input and render a static/dynamic response to the user
+
+abstract class AbstractController implements Controller {
+	protected ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
+		#1 it checks the request method with which the request is received is an allowed web request or not  [GET/POST]
+		#2 performs session synchronization
+		
+		return handleRequestInternal(request, response);
+	}
+	abstract ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response);
+}
+--------------------------------------------------------------------------------------------
+ViewResolver:
+ViewResolver is a component used for identifying for a given logical viewname, the corresponding viewClass and instantiates the object of it and returns to the DispatcherServlet
+
+It helps the programmer to allow him to map a logical viewname flexible to an ViewClass to be used for rendering
+
+For all the view resolvers the base interface is ViewResolver interface
+interface ViewResolver {
+	View resolveViewName(String logicalViewName, Locale locale)
+}
+
+The spring mvc has provided several concrete implementations of the ViewResolver interface, we can use any of them based on our requirement.
+1. InternalResourceViewResolver 
+2. UrlFilenameViewResolver
+3. ResourceBundleViewResolver
+4. BeanNameViewResolver
+5. XmlViewResolver
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

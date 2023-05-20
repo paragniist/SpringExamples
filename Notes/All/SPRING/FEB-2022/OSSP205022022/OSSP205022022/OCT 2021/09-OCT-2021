@@ -1,0 +1,84 @@
+Strategy Design Pattern
+1. Favor composition over inheritance
+2. Always design to interfaces, never design to concreate classes
+3. Code should be open for extension and closed for modification
+
+2#. Always design to interfaces, never design to concreate classes
+If a class cannot be completed by itself and if it has to talk to another class to fulfill its functionality then the class is said to be dependent on another class.
+  
+How to manage dependency between the classes?
+There are 2 ways of managing the dependencies
+1. Inheritance
+2. Composition
+
+based on the 1st principle of strategy design pattern we learnt inheritance is not recommended, so we need to go for composition only.
+  
+class A {              |   class B {
+  B b;                 |    int m2(int i) {
+  void m1(int i) {     |      // arbitary logic
+    b = new B();       |      return 102;
+    int j = b.m2(i);   |    }
+  }                    |  }
+}                      | 
+  
+
+In the above eg we are using composition only, here class A is holding the concreate reference of class B in talking to the class B, so that a change in class B effects the class A directly and these 2 classes are said to be tightly coupled with each other.
+  
+coupling = inter-dependency between the classes of our application is called coupling
+cohesion = A class complete by itself is called cohesion  
+Always avoid coupling between the classes and encourage cohesion.
+  
+There are lot of problems if the classes are tightly coupled with each other.
+A change in one class will affect lot of other classes within our application due to which we run into several problems
+  1. as we are modifying several classes within our application the time required for making the changes is very high
+  2. the cost of making the changes is going to be very high
+  3. as we are modifying several classes within our application, there is always a high risk of introducing bugs because of the changes
+  4. testability and ceritifying the changes is going to take lot of time
+overall maintainability of the application becomes very complex as a small change impacts several parts of the program. So avoid coupling between the classes
+
+From the above we learnt while using composition, the classes are said to be tightly coupled with each other. So how to avoid coupling between the classes?
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+

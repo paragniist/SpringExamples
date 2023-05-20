@@ -1,0 +1,93 @@
+spring transactions
+--------------------
+project architectures (interviews) (5/7 days)
+1. servlet/jsp technology
+2. struts framework (roots for understanding spring framework project architecture)
+3. spring framework architecture
+----------------------------------------
+exception handling
+manage transactions
+
+Transactions
+how many types of transactions are there?
+	1. jdbc transaction
+	2. jee transaction management
+	
+why does spring transactions?
+1. declarative transaction approach
+2. annotation-driven transaction management approach
+--------------------------------------------------------------------------------------------
+What is an project architechture?
+architecture is an composite design pattern (pattern of patterns), where multiple classes designed based on various design patterns are put together in building the whole system is called an "project architecture"
+
+The whole functionality of a software application will be broken down and distributed across various classes. These classes are modelled and designed based on standard design patterns.
+	
+So, the architecture speaks about how these classes are integrated and communicating in building the software system
+--------------------------------------------------------------------------------------------
+We can nuetralize and can study the project architectures from the grounds of
+- technology
+- environment
+- nature of the system we are building
+the project architecture will be more or less similar in nature given the technology, environment and nature of the system we are building is same.
+	
+let us explore the project architectures by considering three different technology stack that is most popular and commonly used in market
+
+#1. How does the project architecture will looks like while we are building application using servlet/jsp technology?
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

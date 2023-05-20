@@ -1,0 +1,213 @@
+Lifecycle 
+---------
+all the activities that are taken on an object during its existence is part of the lifecycle of an object
+
+Lifecycle Management
+--------------------
+To have an object its lifecycle, there are certain mandatory activities that has to be applied/perform durings its birth of the object and while the object is dying. These mandatory activities that we perform to have the objects its lifecycle is called lifecycle management
+There are 2 lifecycle management phases are there
+1. post-construction = the activities that has to be perform after the object has been born before it performs its lifecycle activities we need to apply mandatory activities on top of the object
+2. pre-destruction = before the object is going to be died,there are certain destruction activities that has to be carried to destroy the object easily
+
+since these are mandatory activities it has to be taken care by the underlying runtimes/platforms who are managing these objects, otherwise programmers will find tough time in taking care of applying these activities
+
+For a java class object the constructor and finalize() are the post construction and pre-destruction lifecycle management methods that would be invoked automatically by the jvm during the time of creating the object or while destroying the object
+
+In case of a Servlet class we have different lifecycle management methods which are 
+init(ServletConfig) and destroy() methods, so that user can supply his own input values in performing the post construction activity ontop of the servlet object.
+similarly servlet container can immediately trigger destruction activities by invoking destroy() method when the moment we ask servlet container to undeploy the application without waiting for jvm to perform destruction, so that the precious jvm resources can be saved.
+	
+Bean Lifecycle Management
+-------------------------
+What is a spring bean?
+its underlying a java class only, configured with values asking the ioc container to instantiate the object.
+	
+looks life from the above we can understand a spring bean is also an normal java class, so we can use constructor/finalize as the lifecycle management methods to perform post construction and pre-destruction activities for a spring bean class also, then why does spring framework has introduced bean lifecycle management?
+	
+class Math {
+	int i;
+	int j;
+	int sum;
+	
+	Math(int i) {
+		this.i = i;		
+		this.sum = this.i + this.j;
+	}
+	public void setJ(int j) {
+		this.j = j;
+	}
+	
+}
+during the time of instantiating the object i want to initialize the sum variable with user supplied values as an input for my bean definition, how can we do that
+
+a-c.xml
+-------
+<bean id="math" class="Math">
+	<constructor-arg value="10"/>
+	<property name="j" value="20"/>
+</bean>
+
+In case of spring bean we can supply 2 ways the values as input at the time of creating the object of a bean definition
+1. constructor injection
+2. setter injection 
+as show above
+
+now we want to perform initialization or post construction activity with all the user supplied values as an input. but not all the values user has supplied are not available within constructor of the target class, so how to perform post construction activities with all the user supplied values as an input during the time of creating the object of a spring bean
+
+So to address the above problem we need a separate lifecycle management methods.
+There are 3 ways we can work with bean lifecycle
+1. declarative approach
+2. programmatic approach
+3. annotation-driven approach
+
+#1. declarative approach
+class Math {
+	int i;
+	int j;
+	int sum;
+	
+	public Math(int i) {
+		this.i = i;		
+	}
+	public void setJ(int j) {
+		this.j = j;
+	}
+	
+	// post construction logic inside this method
+	public void init(){
+		this.sum = this.i + this.j;
+	}
+	
+	public void release() {
+		this.sum = 0;
+	}
+}
+
+a-c.xml
+---------
+<bean id="math" class="Math" init-method="init" destory-method="release">
+	<constructor-arg value="10"/>
+	<property name="j" value="20"/>
+</bean>
+
+
+Math math = beanFactory.getBean("math", Math.class);
+
+The rules of writing lifecycle management methods in a class:
+1. The method should be public
+2. the return type of the method should be void, since it is called by ioc container
+3. There should be zero parameters for the method we declared lifecycle methods
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

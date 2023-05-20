@@ -1,0 +1,87 @@
+NamedParameterJdbcTemplate Approach
+------------------------------------
+NamedParameterJdbcTemplate is exactly same as JdbcTemplate only, it has all of the methods that are available in JdbcTemplate.
+But while working with JdbcTemplate, we need to substitute the parameters in the dynamic queries based on position of the parameters declared, there is chance where we might incorrectly substitute these parameters mis-matching their positions and landup into errors or incorrect results as an outcome.
+
+To avoid the above problem with positional parameters Spring jdbc has introduced NamedParameterJdbcTemplate which works with NamedParameters in queries rather than positional parameters
+
+@Configuration
+class JavaConfig {
+	@Bean
+	public DataSource dataSource() {}
+	@Bean
+	public NamedParameterJdbcTemplate npJdbcTemplate(DataSource dataSource) {}
+}
+
+class VehicleBo {
+	int vehicleNo;
+	String modelName;
+	String manufacturer;
+	String color;
+	String registrationNo;
+	String fuelType;
+	float leaseAmount;
+	// accessors
+}
+
+@Repository
+class VehicleDao {
+	private final String SQL_GET_COUNT_VEHICLES_BY_MANF= "select count(1) from vehicles where manufacturer = :manufacturer";
+	private final String SQL_UPDATE_VEHCILE_BY_VEHICLE_NO = "update vehicle set  registration_no = :regNo color = :color lease_amount = :lAmount where vehicle_no = :vehicleNo";
+	private final String SQL_INSERT_VEHICLE = "insert into vehicles(vehile_no, model_nm, manufacturer, color, registration_no, fuel_type, lease_amount) values(:vehicleNo, :model, :manufacturer, :color, :registrationNo, :fuelType, :leaseAmount)";
+	
+	@Autowired
+	private NamedParameterJdbcTemplate npJdbcTemplate;
+	
+	public int getVehiclesCount(String manufacturer) {
+		Map<String, Object> paramMap = null;
+		
+		paramMap = new HashMap<String, Object>();
+		paramMap.put("manufacturer", manufacturer);
+		
+		return npJdbcTemplate.queryForObject(SQL_GET_COUNT_VEHICLES_BY_MANF, Integer.class, paramMap);		
+	}
+	
+	public int updateVehicle(int vehicleNo, String color, String registrationNo, float leaseAmount) {
+		MapSqlParameterSource paramSource = null;
+		
+		paramSource = new MapSqlParameterSource();
+		paramSource.add("vehicleNo", vehicleNo);
+		paramSource.add("color", color);
+		paramSource.add("regNo", registrationNo);
+		paramSource.add("lAmount", leaseAmount);
+		
+		return npJdbcTemplate.update(SQL_UPDATE_VEHCILE_BY_VEHICLE_NO, paramSource);
+	}	
+	
+	public int saveVehicle(VehicleBo bo) {
+		BeanPropertySqlParameterSource paramSource = null;
+		
+		paramSource = new BeanPropertySqlParamSource(bo);		
+		return jdbcTemplate.update(SQL_INSERT_VEHICLE, paramSource);
+	}
+}
+
+(interface)
+SqlParameterSource
+|-MapSqlParameterSource
+|-BeanPropertySqlParameterSource
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

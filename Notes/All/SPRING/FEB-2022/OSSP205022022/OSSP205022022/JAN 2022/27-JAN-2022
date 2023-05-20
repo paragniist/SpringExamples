@@ -1,0 +1,28 @@
+How many principles of classloaders are there?
+There are 3 principles of classloaders are there
+1. principle of delegation
+Whenever a classloader has been requested to load the class, it always delegates the request to the parent classloader (in-first place) without loading the class. This delegation happens util the root of the hierarchy of classloaders.
+If none of the classloaders within the hierarchy are able to load the class, then the classloader will get a chance to load the class again.
+	
+2. principle of visibility
+A class loaded by an classloader can only see other classes that are loaded by the same classloader or its parent classloaders. but it will not see the classes that are loaded by the child classloader
+
+
+
+3. principle of uniqueness
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

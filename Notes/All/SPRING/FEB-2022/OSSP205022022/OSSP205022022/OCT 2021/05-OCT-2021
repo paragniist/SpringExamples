@@ -1,0 +1,64 @@
+Strategy Design Pattern
+1. Favor composition over inheritance
+2. Always design to interfaces, never design to concreate classes
+3. Code should be open for extension and closed for modification
+
+#1. Favor composition over inheritance
+While reusing the functionality of another class, prefer composition rather than inheritance
+If we use Inheritance we run into lot of problems
+1. Most of the realtime usecases are solvable through composition only rather than inheritance, because a class wants to use only few of the functionalities of another class most of the time rather than all.
+2. Many languages inlcluding java doesnt support multiple inheritance, so in case if we want to reuse the functionality of multiple classes in our class the only solution is composition
+3. Classes will become fragile when we use inheritance and will be less fragile if we use composition
+4. Inheritance doesnt support testability of the code, whereas composition supports testability of the code.
+  
+
+class Engine {
+  public int ignite(int mode) {
+    return 0;
+  }
+}  
+mode:-
+0 = petrol
+1 = electric
+2 = automatic transition
+3 = manual transition
+
+
+returnType:-  
+0 = started
+1 = failed to start, retry
+2 = failed to start and requires an repair
+3 = cannot be started tow to guarage
+
+class Car extends Engine{
+  public void drive(int mode) {
+    int status = ignite(mode);
+    
+    // drive the car
+  }
+}
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

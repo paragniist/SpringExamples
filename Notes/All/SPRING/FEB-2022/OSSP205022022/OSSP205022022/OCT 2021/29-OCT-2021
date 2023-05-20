@@ -1,0 +1,142 @@
+
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  
+  public void writeString(String message) {
+    String cMessage = null;
+    
+    messageFormatter = new HTMLMessageFormatterImpl();
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+final class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }
+}
+
+final class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>"
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    messageWriter.writeMessage("Welcome to SDP");
+  }
+}
+
+If a class is creating the object of another class, then we run into 2 problems
+1. in order to create the object of another class, we need to use new operator and should pass concreate classname of another class. So that we will be tightly coupled with classname of another class
+2. we will be exposed to complexity in instantiating the object of another class, so that in future if the instantiation logic has been changed then our class will be impacted.
+  
+How to solve these 2 problems?
+These 2 problems are coming when our class is creating the object. So we should stop creating the object of another class in our class.
+  
+Then how does our class will gets the object of another class to use the functionality?
+Somebody has to create the object so that we can use it, that is where use Factory class
+  
+What is Factory class, why do we need to use it?
+Factory class is used for creating the object of another class.
+
+Why we should use Factory to create object of another class, why not ourself can create the object?
+There are 2 reasons for using an Factory class in creating the object
+1. Factories abstracts the complexity in creating the object of another class. without knowing the details of how to instantiate the object of another class, we can use the object of another class from factory. So if the instantiation process has been changed also our class will not be affected.
+  
+2. without knowing the classname of another class, our class can get the object of another class. So that our class will be loosely coupled
+  
+class B {     class C {}
+  C c; 
+  B(C c) {}
+}
+Here A wants the object of B class, how does A should get the object of B? A should not create the object of B, rather A should use Factory
+
+class BFactory {
+  public static B createB() {
+    C c = new C();
+    return new B(c);
+  }
+}
+
+class A {
+  B b;
+  void m1() {
+    b = BFactory.createB();
+  }
+}
+-------------------------------------------------------------------------------------------------------
+class MessageFormatterFactory {
+  public static IMessageFormatter createMessageFormatter(String type) {
+    IMessageFormatter messageFormatter = null;
+    
+    if(type.equals("html")) {
+      messageFormatter = new HTMLMessageFormatterImpl();
+    }else if(type.equals("pdf")) {
+      messageFormatter = new PDFMessageFormatterImpl();
+    }
+    return messageFormatter;
+  }
+}
+
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+    
+    messageFormatter = MessageFormatterFactory.createMessageFormatter("html");
+    
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);    
+  }  
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

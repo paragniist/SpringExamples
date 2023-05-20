@@ -1,0 +1,84 @@
+How does the directory structure of an maven web application looks like?
+project
+|-src
+	|-main
+		|-java
+		|-resources
+		|-webapp
+			|-html
+			|-jsp
+			|-css
+			|-js
+			|-images
+			|-WEB-INF
+				|-web.xml
+|-pom.xml
+|-target
+	|-classes
+	
+How does the structure of a war file looks like?
+war(root)
+|-html
+|-jsp
+|-css
+|-js
+|-images
+|-WEB-INF
+	|-lib
+	|-classes
+	|-web.xml
+	
+There are 2 types of resources are there in an web application
+1. protected resources
+all the resources placed inside the WEB-INF directory are called protocted resources, and those cannot be directly accessed by the enduser
+
+2. public resources
+These are the resources that can be accessed by the enduser directly by specifying the path to the resource of the application
+
+Where do we place the webapplication resources in spring mvc application?
+Spring mvc recommends us to place the webapplication resources inside the WEB-INF/ or any of the subdirectories under it only. there are multiple reasons in recommending us to place inside the WEB-INF directory
+
+1. not all the views are static in nature, there are pages which are going to display dynamic data, which is nothing but, the result out of performing the operation as an output. if all the views are directly placed under webapp/ directory, there is chance where the enduser might directly access these dynamic jsp pages which might lead to ugly errors to the enduser. so not to let the application break into errors, it is recommended to place these pages under WEB-INF/ directory
+
+2. To abstract the presentation-tier view technology from the enduser, it is recommended to place the webapplication resources inside the WEB-INF/ directory of the project.
+	
+3. For the security in accessing the resources it is recommended to place the views under WEB-INF directory only
+
+If we place the views under the WEB-INF/ directory the users cannot access these pages directory by passing the jsessionId as part of the request, so they cannot steal the session data.
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,141 @@
+class LoanManager {
+	boolean approveLoan(long loanNo) {
+		#security check
+		return true;
+	}
+}
+
+class SecurityCheckException extends RuntimeException {}
+
+class SecurityCheckAdvice implements MethodBeforeAdvice {
+	public void before(Method method, Object[] args, Object target) {
+		AuthenticationManager authenticationManager = null;
+		boolean authenticate = false;
+		
+		authenticationManager = AuthenticationManager.getInstance();
+		authenticate = authenticationManager.authenticate();
+		if(authenticate == false) {
+			throw new SecurityCheckException("invalid un/pwd");
+		}
+	}
+}
+
+class UserCredential {
+	private String un;
+	private String pwd;
+	public UserCredential(String un, String pwd) {}
+	// accessors
+}
+
+class AuthenticationManager {
+	private static AuthenticationManager instance;
+	private ThreadLocal<UserCredential> threadLocal;
+	
+	private AuthenticationManager() {
+		threadLocal = new ThreadLocal<>();
+	}
+	
+	public static synchronized AuthenticationManager getInstance() {
+		if(instance == null) {
+			instance = new AuthenticationManager();
+		}
+		return instance;
+	}
+	
+	public void login(String un, String pwd) {
+		UserCredential uc = new UserCredential(un, pwd);
+		threadLocal.set(uc);
+	}
+	public void logout() {
+		threadLocal.set(null);
+	}
+	public boolean authenticate() {
+		UserCredential uc = null;
+		
+		uc = threadLocal.get();
+		if(uc != null) {
+			if(uc.getUn().equals("john") && uc.getPwd().equals("welcome1")) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
+
+Test.java
+----------
+// proxy = 
+AuthenticationManager authManager = AuthenticationManager.getInstance();
+authManager.login("blake", "welcome1");
+boolean loanStatus = proxy.approveLoan(03904);
+------------------------------------------------------------------------------------------
+AfterReturningAdvice
+---------------------
+If we want to apply the cross-cutting logic after the primary business logic has completed execution successfully and before it is returning the return value to caller.
+The cross-cutting logic we are applying requires output of executing the target class method which is only available after the target class method completed execution, so we need to user AfterReturningAdvice only
+
+
+100 = 
+1 - 50 = weak key
+>50 = strong key
+
+class KeyGenerator {
+	public int generateKey(int range) {
+		SecureRandom secureRandom = new SecureRandom();
+		return secureRandom.nextInt(range);
+	}
+}
+
+class WeakKeyException extends RuntimeException {}
+
+class KeyCheckAdvice implements AfterReturningAdvice {
+	public void afterReturning(Object ret, Method method, Object[] args, Object target) {
+		#cross-cutting
+		// there is no use of modifying the parameters
+		// no control of executing the target class method, no way to abort also, because already target class method completed execution
+		
+		#we cannot modify the return value and return the modified return value, but we can stop returning the return value by throwing an exception
+		
+		if((Integer) key <= 50) {
+			throw new WeakKeyException("weak key generated");
+		}
+	}
+}
+
+Test.java
+------------
+ProxyFactory pf = new ProxyFactory();
+pf.setTarget(new KeyGenerator());
+pf.addAdvice(new KeyCheckAdvice());
+
+KeyGenerator proxy = (KeyGenerator) pf.getProxy();
+int key = proxy.generateKey(100);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

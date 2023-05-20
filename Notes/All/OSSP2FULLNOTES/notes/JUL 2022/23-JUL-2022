@@ -1,0 +1,3 @@
+# @RequestParam
+# no lvn, how does the DispatcherServlet or RequestMappingHandlerAdapter identifies the view to be rendered
+

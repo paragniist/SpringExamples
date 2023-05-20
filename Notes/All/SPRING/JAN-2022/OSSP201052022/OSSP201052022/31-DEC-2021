@@ -1,0 +1,39 @@
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+
+In Spring 4.x onwards the XMLBeanFactory class has been deprecated and in Spring 5 version it was removed.
+
+BeanFactory (interface)	
+|-DefaultListableBeanFactory = is an implementation in which we can list down all the bean definitions in it
+
+Spring 5.x
+------------
+How to create ioc container?
+	
+DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+
+XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+beanDefinitionReader.loadBeanDefinitions(new ClassPathResource("application-context.xml"));
+
+PropertiesBeanDefinitionReader propsBeanDefinitionReader = new PropertiesBeanDefinitionReader(beanFactory);
+propsBeanDefinitionReader.loadBeanDefinitions(new ClassPathResource("application.properties"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

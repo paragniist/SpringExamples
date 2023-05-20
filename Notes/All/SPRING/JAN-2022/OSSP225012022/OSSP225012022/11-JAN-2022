@@ -1,0 +1,109 @@
+There are 3 classloaders provided as part of the core jdk distribution
+1. bootstrap classloader
+bootstrap classloader is called as primordial or ultimate classloader. it is writting in native language like c and compiled to execute on platform, so it is also called "native" classloader.
+it loads all the core jdk classes that are shipped as part of $java_home/lib/rt.jar
+
+2. extension classloader
+extension classloader is an immediate child of bootstrap classloader, it is an another java class that takes care of loading the bytecode of java classes into jvm memory.
+it loads the classes from 2 different locations
+
+note:- extension classloader doesnt load .class files directly rather it loads the class files packaged inside an jar only since the purpose of extension classloader is to extend the capabilities of core jdk by loading third-party libraries
+it loads the jar container classfiles from 2 different locations
+	1. all the jar classes that are inside the $java_home\lib\ext directory
+	2. java.ext.dirs system property pointed directory location containing jar classfiles will be loaded by extension classloader
+
+3. system/application classloader
+
+
+
+How many scopes of variables are there in java?
+There are 4 scopes of variables are there in java
+1. method-level variables
+2. instance variables
+3. class-level variables scoped to the application
+4. jvm-level variables
+
+jdk = development + runtime tools
+jre = runtime tools only
+
+what is jvm?
+jvm is a program/process under execution, when we install jdk we will get required set of software bits and libraries through which we can launch a jvm program
+
+In core java we can run one application within one jvm, where as in a jee/web/application server environment, we can run multiple java applications as part of one single jvm
+
+for eg let us say we have 2 different applications running within a jvm, how to pass the data in such a way any class within any application of the jvm can use the same data?
+That is where jvm level variables called System Properties comes into picture.
+
+definition:	
+System Properties are the variables defined at jvm scope and can be used or accessed by all of the applications running within the jvm. these are key/value pair values where we can access the value using the key
+	
+
+How to pass system properties to a program?
+class SystemPropertiesTest {
+	public static void main(String[] args) {
+		String a = System.getProperty("a");
+		String b = System.getProperty("b");
+		
+		Properties jvmProperties = System.getProperties();
+		
+		System.setProperty("key", "value");
+	}
+}	
+	
+javac SystemPropertiesTest
+java -Da=10 -Db=20 SystemPropertiesTest
+
+how does jvm will extracts the environment information and make it available to all the applications that are running within jvm?
+The entire system or environment information on which our jvm is running will be placed in System Properties.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

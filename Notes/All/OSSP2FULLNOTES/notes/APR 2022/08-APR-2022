@@ -1,0 +1,187 @@
+JdbcTemplate
+1. T execute(PreparedStatementCreator, PreparedStatementCallback<T>) = dynamic sql queries
+2. T execute(String sql, PreparedStatementCallback<T>) = static sql queries
+3. T execute(StatementCallback<T>) = static sql queries
+4. T execute(CallableStatementCreator, CallableStatementCallback<T>) = pl/sql procedures with parameters
+5. T execute(String procedureName, CallableStatementCallback<T>) = pl/sql procedures without parameters
+6. void execute(String sql) = ddl queries
+7. T execute(ConnectionCallBack<T>) = if we want to execute multiple queries
+------------------------------------------------------------------------------------------
+
+class VehicleDao {
+	public int newVehicleForLease(VehicleBo vehicleBo, LeaseBo leaseBo) {
+		return jdbcTemplate.execute(new NewVehicleForLeaseConnectionCallback());
+	}
+	private final class NewVehicleForLeaseConnectionCallback implements ConnectionCallback<Integer> {
+		int doInConnection(Connection con) {
+			
+		}
+	}
+}
+------------------------------------------------------------------------------------------
+
+query-based approach
+---------------------
+How many vehicles are there in the vehicles table?
+
+@Repository
+class VehicleDao {
+	private final String SQL_GET_NO_OF_VEHICLES = "select count(1) from vehicles";
+	private final String SQL_GET_MAX_LEASE_AMOUNT = "SELECT max(lease_amount) FROM vehicles";
+	private final String SQL_GET_MODELNM_BY_VEHICLE_NO = "select model_nm from vehicles where vehicle_no = ?";
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
+	public int getNoOfVehicles() {
+		return jdbcTemplate.queryForObject(SQL_GET_NO_OF_VEHICLES, Integer.class);		
+	} 
+	
+	public int getMaxLeaseAmount() {
+		return jdbcTemplate.queryForObject(SQL_GET_MAX_LEASE_AMOUNT, Integer.class);
+	}
+	
+	public String getModelName(int vehicleNo) {
+		return jdbcTemplate.queryForObject(SQL_GET_MODELNM_BY_VEHICLE_NO, String.class, vehicleNo);
+	}
+}	
+
+@Configuration
+@PropertySource("classpath:db.properties")
+@ComponentScan(basePackages = {"com.qa.dao"})
+class JavaConfig {
+	@Autowired
+	private Environment env;
+	@Bean
+	public DataSource dataSource() {}
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {}	
+}
+	
+class JdbcTemplate {
+	private DataSource dataSource;
+	public JdbcTemplate() {}
+	public JdbcTemplate(DataSource dataSource) {}
+	
+	public T queryForObject(String sql, Class<T> classType) {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Object ret = null;
+		
+		try {
+			con = dataSource.getConnection();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				if(classType == Integer.class) {
+					return rs.getInt(1);
+				}else if(classType == Double.class) {
+					return rs.getDouble(1);
+				}else if(classType == String.class) {
+					return rs.getString(1);
+				}
+			}
+		}catch(SqlException e) {
+			throw new DataAccessException(e);
+		}finally {
+			// close rs, stmt, con
+		}
+		
+		public T queryForObject(String sql, Class<T> classType, Object... params) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Object ret = null;
+		int paramIndex = 1;
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.preparedStatement(sql);
+			
+			for(Object obj : params) {
+				if(obj instanceof Integer.class) {
+					pstmt.setInt(paramIndex, obj);
+				}else if(obj instanceof String.class) {
+					pstmt.setString(paramIndex, obj);
+				}else if(obj instanceof Float.class) {
+					pstmt.setFloat(paramIndex, obj);
+				}
+				paramIndex++;
+			}
+						
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				if(classType == Integer.class) {
+					return rs.getInt(1);
+				}else if(classType == Double.class) {
+					return rs.getDouble(1);
+				}else if(classType == String.class) {
+					return rs.getString(1);
+				}
+			}
+		}catch(SqlException e) {
+			throw new DataAccessException(e);
+		}finally {
+			// close rs, stmt, con
+		}
+	}
+	
+	
+	public void setDataSource(DataSource dataSource) {}
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

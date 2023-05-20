@@ -1,0 +1,218 @@
+Introduction to Spring Framework
+--------------------------------
+Struts Framework supports developing web applications only and it supports only building web aspects of an application. In a typical web application we write 3 tiers of logic/components are there
+1. Presentation-Tier
+2. Business-Tier
+3. Persistence-Tier
+
+Struts Frameworks supports only developing Presentation-Tier components of the application it doesnt support building business/persistence tier logic, so Struts is not an end-to-end application development framework.
+
+Unlike Struts, when it comes to Spring Framework, it supports developing multiple application development types and Spring supports developing all the aspects of an application, So Spring is called End-to-End application development framework.
+
+How many types of applications we can develop using spring framework?
+Spring Framework supports multiple application development types in par with JEE. We can build standalone applications, distributed web applications, integration-tier applications, persistence-tier applications and enterprise applications what not almost all the application development types equal jee it supports.
+  
+If Spring Framework supports all the application types equal to JEE then why do we need to learn and use Spring Framework since I already know JEE.
+  
+JEE is an API. API stands for Application Programming Interface, API are always partial they will only provider interfaces/abstract classes they will not provide concreate classes, so to work with api we need implementation for an novice it is always seems to complex to understand why we need implementation to work with an API.
+  
+API by nature are huge in size, they provide lot of classes as part of them. The classes provided by the api are inter-dependent on each other so working with api is very complex and it takes more time to learn the api because of huge in size and inter-dependency.
+  
+API will not provide boiler-plate logic, programmer has to write boiler-plate logic in building an application. If we are writing the boiler-plate logic we end up in writing lot of lines of code in our application due to which we run into several problems as described below.
+  1. it takes more time in developing the application
+  2. more number of resources are required for building an application
+  3. cost of developing the application will be high
+  4. more amount of efforts is required for developing the application
+  5. more code increases the chances of bugs
+  6. the time required for testing the application also will be more
+overall if we understand api does not support rapid application development.
+  
+Framework provides bunch of classes, all the classes provided by the framework are concreate classes only, and the classes provided by the framework contains boiler-plate logic, so we dont have to write boiler-plate logic which means we need to write less lines of code in developing an application, so we have lot of advantages in developing an application using Framework
+1. we can quickly building an application
+2. less no of developers required for building application
+3. cost of building the application will be less
+4. less lines of code, has less chances of bugs
+5. it takes less time in testing and certifying the application
+considering all framework supports rapid application development.
+  
+Spring framework supports lot of application development types, So spring is an very big framework even then also Spring framework is considered as light weight application development framework why?
+Spring Framework has been broken down into several modules
+1. core
+2. aop
+3. jdbc
+4. tx
+5. mvc
+6. datajpa
+7. security
+8. spring boot
+9. microservices
+10. cloud
+11. batch
+
+each of the modules are completely independent of another module, only the foundation module that is required across all the modules is spring core. depends on the application requirement, developer can choose and pickup the module of his choice and build the application, so it is called light weight application development framework.
+  
+Spring has 2 unique features that made spring framework very popular in the market.
+1. Spring is an non-invasive application development framework
+2. Spring is an versatile application development framework.
+  
+What is versatile application development framework?
+While working with Spring Framework, it can integrate into any of the existing applications which are build on any technology and can enrich the solution.
+  
+  
+What is non-invasive application development framework?
+While working with Spring Framework, our code dont need to extend or implement from Spring Framework provided classes or interfaces. So that we are not tightly coupled with Spring framework, incase if we want to switch to someother framework in building the application, then we just need to remove Spring Framework jars, we dont have to modify the code to remove Spring framework from our project.
+---------------------------------------------------------------------------------------------------
+Spring core is all about instantiating the components of our application and managing their dependencies.
+  
+Spring core can manage dependencies between any 2 arbitary classes, but spring core recommends us to design the classes based on a design pattern called strategy design pattern and the provide the classes to Spring core to get more advantage of using spring framework.
+  
+Strategy design pattern is provided by GOF design patterns.
+It has 3 principles based on which we need to design our application classes.
+  1. Favor composition over inheritance
+  2. Always design to interfaces, never design to concreate classes
+  3. Your code should be open for extension and closed for modification
+  
+#1. Favor composition over inheritance
+There are 2 ways a class can reuse the functionality of another class. 
+  1. Inheritance
+  We can establish inheritance by writing one class extending from another and it represents is-a relationship between the classes. All the traits of the parent will be part of the child, so child can reuse the functionality of parent without using object of parent.    
+    
+  2. Composition
+  Composition represents has-a relationship between the classes. We declare one class as an attribute inside the another class and instantiate the object in calling the methods of another class.
+    
+Strategy design pattern is recommending us to use composition only rather than inheritance.
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="facebookAccount"
+		class="com.propertyeditors.beans.FacebookAccount">
+		<property name="profilePicture"
+			value="D:/jclwork/appcl/Meeting.java" />
+		<property name="fbLink" value="http://www.facebook.com" />
+		<property name="followers"
+			value="alex,james,bob,steve,stephen,smit" />
+		<property name="dob" value="12/01/2022" />
+	</bean>
+
+</beans>

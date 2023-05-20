@@ -1,0 +1,178 @@
+#2 Always design to interfaces never design to concreate classes
+
+while using composition, the classes would become tightly coupled with each other so to eliminate coupling between the classes use interfaces rather than concreate classes.
+  
+#2.1 how can we differentiate between requirement change and coupling
+#2.2 how does interfaces makes the components loosely coupled
+class A {                   interface IB {
+  IB ib;                     int m2(int i);
+  void m1(int i) {          }
+    ib = new B();
+    int j = ib.m2(i);
+    // logic
+  }
+}
+
+here class A can not only talk to B, it can talk to any of the implementations of IB interface, so we can say our class A is not tightly coupled with B
+
+#2.3 Why does the new implementation we write should implement from the same interface
+interface IB {       class B implements IB {
+  int m2(int i);      int m2(int i) {
+}                       // logic    
+                        return 93;
+                      }
+                     }
+now we want to write new algorithm approach of building the functionality than the logic in B class. So we are coming up with C class, if it has to serve the same functionality of B class, then C also should fulfill the same interface of B
+  
+class C implements IB {}
+
+#2.4 Why do we need to use interfaces only to achieve loose coupling why not concrete classes?
+We can achieve loose coupling through concrete classes as well as shown below
+
+class A {                  class B {
+  B b;                      int m2(int i) {
+  void m1(int i) {           // logic
+    b = new B();             return 24;
+    int j = b.m2(i);        }
+    /*logic*/              }
+  }
+}
+we want to switch from B to C so the new implementation we are writing can extends from B.
+class C extends B {
+  int m2(int i) { // override and provide new implementation
+    // new logic
+    return 35;
+  }
+}  
+Now class A can easily switch from B to C just by changing the instantiation logic without the need of modifying the code.
+
+class A {
+  B b;
+  void m1(int i) {
+    b = new C(); // change to C
+    ..
+  }
+}  
+  
+by the above we can understand we are able to easily switch from B to C and thereby we can say classes are loosely coupled. Here the cost of achieving the loose-coupling is very high
+
+1. here we have comeup with new class C replacing the class B, so we no more require the B class in our application even then also we cannot remove the class B from our application since C is extending from B and B class is being left as deadcode in our application
+  
+2. There is always a high amount of chance where few of the developers in our team without proper knowledge may endup in using the B class, which results in poor implementation of the logic
+
+3. There is no point in writing C class extending from B, since we are not reusing or not enhancing the class B
+  
+#2.5 why do we need to go for interfaces for achieving loose coupling, why not abstract classes?
+Ofcourse we can achieve loose coupling through Abstract classes as well shown below.
+
+class A {                        abstract class AbstractB {      class B extends AbstractB {  
+  AbstractB abstractB;             abstract int m2(int i);         int m2(int i) {
+  void m1(int i) {               }                                   // logic
+    abstractB = new B();                                             return 3;
+    int j = abstractB.m2(i);                                       }
+    // logic                                                      }
+  }
+}  
+A can talk to any of implementations of the AbstractB, not only to the B class above
+class C extends AbstractB {}, then A class can talk to C as well. So we are able to achieve loose coupling through Abstract classes.
+  
+In general we use Abstract classes if we have partial implementation to be reused across multiple classes. here the AbstractB has no partial implementation, its an pure abstract class, by which there is no point in creating as an Abstract class rather we should go for interface only. If we have any partial implementation that can be shared then we can use Abstract class as well.
+  
+
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

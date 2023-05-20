@@ -1,0 +1,91 @@
+What is a singleton class, how to create a singleton class?
+For a given class if we can create only one single object within the jvm memory then that class is called singleton class
+	
+1. dont let other class of our application to create the object of our class
+	declare the default constructor under private access modifier, so that no one can access the default constructor apart from the class, so no one can create the object
+2. in order to make other classes use the functionality of our class, our class has to create an object and distribute it to all other classes through an static factory method
+3. in order to ensure only one object is created and distributed, hold the object in a static variable of the class upon creating the object and distribute the same reference to all the classes of the application
+	
+class DateConverter {
+	private static DateConverter instance;
+	private DateConverter() {
+		// no-op
+	}
+	public static synchronized DateConverter getInstance() {
+		if(instance == null) {
+			instance = new DateConverter();
+		}
+		return instance;
+	}
+}	
+
+To avoid creating multiple objects of the singleton class in multi-threaded environment declare the static factory method as synchronized
+
+Singleton:-	
+For a class, if it allows us to create only one object of it within the scope of the application, then the class can be called as singleton class.
+	
+The above definition is contradicting to what we have studied earlier, because a singleton class should have only one object within jvm memory but looks like based on above definition there is a chance of multiple objects in jvm memory, how is it possible to have multiple objects?
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

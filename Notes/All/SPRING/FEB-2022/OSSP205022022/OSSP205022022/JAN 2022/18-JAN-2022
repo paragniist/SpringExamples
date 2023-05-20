@@ -1,0 +1,153 @@
+There are 3 classloaders provided as part of the core jdk distribution
+1. Bootstrap classloader
+The parent/root classloader of the hierarchy of the classloaders. It is not a java class rather it is written in native programming language like "c" and compiled to the specific platform on which it executes so it is called "native classloader"
+it loads the core jdk classes that are part of $JAVA_HOME\lib\rt.jar
+
+2. Extension classloader
+It is the decendent/child of bootstrap classloader and it is an java class. extension classloader loads all the jars (containing classes) that are placed under 2 different locations
+	1. JAVA_HOME\lib\ext = all the jar files that are placed under this directory will be loaded
+	2. java.ext.dirs = SystemProperty pointed directory location containing classes will be loaded by the extension classloader.
+
+SystemProperties = are the variables scoped at jvm level and all the applications running with the jvm can access the system properties.
+during the bootup the jvm will gather the environment information and populate it as SystemProperties to make the info available to the applications running within the jvm.
+How to set the System property?
+	1. through command-line args as java -Dkey=value -Dkey=value fqnClass
+	2. at runtime within the program using System.setProperty("key", "value");
+	
+3. System/Application classloader
+
+
+How does a classloader will load the class?
+whenever we ask jvm to execute a class by passing full qualified name of the class as below
+java com.clh.test.CLTest, the jvm inorder to execute the class requires the bytecode to be loaded into jvm memory. so it goes to classloader asking to load the bytecode of the respective class by passing fqnClass.
+	
+The classloader will convert the fqnClass into directoryPath + File as packageName separated by "." into "/" directory format and ClassName appended with ".class" and creates an file location of class file "com/clh/test/CLTest.class" and goes to the respective location of the classloader and searches for the ClassFile with the above path, if found the classloader reads the bytecode then loads the bytecode and constructs java.lang.Class object by populating all the information about the class
+	
+like attributes, methods, constructors, packageName, fqnClass, canonicalName etc along with that the self reference of the classloader through which the class has been loaded will placed inside the Class object and places the Class object into jvm memory and pass the reference of the Class object to the jvm asking to execute.
+	
+	
+every java class get it its Class object through static variable called ".class". For eg if we want to get the reference of the Class object for a class CLTest we can access it using
+CLTest.class or using the instance method object.getClass();	
+
+Extension classloader example:
+------------------------------
+#1 write the code	
+d:\jclwork:/>	
+|-extxperiment
+Organizer.java
+package com.extcl.beans;
+public class Organizer {
+	public static void main(String[] args) {
+		ClassLoader cl = Organizer.class.getClassLoader();
+		System.out.println("classloader : " + cl.getClass().getName());		
+	}
+}
+#2. compile and make a jar file
+d:\jclwork\extxperitment:/> javac -d . Organizer.java
+d:\jclwork\extxperitment:/> 
+						|-Organizer.java
+						|-com
+							|-extcl
+								|-beans
+									|-Organizer.class
+				
+since extension classloader job is to load external libararies which are distributed in ".jar" format we need to package the above .class file into ".jar" file by using jar command as below.
+	
+d:\jclwork\extxperitment:/> jar -cvf extxper.jar .
+jar it an java archive utility distributed as part jdk distribution under %JAVA_HOME\bin directory, run the utility to create jar files
+-c  = create
+-v  = verbose (display the debug output)
+-f  = filename
+#3. cut and paste the jar file into $JAVA_HOME\lib\ext directory
+#4. run the java class.
+e:\> java com.extcl.beans.Organizer
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

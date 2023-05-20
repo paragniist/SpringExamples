@@ -1,0 +1,183 @@
+@PropertySource
+To support performing primitive injection spring framework has introduced PropertySource as part of ioc container
+Per each properties file we want to refer using @PropertySource annotation internally ioc container dumps all of the properties of the file into an internal object called PropertySource and these PropertySources are accumulated and managed through Environment object of the ioc container.
+	
+If we want to access one of the property we dont need to look into all the PropertySource objects rather goto Environment object which will takes care of returning the value by searching through PropertySource objects
+
+// source code
+@Component
+@PropertySource("classpath:application.properties")
+class Toy {		
+	int id;
+	String name;
+	@Value("${toy.manufacturer}")
+	String manufacturer;
+	String color;
+	double price;
+
+	public Toy(@Value("${Toy.id}")int id, @Value("${Toy.name}")String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	public void newToy(@Value("toy.color") String color) {
+		this.color = color;
+	}
+	
+	@Value("${toy.price}")
+	public void setPrice(double price) {}
+}
+
+application.properties
+-----------------------
+Toy.id=10
+Toy.name=Toy Train
+
+Test.java
+------------
+ApplicationContext context = new AnnotationConfigApplicationContext("packageName");
+Toy toy = context.getBean("toy", Toy.class);
+------------------------------------------------------------------------------------------
+// no source code	
+class Library {
+	private int libraryNo;
+	private String libraryName;
+	private int nbooks;
+	
+	public Library(int libraryNo) {}
+	public void setLibraryName(String libraryName) {}
+	public void setNbooks(int nbooks) {}
+}	
+
+@Configuration
+@PropertySource("classpath:common.properties")
+class JavaConfig {
+	
+	@Autowired
+	private Environment env;
+	
+	@Bean
+	public Library library(@Value("${library.libraryNo") int libraryNo,@Value("${library.libraryName}") String libraryName,@Value("#{library.nbooks}") int nbooks) {		
+		/*Library library = new Library(Integer.parseInt(env.getProperty("library.libraryNo"));
+		library.setLibraryName(env.getProperty("library.libraryName"));
+		library.setNbooks(Integer.parseIntenv.getProperty("library.nbooks"));
+		*/
+		library.setLibraryNo(libraryNo);
+		library.setLibraryName(libraryName);
+		library.setNbooks(nbooks);
+		
+		return library;
+	}
+}
+	
+common.properties
+-------------------
+library.libraryNo=2993
+library.libraryName=Pachayat Library
+library.nbooks=1000
+------------------------------------------------------------------------------------------
+Primitive dependency injection
+#Source Code
+	-> Xml-Approach + Stereotype Annotations (util:properties)
+	-> Stereotype Approach = @PropertySource @Value
+	-> Java Config Application = @PropertySource, env or @Value	
+------------------------------------------------------------------------------------------	
+// source code	
+@Component	
+class GasStation {
+	@Value("${gasStation.stationName}")
+	String stationName;
+
+	@Autowired
+	GasPump gasPump;
+}	
+
+// no source code
+class GasPump {
+	int pumpNo;
+	String fuelType;
+	
+	public void setPumpNo(int pumpNo){}
+	public void setFuelType(String fuelType) {}
+}
+	
+@Configuration
+@PropertySource("classpath:common.properties")
+@ComponentScan(basePackages = {"com.annotation5.javaconfigstereotype"})
+class JavaConfig {
+
+	@Autowired
+	private Environment env;
+	
+	@Bean
+	public GasPump gasPump() {
+		GasPump gasPump = new GasPump();
+		gasPump.setPumpNo(Integer.parseInt(env.getProperty("gasPump.pumpNo")));
+		gasPump.setFuelType(env.getProperty("gasPump.fuelType"));
+		
+		return gasPump;
+	}
+}
+
+common.properties
+-----------------
+GasStation.gasStationName=Bhavani Gas Station
+GasPump.pumpNo=29
+GasPump.fuelType=Petrol
+
+Test.java
+---------
+ApplicationContext context = new AnnotationConfigApplicationContext(JavaConfig.class);
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+

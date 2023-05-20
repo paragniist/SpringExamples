@@ -1,0 +1,95 @@
+package com.aa.beans;
+class Calculator {
+	int add(int a, int b) {
+		return a + b;
+	}
+}
+
+package com.aa.aspect;
+class LoggingAspect {
+	public Object log(ProceedingJoinPoint pjp) {
+		String methodName = null;
+		Object[] args = null;
+		
+		methodName = pjp.getSignature().getName();
+		args = pjp.getArgs();
+		sop("entered into " methodName +"("+args[0]+","+args[1]+")");
+
+		Object ret = pjp.proceed();
+		
+		sop("exiting from " + methodName + " with ret : " +ret);
+		return ret;
+	}
+}
+class Cache {
+	private static Cache cache;
+	private Map<String, Object> dataMap;
+	private Cache() {
+		dataMap = new HashMap();
+	}
+	
+	public static synchronized Cache getInstance() {
+	}
+	public void put(String key, Object data){}
+	public Object get(String key) {}
+	public boolean containsKey(String key) {}	
+}
+
+package com.aa.aspect;
+public class CacheAspect {
+	private Cache cache;
+	
+	public Object applyCache(ProceedingJoinPoint pjp) {
+		String methodName = null;
+		Object[] args = null;
+		String key = null;
+		
+		methodName = pjp.getSignature().getName();
+		args = pjp.getArgs();
+		key = methodName+"("+args[0]+","+args[1]+")";
+		
+		if(cache.containsKey(key) == true) {
+			return cache.get(key);
+		}
+		
+		Object obj = pjp.proceed();
+		cache.put(key, obj);
+		return obj;		
+	}
+	public void setCache(Cache cache) {}
+}
+
+application-context.xml
+------------------------
+<bean id="calculator" class="Calculator"/>
+<bean id="loggingAspect" class="LoggingAspect"/>
+
+<bean id="cache" class="Cache" factory-method="getInstance"/>
+
+<bean id="cacheAspect" class="CacheAspect">
+	<property name="cache" ref="cache"/>
+</bean>
+
+<aop:config>
+	<aop:pointcut id="commonPoincut" expression="execution(* com.aa.beans.*.*(..))"/>
+	
+	<aop:aspect ref="loggingAspect" order="2">
+		<aop:around method="log" pointcut-ref="commonPointcut"/>
+	</aop:aspect>
+	<aop:aspect ref="cacheAspect" order="1">
+		<aop:around method="applyCache" pointcut-ref="commonPointcut"/>
+	</aop:aspect>
+</aop:config>
+
+
+
+
+
+
+
+
+
+
+
+
+

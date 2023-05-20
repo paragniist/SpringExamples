@@ -1,0 +1,139 @@
+mvc namespace
+---------------
+while working with spring webmvc, the developer has to use spring webmvc components like HandlerMapping, ViewResolvers and Controller classes to build an application
+To use the spring mvc components programmer has to configure these classes as bean definitions within spring bean configuration file. 
+The programmers always feel complicated to memorize the classnames of those classes and the attributes with configuration options to be used in configuring these classes. It takes lot of time in writing these classes as bean definitions. It is not that we know these components, the spring webmvc components and their configuration options are know to even spring developers
+rather than forcing us in writing these classes as bean definitions with complex configuration tags, the spring mvc people has provided mvc namespace that simplifies the way we can configure and use the spring mvc components in building an application, that will greatly reduces the learning curve and complexity in building the application.
+	
+<bean name="/welcome.htm" class="org.springframework.web.controller.ParameterizableViewController">
+	<property name="viewName" value="welcome"/>
+</bean>
+
+<bean class="org.springframework.web.viewresolvers.InternalResourceViewResolver">
+	<property name="prefix" value="/WEB-INF/jsp/"/>
+	<property name="suffix" value=".jsp"/>
+</bean>
+
+instead of the above bean definitions we can quickly configure controller and viewresolver as below
+
+<mvc:view-controller path="/welcome.htm" view-name="welcome"/>
+<mvc:view-resolvers>
+	<mvc:jsp prefix="/WEB-INF/jsp/" suffix=".jsp"/>
+</mvc:view-resolvers>
+
+<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path=""/>
+		<bean class=""/>
+	</mvc:interceptor>
+</mvc:interceptors>
+--------------------------------------------------------------------------------------------
+#programmatic approach in configuring DispatcherServlet and ContextLoaderListener
+
+@Configuration
+class WebMvcConfiguration {
+
+	@Bean
+	public HandlerMapping handlerMapping() {
+		SimpleUrlHandlerMapping handlerMapping = new SimpleUrlHandlerMapping();
+		Properties mappings = new Properties();
+		mappings.put("/home.htm", "homeController");
+		handlerMappings.setMappings(mappings);
+		return handlerMappings;
+	}
+
+	@Bean
+	public Controller homeController() {
+		ParameterizableViewController viewController = new ParameterizableViewController();
+		viewController.setViewName("home");
+		return viewController;
+	}
+	
+	@Bean
+	public ViewResolver viewResolver() {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setPrefix("/WEB-INF/jsp/");
+		viewResolver.setSuffix(".jsp");
+		return viewResolver;
+	}
+}
+
+@Configuration
+class RootConfig {}
+
+class ProgAnnonDispatcherServletInitializer extends AbstractDispatcherServletInitializer {
+	public WebApplicationContext createRootApplicationContext() {
+		AnnotationConfigWebApplicationContext rootApplicationContext = null;
+		
+		rootApplicationContext = new AnnotationConfigWebApplicationContext();
+		rootApplicationContext.register(RootConfig.class);
+		return rootApplicationContext;
+	}
+	
+	public WebApplicationContext createServletApplicationContext() {
+		AnnotationConfigWebApplicationContext servletApplicationContext = null;
+		
+		servletApplicationContext = new AnnotationConfigWebApplicationContext();
+		servletApplicationContext.register(WebMvcConfig.class);
+		return servletApplicationContext;
+	}
+	
+	public String[] getServletMappings() {
+		return new String[] {"*.htm"};
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

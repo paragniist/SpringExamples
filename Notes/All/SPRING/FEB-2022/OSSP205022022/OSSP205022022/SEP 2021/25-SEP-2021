@@ -1,0 +1,106 @@
+There are 2 features that made the Spring Framework unique in the market
+1. versatile application development framework
+Spring Framework can work with any of the existing technologies without the need of re-writing the existing application, so that it can identify and fill the gaps of the existing application and enriches it.
+(or)
+Spring is versatile enough to be integrated into any of the existing investments/technologies in which the application has been developed, thereby enriching the existing system.
+  
+2. non-invasive application development framework
+In order to use the Spring Framework in building the application we dont need to write our code referencing or using the Spring Framework classes, thus by our application will be loosely coupled from Spring Framework. To separate our application from Spring Framework we dont need to modify the code withour application we just need to remove the Spring Framework jar dependencies.
+--------------------------------------------------------------------------------------------------------
+What does Spring Core module offers?
+An application is build out of several classes, each of them performing various different types of functionality. Based on the nature of code written inside the classes, we can broadly classify the classes into 3 types.
+  
+1. pojo
+pojo stands for plain old java object. 
+if we can compile/run the code without referring any external third-party libraries then the class can be called as pojo class.
+For eg if we are using api/implementation in writing the code, our class is considered as pojo class only. but if we are using third-party libraries in writing our logic, then it is not considered as pojo.
+  
+2. java bean
+Java Beans are used for carrying or storing the data. we declare attributes with zero-arg along with accessor methods then it is called "Java Bean".
+
+class Book {
+  int isbn;
+  String title;
+  String description;
+  String authorName;
+  // no-arg constructor
+  // setters & getters (accessors)
+}  
+  
+3. bean (or) component
+A bean or component class is a general purpose class which may contain attributes and methods, the methods contains arbitary logic in performing operation, such type of classes are called "bean" or "component".
+  
+In an application the bean or component classes plays a major role in building the application. 
+we can write a class with any amount of lines of code, but to avoid maintainability problems it is often recommended to break the code into multiple classes.
+what type of maintainability problems we run into?
+  1. complexity in understanding the code
+  2. debugging is very difficult
+  3. we cannot reuse the code in other parts of the program
+  
+we can achieve reusability through modularity.
+always break the code into mutliple components so that we can reuse a part of the code in another place whereever we need.
+  
+From the above we can understand we need to modularize and distribute the code into multiple bean or component classes within an application.
+Every class cannot be complete by itself, it may has to use or refer or talk to someother class to complete its functionality. So a class may be dependent on another class to complete its functionality.
+  
+How to manage dependency between the classes?  
+In one class we need to write the logic to talk to another class, so that it can complete its functionality.
+Instead of we managing the dependencies between the classes, spring core takes care of managing the dependencies for us.  
+
+Spring core is a module, that help us in managing the dependency between the classes.
+  
+class A {
+  void m1() {
+    B b = new B();
+    int j = b.m2();
+    // perform additional logic
+  }
+} 
+
+class B {
+  int m2() {
+    
+  }
+}
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

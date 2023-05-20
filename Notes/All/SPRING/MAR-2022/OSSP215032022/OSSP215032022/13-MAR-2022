@@ -1,0 +1,130 @@
+What is BeanFactoryPostProcessor?
+BeanFactoryPostProcessor is used for performing post processing logic ontop of ioc container, after the BeanFactory/ioc container has been created and the metadata has been loaded, before it begins instantiating the objects for the bean definitions we can apply post processing logic on the ioc container
+
+by using BeanFactoryPostProcessor we can modify the in-memory metadata of the ioc container at runtime during the time of creating the ioc container
+
+How to work with BeanFactoryPostProcessor?
+	
+class ConnectionManager {
+	private String driverClassname;
+	private String url;
+	private String username;
+	private String password;
+	
+	// setters	
+}	
+	
+application-context.xml
+-----------------------
+<bean id="connectionManager" class="ConnectionManager">
+	<property name="driverClassname" value="${db.driverClassname}"/>
+	<property name="url" value="${db.url}"/>
+	<property name="username" value="${db.username}"/>
+	<property name="password" value="${db.password}"/>
+</bean>
+
+<bean id="bfpp" class="PropertyPlaceHolderConfigurer">
+	<property name="location" value="classpath:db.properties"/>
+</bean>
+
+db.properties
+--------------
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/db
+db.username=root
+db.password=root
+	
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+BeanFactoryPostProcessor bfpp = beanFactory.getBean("bfpp", BeanFactoryPostProcessor.class);
+bfpp.postProcessBeanFactory((ConfigurableListableBeanFactory)bfpp);
+
+
+ConnectionManager connectionManager = beanFactory.getBean("connectionManager", ConnectionManager.class);
+
+sop(connectionManager);
+	
+The BeanFactoryPostProcessor we are writing must and should be written by implementing an spring provided interface
+	
+interface BeanFactoryPostProcessor {
+	void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory);
+}
+	
+ioc container has provided an implementations for BeanFactoryProcessor called "PropertyPlaceHolderConfigurer" since reading the properties file and updating the metadata of the ioc container is a common requirement.
+-----------------------------------------------------------------------------------------
+Lookup Method Injection
+------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

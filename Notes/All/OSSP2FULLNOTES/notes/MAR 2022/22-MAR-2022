@@ -1,0 +1,164 @@
+<context:annotation-config/>
+The ioc container internally replaces the tag by configuration annotation-based BeanPostProcessors and BeanFactoryPostProcessors within the ioc container as bean definitions
+------------------------------------------------------------------------------------------
+@Autowired
+Instead of we declaring the dependencies between the bean definitions we want ioc container to automatically identify and manage the dependencies
+
+Here there are no modes of autowiring are there always the dependent bean is identified based on classType only, and the dependent bean is injected into the target class based on the place we are writing the autowire annotation
+	
+How many places we can write autowire annotation?
+We can write @Autowired annotation at 4 different places within a class
+1. attribute level
+2. setter level
+3. constructor level
+4. arbitary method level
+------------------------------------------------------------------------------------------
+
+class Radio {
+	private Tuner tuner;
+
+	@Autowired(required=true)
+	public void setTuner(Tuner tuner) {
+		this.tuner = tuner;
+	}
+}
+
+class Tuner {
+	String tunerType;
+	
+	public void setTunerType(String tunerType) {}
+}
+
+application-context.xml
+------------------------
+<bean id="radio" class="Raido" />
+	
+<context:annotation-config/>
+
+Test.java
+----------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+Radio radio = context.getBean("radio", Radio.class);
+
+@Qualifier
+by default when we write @Autowired annotation ioc container will tries to identify the dependent bean definition matching with attributeType or parameterType with corresponding Bean Class Type
+if there are multiple bean definitions matching with same class type, the ioc container runs into ambiguty
+
+#1 one way we can resolve this ambiguty is by using autowire-candidate="false" for one of the bean definition.
+
+<bean id="tuner2" class="Tuner">
+	<property name="tunerType" value="manual tuner"/>
+</bean>
+
+<bean id="tuner1" class="Tuner" autowire-candidate="false">
+	<property name="tunerType" value="digital tuner"/>
+</bean>
+so that always the tuner1 will be injected via autowiring, we need to manually inject it as dependency into target class which is an dis-advantage
+
+alternative Spring has provided @Qualifier annotation to resolve ambiguty issue
+
+For one of the bean definition out of multiple available of the class type we can write <qualifier/> tag by giving an qualifier value as shown below.
+	
+<bean id="tuner2" class="Tuner">
+	<property name="tunerType" value="manual tuner"/>
+</bean>
+
+<bean id="tuner1" class="Tuner">
+	<property name="tunerType" value="digital tuner"/>4
+	<qualifier value="digitalTuner"/>
+</bean>
+and along with @Autowired annotation we need to use @Qualifier annotation to tell ioc container inject Tuner whose qualifier value is "digitalTuner" as below
+
+class Radio {
+  @Autowired
+	@Qualifier("digitalTuner")
+	private Tuner tuner;
+}
+
+by default for each bean definition if we dont write <qualifier/> tag the default qualifier is the bean id itself and it is not recommended to use bean id as a qualifier to resolve ambiguity as we the code becomes tightly coupled with the bean id
+
+if the bean id and corresponding attribute name is matching then ioc container will resolve the ambiguty automatically by picking up the bean of the same name without error.
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

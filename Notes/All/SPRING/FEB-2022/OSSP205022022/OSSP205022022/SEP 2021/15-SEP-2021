@@ -1,0 +1,142 @@
+#1
+Struts Framework support developing Web Applications only and we can develop only the presentation-tier aspect of an typical web application, we can consider Struts as not a complete application development framework. 
+Unlike Struts Framework, Spring Framework supports developing multiple application development types like Standalone application, Distributed Web Application, Integration Application and Enterprise Applications.
+
+In a typical web application there are 3 layers/tier of components are there
+1. Presentation-Tier components = These are the components that are exposed to the enduser, where enduser will interact with the application through the help them. For eg..html/jsp, Servlet
+
+2. Business-Tier components = They contain business logic which takes data as an input perform the operation and returns the output interms of return value.
+  
+3. Persistence-Tier components = These components only has the logic for accessing/storing the data into the permanent storage device like database.
+  
+Spring Framework supports building all the aspects/tiers of an application, so we can consider Spring Framework as end-to-end application development framework.
+
+#2  
+Spring Framework supports developing all the application development types in par with JEE, then why do we need to go for Spring Framework, we can use JEE for application development?
+What is the difference between Api and Framework, why do we need to use Framework?
+
+JEE stands for Java Enterprise Edition is an platform provided by Sun Microsystems to build enterpise large-scale application development. 
+  
+JEE is an api, api stands for Application Programming Interface and always java standard apis are partial, they provide interfaces and abstract classes only. We cannot develop the application using api, we need implementation, which will be provided by vendor. Most of the Java developers find it difficult to understand api and implementation of the language which makes them believe complex in using the api.
+  
+Api are huge in nature, they provide lot of classes aspart of them, So learning api takes lot of time, in addition the classes provided by the api are inter-linked with each other, due to this reason learning api is very complex and we cannot partial learn api to build application.
+  
+apis will not provide boiler-plate logic, so while working with api we need to write lot of code in building an application
+1. more time for development
+2. more number of resources are required for developing
+3. more efforts of development
+4. more cost in building the application
+5. more code means more chances of increasing the bugs
+6. more amount of time for testing the application
+7. difficult to maintain the application due to huge amount of code base
+Considering the above factors the api doesnt support rapid application development.
+  
+Framework provides bunch of concreate classes which contains boiler-plate/pre-identified logic. Frameworks are complete we dont need an api and implementation to work with, so finally developers are relieaved from the mystery of api/implementation.
+  
+Frameworks provides less number of classes when compared with an api, and these classes will not have inter-dependency with each other, which means learning framework is easier when compared with api
+
+Framework classes provides boiler-plate logic, so while building the application using Framework we need to write less number of lines of code due to which we have plenty of advantages:
+1. less time for development
+2. less efforts
+3. less man power required
+4. low cost in developing application
+5. less code indicates less number of bugs
+6. testing time is low
+7. improved code quality because most of the logic is implemented by framework itself
+8. easy to maintain
+
+So Frameworks supports rapid application development.
+  
+#3  
+Spring Framework is a very huge/big as it supports lot of application types, but even then also it is considered as light weight application development framework.
+The Spring Framework is considered as light weight application development framework due to its modularity in nature. The Spring has been broken down into several modules where each of these modules are completely independent of each other. The only module on which all the modules Spring Framework are dependent is core container (core, beans, context, el). 
+  
+So to work with Spring Framework the developer dont have to learn the entire spring and no need to use it as a whole, based on the requirement he can choose an appropriate module of the Spring Framework learn it and use for developing the application, thus making it completely light weight because I dont need to bother anything apart from what I need.  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

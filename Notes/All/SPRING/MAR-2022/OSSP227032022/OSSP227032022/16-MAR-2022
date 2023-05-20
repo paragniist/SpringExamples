@@ -1,0 +1,280 @@
+Lookup Method Injection
+------------------------
+What are the scopes in which we can declare attributes of a class in another class?
+	
+Class           Attribute Type     Allowed (Y/N)
+Singleton       Singleton          Yes
+Non-Singleton   Non-Singleton      Yes
+Non-Singleton   Singleton          Yes
+Singleton       Non-Singleton      No (We run into data-insistency issues)
+	
+always avoid declaring non-singleton (non-sharable) attributes in a singletons because the object becomes non-thread safe, multiple threads of execution shares the same object and run into data in-consistency issues
+
+interface IEngine {
+	void start();
+}
+
+class YamahaEngineImpl implements IEngine {
+	public void start() {
+		sop("yamaha engine started..");
+	}
+}
+
+class Car {
+	private IEngine engine;
+	
+	public void drive() {
+		engine.start();
+		sop("driving car");
+	}
+
+	public void setEngine(IEngine engine) {
+		this.engine = engine;
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="yamahaEngine" class="YamahaEngineImpl" scope="prototype"/>
+<bean id="car" class="Car">
+	<property name="engine" ref="yamahaEngine"/>
+</bean>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Car car = beanFactory.getBean("car", Car.class);
+car.drive();
+
+
+In the above example we are injecting YamahaEngine which is scoped as "prototype" into an singleton class and it is not recommended as we run into data inconsistency issues. In addition if we are injecting prototype bean into singleton the prototype behaves as singleton only
+
+dont use dependency injection and dont declare IEngine as an attribute within the Car
+class. now  we need to pull the engine from ioc container
+	
+class Car implements BeanFactoryAware {	
+	private BeanFactory beanFactory;
+	
+	public void drive() {
+		IEngine engine = null;
+		
+		engine = beanFactory.getBean("yamahaEngine", IEngine.class);
+		engine.start();
+		sop("driving car");
+	}
+	public void setBeanFactory(BeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+}	
+	
+application-context.xml
+------------------------
+<bean id="yamahaEngine" class="YamahaEngineImpl" scope="prototype"/>
+<bean id="car" class="Car"/>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Car car = beanFactory.getBean("car", Car.class);
+car.drive();
+
+Now the above approach of pulling the engine object within the method has solved the problem, for each invocation of drive() method a new object of Engine will be created and used since it is not shared across the threads of execution we are thread-safe
+
+Even though the above approach solved the thread-safety problem our class has been tightly coupled with spring framework because of using Spring specific classes in our application
+	
+How to make our application de-coupled from Spring framework?
+Use lookup method injection
+
+
+abstract class Car  {	
+	public void drive() {
+		IEngine engine = null;
+		
+		engine = lookupEngine();
+		engine.start();
+		sop("driving car");
+	}
+	
+	/**
+		Inside this method we want to fetch the object of yamahaEngine bean definition and return, but if i write the logic for fetching the object from ioc container am tightly coupled with spring framework, so ioc container can you please implement the logic for this method
+	*/
+	abstract public IEngine lookupEngine();
+}	
+	
+application-context.xml
+------------------------
+<bean id="yamahaEngine" class="YamahaEngineImpl" scope="prototype"/>
+
+<bean id="car" class="Car">
+	<lookup-method name="lookupEngine" bean="yamahaEngine"/>
+</bean>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Car car = beanFactory.getBean("car", Car.class);
+car.drive();
+
+The ioc container by lookup at lookup-method injection tag it generates a proxy class at runtime using cglib and asm proxy libraries overriding look-method declared and implements the logic for returning the object of the bean we declared and instantiates the proxy of the Car class and returns to us
+	
+//just for assumption	
+class Car$Proxy extends Car implements BeanFactoryAware {
+	BeanFactory beanFactory;
+	String bean;
+	
+	public IEngine lookupEngine() {
+		return beanFactory.getBean(bean)
+	}
+	public void setBeanFactory(BeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+}	
+
+dependency lookup            = lookup method injection
+contextual dependency lookup = aware injection
+
+setter injection
+constructor injection
+-----------------------------------------------------------------------------------------
+ioc container
+dependency injection
+why do we need to use dependency injection how does it makes our classes loosely coupled?
+strategy design pattern
+bean scopes
+aware interfaces
+lookup method injection
+instance factory method/static factory method instantiation
+bean lifecycle
+bean/bean factory post processors
+bean autowiring
+bean factory vs application context
+
+usecases (what is the challenging task you have worked on?)
+bean scopes (cities/states/countries)
+cache design pattern
+method replacement
+instance factory method instantiation
+depends-on
+-------------------------------------------------------------------------
+spring core annotations (5 - 7 days)
+spring jdbc - 10 days
+spring aop - 10 days
+spring transaction = 15 days
+
+spring mvc = 15/20 days
+-------------------------- uploading resumes
+
+
+
+
+OSSP215032022 = d32TSz
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

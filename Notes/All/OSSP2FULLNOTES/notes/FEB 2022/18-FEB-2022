@@ -1,0 +1,159 @@
+Bean Lifecycle
+---------------
+lifecycle:-
+Everything that has an existence has a lifecycle and all the activities that will be taken part during the existence of the object are part of lifecycle of the object
+
+lifecycle management:-
+There are certain mandatory activities that has to be performed during the birth of the object, so that the object can exists properly to perform its lifecycle which are called post construction activities and similarly we need to perform certain activities during the death of an object for an easy destruction of the object which are called pre-destruction activities, both of these mandatory activities that has to carried during birth and death of an object are called lifecycle management.
+
+What is the lifecycle of java class object?
+all the activities that are taken part on top of the object during its existence like
+	- method calls
+	- state change in the object
+are part of the object
+
+What is the lifecycle management for a java class object?
+To perform the post construction activities during the birth of the object jvm has provided an special contractual method which is constructor which will be invoked automatically by the jvm itself on each object of the class, so that the object will initialized properly to have its lifecycle.
+	
+Similarly the jvm has provided finalize() method in which we need to write destruction logic to release the resource our object is holding, so that object can destroyed easily which is called post construction lifecycle management method
+
+So from the above we can understand jvm has provided 2 lifecycle management methods
+1. constructor = post construction activities
+2. finalize = pre-destruction activities
+
+From the above we can understand the underlying platform which is taking care of instantiating the objects should be able to manage the lifecycle management activities for the object so that it will be easy to handle post construction and pre-destruction of an object
+
+What is the lifecycle management methods for a servlet class?
+init() method and destroy() method = lifecycle management methods
+service() is lifecycle method
+
+Why cant we have constructor and finalize as the lifecycle management methods for a servlet, why does it requires a different lifecycle management methods like init() and destroy() for it?
+	
+within an servlet class also we can write constructor which will be invoked by the jvm during its instantiation and similarly we can write finalize() method in a servlet class to perform destruction activity and will be invoked by the garbage collector during its termination
+	
+	
+class BillingServlet extends HttpServlet {
+	private double stateGst;
+	private double centralGst;
+	
+	public void init(ServletConfig config) {
+		this.stateGst = double.parseDouble(config.getInitParameter("stateGst"));
+		this.centralGst = double.parseDouble(config.getInitParameter("centralGst"));
+	}
+	
+	public void service(httpRequest, httpResponse) {
+		// billing logic	
+		
+	}
+	public void destroy() {
+		stateGst = 0;
+		centralGst = 0;
+	}
+}	
+
+web.xml
+-------
+<servlet>
+	<servlet-name>billservlet</servlet-name>
+	<servlet-class>BillingServlet</servlet-class>
+	<init-param>
+		<param-name>stateGst</param-name>
+		<param-value>18</param-value>
+	</init-param>
+	<init-param>
+		<param-name>centralGst</param-name>
+		<param-value>18</param-value>
+	</init-param>
+</servlet>
+<servlet-mapping>
+	<servlet-name>billservlet</servlet-name>
+	<url-pattern>/billing</url-pattern>
+</servlet-mapping>
+
+-> deploying the application by writing
+	- Servlet class and Relevant configuration (web.xml)
+		
+-> Servlet Container, I will goto jvm and will request for creating the object
+
+developer (deploy)
+------------------
+servlet container 
+-----------------
+      jvm (default constructor)
+
+
+For a servlet class we need a separate lifecycle managment methods because, within a servlet we can write only default constructor and we can initialize the state of the servlet object with default values only.
+	
+But if we want to initialize the state of the servlet object with user supplied values, we cannot write parameterized constructor for a servlet, since the servlet container dont know with what values being passed it should ask jvm to execute the constructor
+
+So to help the developer in performing the initialization with user supplied values as an input it has provided init(ServletConfig). now programmer can configure initialization values for a servlet within init-param of the web.xml and he can read those init-parameter values within init method of the servlet with which he can initialize the servlet object with his own values.
+	
+Similarly the servlet object has to be destroyed immediately when the application has been undeployed otherwise the jvm memory and the resources of the machine will be wasted, since the servlet container is the person first inplace knows we are undeploying the application, immediately with no late to release the resource our servlet is holding it facilitates in calling destroy() method without waiting for jvm to invoke finalize() so that we can effectively manage the resources of the jvm/machine
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+There are 3 classloaders provided as part of the core jdk distribution
+1. Bootstrap classloader
+2. Extension classloader
+3. System or Application classloader
+System or Application classloader is the child of Extension classloader and it is an java class which takes care of loading the bytecode of another java classes into jvm memory. It loads the bytecode of the java classes from 3 different locations
+	1. CLASSPATH environment variable pointed directory location .class files or jar pointed .class files are loaded
+	2. -cp or -classpath switch/args pointed directory location .class files or jar pointed .class files will be loaded
+	3. Class-Path attribute as part of the manifest.mf containing directory/jar classes will be loaded
+	
+#3. What is Class-Path attribute, how to populate it in manifest.mf, why do we need manifest.mf?
+	

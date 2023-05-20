@@ -1,0 +1,95 @@
+There are 3 ways we can work with Bean Lifecycle management:
+1. declarative approach
+2. programmatic approach
+3. annotation-driven approach
+
+#2. programmatic approach
+--------------------------
+class Rectangle implements InitializingBean, DisposableBean {
+	private int length;
+	private int breadth;
+	private int area;
+	
+	public void afterPropertiesSet() {
+		area = length * breadth;
+	}
+	
+	public void destroy() {
+		area = 0;
+	}
+}
+
+a-c.xml
+--------
+<beans>
+	<bean id="rectangle" class="Rectangle">
+		<constructor-arg value="23"/>
+		<property name="breadth" value="23"/>
+	</bean>
+
+	<bean id="rectangle1" class="Rectangle">
+		<constructor-arg value="25"/>
+		<property name="breadth" value="25"/>
+	</bean>
+</beans>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Rectangle rectangle = beanFactory.getBean("rectangle", Rectangle.class);
+
+((ConfigurableListableBeanFactory)beanFactory).destroySingletons();
+----------------------------------------------------------------------------------------------------
+FactoryBeans
+-------------
+spring < 3.x = factory beans
+spring => 3.x = instance factory method and static factory method instantiation
+
+
+FactoryBeans = is used for creating an object of a class as bean definition.
+Calendar
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

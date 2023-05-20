@@ -1,0 +1,14 @@
+Introduction
+------------
+Spring is a Framework, Struts is also an Framework. Struts Framework support developing only web applications, it doesnt support any other application development types apart from Web Application.
+
+In a typical web application there are 3 types of logics we write, which is also refered as 3 tiers/layers.
+1. presentation-tier logic = The code/logic we write in interacting with the end-user of the application.
+2. business-tier logic = The code/logic we write in computing the output by using the data
+3. persistence-tier logic = the logic we write for storing/accessing the data from the persistence storage devices like database or file 
+
+While working with Struts Framework, it helps us in developing Presentation-tier aspects of developing an web application, it doesn't support building business/persistence-tier of an web application.
+Struts is not a Framework that support building end-to-end application development, it only helps us in building Presentation-tier aspects only, so it is not a complete framework.
+  
+Unlike Struts, Spring Framework supports not only developing web application, it supports multiple application development types.
+  

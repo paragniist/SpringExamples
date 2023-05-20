@@ -1,0 +1,76 @@
+There are 3 priniple are there
+1. Principle of delegation
+2. Principle of visibility
+3. Principle of uniqueness
+If a classloader within the hierarchy has loaded a class into jvm memory, no other classloader of the hierarchy will reload the same class into the jvm memory, this has been achieved through principle of delegation.
+	
+Most of the time the default classloaders provided as apart of the jdk serves the purpose, but in few cases we might have to write our own custom classloaders also.
+	like 1. we want to load the bytecode from an network location rather than the local filesystem
+			 2. may want decrypt the bytecode and load into jvm memory etc
+-----------------------------------------------------------------------------------------------
+What is the difference between ClassNotFoundException and NoClassDefFoundError?
+There are 2 ways in loading a class into jvm memory.
+	1. implicit loading
+	When we tried creating the object of the class using the classname then jvm will loads the bytecode of the class into jvm memory.
+		A a = new A();
+
+	2. explicit loading
+	if we are using Class.forName(classname) to load a class, then it is called explicit loading.
+	Class.forName("A");
+
+In case of implicit loading the class that has to be loaded will be resolved during compilation time itself, since java compiler knows which class we are referring.
+	
+class Test {
+	public static void main(String[] args) {
+		A a = new A(); // link A (generated)
+	}
+}	
+javac -d . Test.java
+Test.class (there reference to A.class will be written)
+	
+we removed A.class from classpath
+	
+
+java Test = NoClassDefFoundError = because the classpath is missing
+NoClassDefFoundError 
+While running our application we have not property configured CLASSPATH variable pointing to class file locations
+	
+class Test {
+	public static void main(String[] args) {
+		Class clazz = Class.forName(args[0]); // which class?
+	}
+}
+
+javac -d . Test.java
+When we do explicit loading, the compiler will not determine class we are trying to refer since the class that has to be loaded is determined only at runtime
+So we dont have to set the classpath while compiling Test.java pointing to any other classes
+
+ClassNotFoundException
+java Test A1
+1. In-proper ClassPath
+2. wrong classname being passed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			 

@@ -1,0 +1,68 @@
+@Required
+----------
+@Required is an annotation used for mandating the setter injection properties of a class. by default the setter injection properties are optional, if we wanted to mandate them we need to use constructor inject, but few times we cannot use constructor inject because of limitation with circular dependencies, in such case only option left is setter injection but dependents becomes optional
+To make setter injection dependencies mandatory we need to use @Required
+
+	
+class Microprocessor {
+	String processorType;
+	int generation;
+	String manufacturer;
+	
+	@Required
+	public void setProcessType(String processorType) {}
+	public void setGeneration(int generation) {}
+	@Required
+	public void setManufacturer(String manufacturer) {}	
+}
+
+application-context.xml
+------------------------
+<bean id="microProcessor" class="Microprocessor">
+	<property name="processorType" value="i5"/>
+	<property name="manufacturer" value="intel"/>
+</bean>
+<context:annotation-config/>
+
+Test.java
+----------
+//BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+Microprocessor microProcessor = context.getBean("microProcessor", Microprocessor.class);
+
+
+In general we can write annotations within a class at 4 levels
+1. class level
+2. attribute
+3. method/constructor level
+4. method/constructor parameter level
+
+@Required annotation can be written only on method level. since it is meant for mandating setter injection, we can only write on setter methods only
+
+whichever the setter injection properties we want to be mandatory on those corresponding setter methods write @Required annotation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

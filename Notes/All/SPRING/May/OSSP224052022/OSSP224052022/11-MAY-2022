@@ -1,0 +1,172 @@
+What is transactions?
+Transaction is an unit of work in which all the operations has to be either comitted complete or all the operations we perform should be rollback complete is called an transaction
+
+There are 2 types of transactions are there
+1. local transaction
+within in transactional boundary if there is only one single transaction participating resource on whom we are issuing a commit/rollback then it is called "local transaction"
+	
+2. global transaction
+within the transactional boundary if there are multiple global transactional participating resources are there on whom we are issuing a commit/rollback at oneshot then it is called "global transactions"
+	
+How to work with local transactions using jdbc api?
+There are 2 tables in our database
+1. employee [emp_no, fullname, age, gender, designation]
+2. payroll [payroll_no (pk), emp_no (fk), basic_amount, special_allowances, hra, lta, pf]
+
+class EmployeeDao {
+	public int saveEmployee(EmpBo bo, PayrollBo bo) {
+		boolean flag = false;
+		Connection con = null;
+		PreparedStatement empPstmt = null;
+		PreparedStatement payrollPstmt = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection(url, un, pwd);
+			con.setAutoCommit(false);
+			
+			pstmt1 = con.preparedStatement("insert into emp value(?,?,?,?,?)");
+			// substitute parameters
+			pstmt1.executeUpdate();
+			
+			pstmt2 = con.preparedStatement("insert into payroll values(?,?,?,?,?,?,?)");
+			// substitute the parameters
+			pstmt2.executeUpdate();
+			flag = true;
+		}catch(ClassNotFoundException | SqlException e) {
+			// printStacktrace
+			flag = false;
+			throw e;
+		}finally {
+			if(pstmt1 != null) {
+				pstmt1.close();
+			}
+			if(pstmt2 != null) {
+				pstmt2.close();
+			}
+			if(con != null) {
+				if(flag == true) {
+					con.commit();
+				}else {
+					con.rollback();
+				}			
+				con.close();
+			}
+		}
+	}
+}
+
+How to work with global transactions?
+jdbc api doesnt support global transactions, it only works for local transaction. for eg.. if we try to manage global transaction using jdbc api it fails
+
+	
+class EmployeeDao {
+	public int saveEmployee(EmpBo bo, PayrollBo bo) {
+		boolean flag = false;
+		Connection con1 = null;
+		Connection con2 = null;
+		PreparedStatement empPstmt = null;
+		PreparedStatement payrollPstmt = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con1 = DriverManager.getConnection("jdbc:mysql://192.168.10.11:3306/empdb", un, pwd);
+			con2 = DriverManager.getConnection("jdbc:mysql://192.168.10.11:3306/payrolldb", un, pwd);
+			con1.setAutoCommit(false);
+			con2.setAutoCommit(false);
+			
+			pstmt1 = con1.preparedStatement("insert into emp value(?,?,?,?,?)");
+			// substitute parameters
+			pstmt1.executeUpdate();
+			
+			pstmt2 = con2.preparedStatement("insert into payroll values(?,?,?,?,?,?,?)");
+			// substitute the parameters
+			pstmt2.executeUpdate();
+			flag = true;
+		}catch(ClassNotFoundException | SqlException e) {
+			// printStacktrace
+			flag = false;
+			throw e;
+		}finally {
+			if(pstmt1 != null) {
+				pstmt1.close();
+			}
+			if(pstmt2 != null) {
+				pstmt2.close();
+			}
+			if(con1 != null) {
+				if(flag == true) {
+					con1.commit();
+				}else {
+					con1.rollback();
+				}			
+				con1.close();
+			}
+			if(con2 != null) {
+				if(flag == true) {
+					con2.commit();
+				}else {
+					con2.rollback();
+				}			
+				con2.close();
+			}
+		}
+	}
+}	
+In the above code while commiting the con2, if there is an exception, then con2 will be rollbacked but con1 (database) will be commited so that both operations will not be part of single transaction.
+	
+How to work with global transactions?
+To work with global transactions sun microsystems has provided jta api as part of jee platform. jta stands for java transaction api, used for managing global transactions within the jee container environment.
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

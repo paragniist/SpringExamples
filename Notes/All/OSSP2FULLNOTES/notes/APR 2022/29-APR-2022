@@ -1,0 +1,76 @@
+declarative aspectj aop approach
+---------------------------------
+around advice
+--------------
+
+class Calculator {
+	int add(int a, int b) {
+		return a + b;
+	}
+	int add(int a, int b, int c) {
+	
+	}
+}
+
+
+class LoggingAspect {
+	public Object log(ProceedingJoinPoint pjp) {
+		String methodName = null;
+		Object[] args = null;
+		
+		methodName = pjp.getSignature().getName();
+		args = pjp.getArgs();
+		args[0] = (Integer) args[0] + 1;
+		args[1] = (Integer) args[1] + 1;
+		
+		sop("entered into " + methodName+"("+args[0]+","+args[1]+")");
+		
+		Object ret = pjp.proceed(args);
+		
+		sop("exiting from : " + methodName+ " with ret : " + ret);
+		return ret;		
+	}
+}
+
+	// logging aspect logic (in pojo)
+Here the advice interface we are implementing indicates 	2 things
+1. Type of advice
+2. method in which we wrote the aspect logic
+
+application-context.xml
+-------------------------
+
+<bean id="calculator" class="Calculator"/>
+<bean id="loggingAspect" class="LoggingAspect"/>
+<!--
+<aop:config>
+	<aop:aspect ref="loggingAspect">
+		<aop:around method="log" pointcut="execution(* com.aa.beans.Calculator.add(..))"/>
+	</aop:aspect>
+</aop:config>
+-->
+
+Test.java
+----------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+Calculator calculator = context.getBean("calculator", Calculator.class);
+int sum = calculator.add(10, 20);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

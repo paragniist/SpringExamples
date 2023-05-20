@@ -1,0 +1,19 @@
+class Car implements BeanFactoryAware {
+	private BeanFactory beanFactory;
+	public void setBeanFactory(BeanFactory beanFactory) {
+		
+	}
+}
+
+a-c.xml
+----------
+<bean id="car" class="Car">
+
+</bean>
+<bean id="yamahaEngine" class="YahamaEngineImpl"/>
+
+Test.java
+---------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Car car = beanFactory.getBean("car", Car.class);
+

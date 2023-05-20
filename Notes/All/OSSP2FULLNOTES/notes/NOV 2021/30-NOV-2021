@@ -1,0 +1,168 @@
+class WaterPump {
+	private Motor motor;	
+	
+	public WaterPump(Motor motor) {
+		this.motor = motor;
+	}
+	
+	public void on() {
+		motor.run();
+	}
+	/*public void setMotor(Motor motor) {}*/
+}
+
+interface Motor {
+	void run();
+}
+
+class KirloskarMotorImpl implements Motor {}
+class CromptonMotorImpl implements Motor {}
+
+application-context.xml
+------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<beans>
+	<bean id="waterPump" class="WaterPump">
+		<!--<property name="motor" ref="kirloskarMotor"/>-->
+		<constructor-arg ref="kirloskarMotor"/>
+	</bean>
+	
+	<bean id="kirloskarMotor" class="KirloskarMotorImpl"/>
+	<bean id="cromptonMotor" class="CromptorMotorImpl"/>
+</beans>
+
+class Test {
+	public static void main(String[] args) {
+		BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("application-context.xml"));
+		WaterPump waterPump = beanFactory.getBean("waterPump", WaterPump.class);
+		waterPump.on();
+	}
+}
+----------------------------------------------------------------------------------------------------
+******
+There are 2 ways of performing dependency injection are there
+1. setter injection
+2. constructor injection
+
+why do we have 2 forms of dependency injection, what is the difference between them, which one should be used one?
+	
+constructor vs setter injection
+--------------------------------
+setter injection = the dependent object will be injected into the target class attribute via setter method which is called "setter injection"	
+constructor injection = the dependent object will be injected into target class by passing the dependent as a argument to the constructor of target class, so it is called "constructor injection"
+#1
+constructor injection:
+In case of constructor injection the dependent object will be injected into target class, while creating the object of target class itself
+setter injection:
+the dependent will be injected into target class, only after the target class object has been created. 
+
+when we should go for:	
+if we want to perform some initialization using the dependent object in the target class then go for constructor injection, because incase of setter the dependent object will be null inside the constructor
+----------------------------------------------------------------------------------------------------
+#2
+constructor injection:
+always the dependent is manatory to be injected via constructor arg, otherwise ioc container fails in instantiating the object of target
+
+setter injection:
+always the dependent object is optional to be injected into target class
+	
+when we should use what?
+if we want dependent to be mandatory to be injected use constructor, otherwise use setter.
+----------------------------------------------------------------------------------------------------
+#3 
+constructor injection:
+if our classes are having cyclic dependencies between each other, we cannot manage them through constructor injection
+
+setter injection:
+we can manage classes with cyclic dependencies also through setter injection
+----------------------------------------------------------------------------------------------------
+
+primitive dependency injection
+ioc container not only supports managing dependencies between the classes, it also supports injecting primitive values as dependents into the target class, which is called primitive dependency injection.
+	
+class Passport {
+	private String passportNo;
+	private String passportHolderName;
+	private String issuedAuthority;
+	
+	public void setPassportNo(String passportNo) {}
+	public void setPassportHolderName(String passportHolderName) {}
+	public void setIssuedAuthority(String issuedAuthority) {}
+}	
+
+application-bean.xml
+<bean id="passport" class="Passport">
+	<property name="passportNo" value="p038394"/>
+	<property name="passportHolderName" value="James Kevin"/>
+	<property name="issuedAuthority" value="Hyderabad Passport Office"/>
+</bean>
+
+Test.java
+-------------
+BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("a-c.xml"));
+Passport passport = beanFactory.getBean("passport", Passport.class);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

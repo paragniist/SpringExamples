@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="parcel" class="com.cdi.beans.Parcel">
+		<constructor-arg value="awb0383873" />
+		<property name="source" value="Hyderabad" />
+		<property name="destination" value="Banglore" />
+		<property name="goods">
+			<list value-type="java.lang.String">
+				<value>documents</value>
+				<value>pendrive</value>
+				<value>stationory</value>
+				<value>T-Shirt</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="staff1" class="com.cdi.beans.Staff">
+		<property name="staffNo" value="2" />
+		<property name="fullname" value="Patrik" />
+		<property name="age" value="32" />
+		<property name="gender" value="Male" />
+	</bean>
+
+	<bean id="staff2" class="com.cdi.beans.Staff">
+		<property name="staffNo" value="1" />
+		<property name="fullname" value="Mathew" />
+		<property name="age" value="23" />
+		<property name="gender" value="Male" />
+	</bean>
+
+	<bean id="staff3" class="com.cdi.beans.Staff">
+		<property name="staffNo" value="3" />
+		<property name="fullname" value="Rose" />
+		<property name="age" value="32" />
+		<property name="gender" value="Female" />
+	</bean>
+
+	<bean id="store" class="com.cdi.beans.Store">
+		<constructor-arg value="9383" />
+		<property name="storeName" value="Red Hills Store" />
+		<property name="location" value="west woods" />
+		<property name="staff">
+			<set value-type="com.cdi.beans.Staff">
+				<ref bean="staff1" />
+				<ref bean="staff2" />
+				<ref bean="staff3" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="person1" class="com.cdi.beans.Person">
+		<constructor-arg value="u938334" />
+		<property name="fullname" value="david" />
+		<property name="age" value="30" />
+		<property name="gender" value="Male" />
+	</bean>
+	<bean id="person2" class="com.cdi.beans.Person">
+		<constructor-arg value="u82733" />
+		<property name="fullname" value="blake" />
+		<property name="age" value="32" />
+		<property name="gender" value="Male" />
+	</bean>
+
+	<bean id="electionComission"
+		class="com.cdi.beans.ElectionCommission">
+		<property name="electrolList">
+			<map key-type="java.lang.String"
+				value-type="com.cdi.beans.Person">
+				<entry key="v03933" value-ref="person1" />
+				<entry key="v92822" value-ref="person2" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="profile" class="com.cdi.beans.Profile">
+		<property name="fullname" value="Peter" />
+		<property name="age" value="23" />
+		<property name="wishList">
+			<props>
+				<prop key="car">lamborgini</prop>
+				<prop key="bike">harley davidson</prop>
+				<prop key="house">duplex villa</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

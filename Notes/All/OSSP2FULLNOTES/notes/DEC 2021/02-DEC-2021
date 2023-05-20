@@ -1,0 +1,175 @@
+What is collection dependency injection?
+ioc container supports injecting collection class objects with pre-populated data	as dependent into the target class attributes is called "collection dependency injection".
+	
+we can configure a collection class	like an java.util.ArrayList or java.util.HashMap as bean definition and we can inject it as a dependent into the target class, but there is no use of injecting an empty collection class object as a dependent.
+	
+rather we want to instantiate collection class object with populated data and want to inject as dependent into target class. The only way ioc container supports injecting values into a class object is via setter/constructor, unfortunately none of the collection classes doesnt have either setter/constructor to configure as bean definitions and to populate values into them.
+	
+since the collections are heavily used classes we cannot populate them with data seems to be an drawback in spring framework, so ioc container/spring framework has provided special tags that helps us in creating the object of collection class by populating data, so that those objects can be injected as dependents into the target, which is called "collection dependency injection".	
+
+Summarize:	
+Collection dependency injection = there are special tags provided by ioc container to instantiate collection class objects by populating with data.
+	
+Spring supports 4 types of collections
+1. List
+2. Set
+3. Map
+4. Properties
+
+package com.cdi.beans;
+class Product {
+	private int productNo;
+	private String productName;
+	private List<String> features;
+	
+	public Product(int productNo) {}
+	public void setProductName(String productName) {}
+	public void setFeatures(List<String> features) {}
+}
+
+application-context.xml
+------------------------
+<bean id="product" class="com.cdi.beans.Product">
+	<constructor-arg value="9394"/>
+	<property name="productName" value="Samsung 32inch HD Led Television"/>
+	<property name="features">
+		<list value-type="java.lang.String">
+			<value>FullHD</value>
+			<value>3.1 dolby stereo sound</value>
+			<value>google assistance</value>
+			<value>android smart</value>
+		</list>
+	</property>
+</bean>
+
+
+Test.java
+------------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+Product product = beanFactory.getBean("product", Product.class);
+System.out.println(product);
+
+----------------------------------------------------------------------------------------------------
+package com.cdi.beans;	
+class Staff {
+	int staffNo;
+	String fullname;
+	int age;
+	String gender;
+	// setter
+}	
+
+package com.cdi.beans;
+class Store {
+	int storeNo;
+	String storeName;
+	String location;
+	Set<Staff> staff;
+	
+	public Store(int storeNo) {}
+	// setter
+}
+
+application-context.xml
+-------------------------
+<bean id="staff1" class="Staff">
+	<property name="staffNo" value="1"/>
+	<property name="fullname" value="david"/>
+	<property name="age" value="23"/>
+	<property name="gender" value="Male"/>
+</bean>
+
+<bean id="staff2" class="Staff">
+	<property name="staffNo" value="2"/>
+	<property name="fullname" value="Harris"/>
+	<property name="age" value="25"/>
+	<property name="gender" value="Male"/>
+</bean>
+
+<bean id="staff3" class="Staff">
+	<property name="staffNo" value="3"/>
+	<property name="fullname" value="Kevin"/>
+	<property name="age" value="25"/>
+	<property name="gender" value="Male"/>
+</bean>
+
+<bean id="store" class="Store">
+	<constructor-arg value="938"/>
+	<property name="storeName" value="Peakwood Store"/>
+	<property name="location" value="green hills"/>
+	<property name="staff">
+		<set value-type="com.cdi.beans.Staff">
+			<ref bean="staff1"/>
+			<ref bean="staff2"/>
+			<ref bean="staff3"/>
+		</set>
+	</property>
+</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/book-ticket.htm">bookTicketController</prop>
+				<prop key="/cancel-ticket.htm">cancelTicketController</prop>
+			</props>
+		</property>
+		<property name="interceptors">
+			<list>
+				<ref bean="siteMaintenanceInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+
+	<bean id="bookTicketController"
+		class="com.hiw.controller.BookTicketController" />
+	<bean id="cancelTicketController"
+		class="com.hiw.controller.CancelTicketController" />
+
+	<bean name="/pnr-status.htm"
+		class="com.hiw.controller.PnrStatusController" />
+
+	<bean name="/print-ticket.htm"
+		class="com.hiw.controller.PrintTicketController" />
+
+	<bean id="siteMaintenanceInterceptor"
+		class="com.hiw.interceptors.SiteMaintenanceHandlerInterceptor" />
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+</beans>
+
+
+
+
+
+
+

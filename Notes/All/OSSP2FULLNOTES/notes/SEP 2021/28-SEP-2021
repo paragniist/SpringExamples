@@ -1,0 +1,84 @@
+What is spring core is about, what does it provide?
+Spring core is all about managing the dependencies between the classes.
+  
+Even though Spring core can manage dependencies between any 2 arbitary set of classes, it recommends us to design the classes based on the Strategy Design Pattern and give to him. So, that it can better manage the dependencies and we can get benefited out of using Spring Framework.
+  
+What is a Design Pattern?
+For a recurring problem, there is pre-computed best solution that can be applied under a specific context to solve the problem together documented is called design pattern.
+  
+The roots or notion of design patterns in the software engineering world has been started by 4 people Richard Helm, Ralph Johnson, Enrich Gamma, John Vissel who are popular know as Gang of Four. The document the recurring problems and their best applicable solutions under a context and published a book called "Elements of Reusable object oriented Software".
+These people has document the problems and solutions that we generally face while building the application on object oriented programming principles.
+  
+Strategy Design Pattern is one of the design pattern out of the patterns of GOF, that Spring people recommends us to use in design the applciation classes, to get more benefited.
+---------------------------------------------------------------------------------------------------------
+Strategy Design Pattern
+The strategy design pattern has provided 3 principles based on which we need to design our application classes.
+  1. Favor composition over inheritance
+  2. always design to interfaces, never design to concreate classes
+  3. your code should be open for extension and should be closed for modification
+--------------------------------------------------------------------------------------------------------
+#1. Favor composition over inheritance
+If a class wants to reuse the functionality of another class, there are 2 ways are there
+1. Inheritance
+2. Composition
+
+Inheritance:-
+We can establish Inheritance relationship between the classes by extending one class from another.
+eg..  
+class A extends B {
+}  
+When we inherit one class from another class, all the traits of the parent will be part of the child class. The methods of the parent can be called by child class method directly as if those methods are also part of the child without using the object of parent.
+Inheritance always establishes IS-A relationship between the classes. IS-A relationship means always the child can be expressed interms of Parent.
+  
+  
+  
+OFWP226092021 = P49sU2  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

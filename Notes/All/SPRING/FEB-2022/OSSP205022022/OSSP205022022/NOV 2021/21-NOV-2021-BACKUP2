@@ -1,0 +1,226 @@
+Strategy Design Pattern
+There are 3 principles  are there 
+1. Favour composition over inheritance
+2. Always design to interfaces never design to concreate classes
+3. Code should be open for extension and closed for modification
+
+#1 Favour composition over inheritance
+A class can reuse the functionality of another class in 2 ways, either using inheritance or using composition
+
+Inheritance
+Inheritance can be established by extending one class from another class. Inheritance always represents IS-A relationship between the classes. When we inherit a class from another class all the traits of another class will be part of our class, so we can access attributes/methods of parent class from child directly without using object of the parent.
+  
+When to use inheritance?
+If we want all the traits of parent inside the child and if child can be expressed or represented in the form of parent, then we can use inheritance.
+  
+Composition
+Composition can be established by declaring another class as an attribute inside our class, instantiate the object and access the attributes/methods of another class, this is another form of reusing the functionality of another class. Composition established "HAS-A" relationship between the classes.
+
+When to use Composition?
+If we want to use few of the features/functionalities of another class, then use Composition
+
+Now the Strategy design pattern states avoid inheritance, rather prefer composition why?
+There are problems we encouter when we use inheritance, to avoid them go for composition
+1. In realtime applications a class want to reuse only few of the functionalities of another class where most of the time we use composition only rather than inheritance, which indicates
+most of the realtime usecases are solvable through composition rather than inheritance.
+  
+2. Multiple inheritance is not supported by most of the programming languages including java, so the only way we can make a class reuse the functionality of multiple classes is through composition only.
+  
+3. If we use Inheritance our classes will become fragile, and if we go for composition those are less fragile.
+Fragile := easily breakable or delicate
+
+class A {
+  double m1(int i) {
+    // logic 
+    return 10;
+  }
+}
+
+class B {  
+  A a;
+  int m1(int i) {
+    a = new A();
+    int j = (int) a.m1(i);
+    // additional logic
+    return j;
+  }
+}
+
+class C {
+  B b;
+  void m3() {
+    b = new B();
+    int k = b.m1(10);
+    // logic
+  }
+}
+
+4. Inheritance doesnt support testability, whereas composition support testing the application components.
+  
+0 = started successfully
+1 = failed to start retry
+2 = failed to start require service
+3 = failed not startable requires inspection and repair
+
+abstract class Engine { // developer1
+  int ignite(int mode) {
+    return 0;
+  }
+}  
+
+class MockEngine1 extends Engine {
+  public int ignite(int mode) {
+    return 0;
+  }
+}
+
+class MockEngine2 extends Engine {
+  public int ignite(int mode) {
+    return 1;
+  }
+}
+
+class MockEngine3 extends Engine {
+  public int ignite(int mode) {
+    return 2;
+  }
+}
+
+class MockEngine4 extends Engine {
+  public int ignite(int mode) {
+    return 4;
+  }
+}
+  
+class Car  { // developer2
+  private Engine engine;
+  
+  public Car(Engine engine) {
+    this.engine = engine;
+  }
+  
+  void drive(int mode) {
+    int status = engine.ignite(mode);
+    if(status == 0) {
+      sop("accelerate and drive");
+    }else if(status == 1) {
+      sop("retrying to start the engine");
+      drive(mode);
+    }else if(status == 2) {
+      sop("failed calling guarage for service");
+    }else if(status == 3) {
+      sop("failed calling towing vehicle for inspection and repair");
+    }    
+  }
+}  
+
+class Test {
+  public static void main(String[] args) {
+    Car car1 = new Car(new MockEngine1());
+    Car car2 = new Car(new MockEngine2());
+    Car car3 = new Car(new MockEngine3());
+    Car car4 = new Car(new MockEngine4());
+    car1.drive(1);    
+    car2.drive(1);    
+    car3.drive(1);    
+    car4.drive(1);    
+  }
+}
+---------------------------------------------------------------------------------------------------
+#2. Always design to interfaces, never design to concreate classes.
+  
+
+  
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    messageFormatter = new HTMLMessageFormatterImpl();
+    String cMessage = messageFormatter.formatMessage(message);
+    sop(cMessage);
+  }
+}  
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+  
+class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }
+}
+class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>";
+  }
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

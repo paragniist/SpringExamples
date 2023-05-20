@@ -1,0 +1,104 @@
+How to programmatically register DispatcherServlet and ContextLoaderListener in a spring mvc application?
+	
+#pre-deployment	
+class ProgWebApplicationInitializer implements WebApplicationInitializer {
+	public void onstartup(ServletContext context) {
+		WebApplicationContext rootApplicationContext = null;
+		WebApplicationContext servletApplicationContext = null;
+		DispatcherServlet dispatcherServlet = null;
+		ContextLoaderListener contextLoaderListener = null;
+
+		rootApplicationContext = new XmlWebApplicationContext();
+		rootApplicationContext.setConfigLocation("/WEB-INF/application-context.xml");
+		
+		contextLoaderListener = new ContextLoaderListener(rootApplicationContext);
+		context.addListener(contextLoaderListener);
+		
+		servletApplicationContext = new XmlWebApplicationContext();
+		servletApplicationContext.setConfigLocation("/WEB-INF/dispatcher-servlet.xml");
+		
+		dispatcherServlet = new DispatcherServlet(servletApplicationContext);
+		ServletRegistration.Dynamic dynamic = context.addServlet("dispatcher", dispatcherServlet);
+		dynamic.setLoadOnStartup(1);
+		dynamic.setUrlPatterns("*.htm");		
+	}
+}
+
+<servlet>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DipsatcherServlet</servlet-class>	
+	<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<url-pattern>*.htm</url-pattern>
+</servlet-mapping>
+
+#1. WAR will be exploded
+#2. web.xml and annotation configuration will be validated
+
+#3. it creates ServletContext
+#4. loads the web.xml and annotation configuration into ServletContext object
+#5. looks for ServletContainerInitializer implementation class by going to all the jars and looking into META-INF/services/javax.servlet.ServletContainerInitializer
+	- invokes SpringServletContainerInitializer#onstartup(ServletContext context, Set<Class<?>> handlers)
+		-> WebApplicationInitializer#onstartup(ServletContext)
+			-> register contextLoaderListener and DispatcherServlet to ServletContext of our application
+--------------------------------------------------------------------------------------------with the above all the metadata is loaded into servlet context (web.xml, annotations and programmatic metadata)			
+	
+#deployment process
+1. during deployment it looks for Listener (ServletContextListener) classes
+	> we registered ContextLoaderListener now
+		> onContextCreated(ServletContext) [
+			# it refersh the ioc container and binds to ServletContext as parent container	
+		]
+------------------------------------------------------------------------------------------
+#Initialization Phase		
+2. checks are there any servlets/filters with load-on-startup
+	> we registered DispatcherServlet to ServletContext already with load-on-startup=1
+	it instantiates the DispatcherServlet and invokes init() method
+		> it gets the parent ioc container from ServletContext
+		> nest with child ioc container which is already prepopulated
+		> refresh the child ioc container
+-------------------------------------------------------------------------------------------
+Now the application is marked for ready to access
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

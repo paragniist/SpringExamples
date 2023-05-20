@@ -1,0 +1,78 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+            
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+  
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {
+    this.messageFormatter = messageFormatter;
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+class HTMLMessageFormatterImpl implements IMessageFormatter {}
+class PDFMessageFormatterImpl implements IMessageFormatter {}
+
+class  {
+  public static IMessageFormatter createMessageFormatter(String type) {
+    IMessageFormatter messageFormatter = null;
+    if(type.equals("html")) {
+      messageFormatter = new HTMLMessageFormatterImpl();
+    }else if(type.equals("pdf")) {
+      messageFormatter = new PDFMessageFormatterImpl();
+    }
+    return messageFormatter;
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    IMessageFormatter messageFormatter = MessageFormatterFactory.getMessageFormatter("html");
+    
+    messageWriter.setMessageFormatter(messageFormatter);    
+    messageWriter.writeMessage("welcome to sdp");
+  }
+}
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

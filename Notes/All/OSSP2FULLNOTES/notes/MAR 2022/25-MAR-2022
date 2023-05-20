@@ -1,0 +1,121 @@
+stereotype annotations
+@Scope
+@Lazy
+@PostContruct
+@PreDestroy
+
+<context:component-scan base-package=""/>
+AnnotationConfigApplicationContext
+-----------------------------------------------------------------------------------------
+// no source code	
+// dependent
+class ToyCar {
+	private int id;
+	private String color;
+	
+	public void go() {
+		System.out.println("moving id " + id + " color : " + color);
+	}
+}
+
+// source code
+// target
+@Component
+class Gear {
+	@Autowired
+	private ToyCar toyCar;
+	
+	public void forward() {
+		toyCar.go();
+	}
+}
+
+application-context.xml
+-----------------------
+<bean id="toyCar" class="ToyCar">
+	<property name="id" value="10"/>
+	<property name="color" value="Blue"/>
+</bean>
+<context:component-scan base-package="com.xmlstreotype.annon"/>
+
+Test.java
+-----------
+ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+Gear gear = context.getBean("gear", Gear.class);
+gear.forward();
+------------------------------------------------------------------------------------------
+
+// no source code
+// target
+class Meeting {
+	int id;
+	String agenda;
+	Room room;
+	
+	public Meeting(int id) {
+		this.id = id;
+	}
+	public void setAgenda(String agenda) {}
+	public void setRoom(Room room) {}	
+}	
+
+// source code
+// dependent
+@Component
+class Room {
+	@Value("${applicationProperties.roomNo}")
+	int roomNo;
+	@Value("${applicationProperties.seatingCapacity")
+	int seatingCapacity;
+	
+}
+
+application-context.xml
+------------------------
+<bean id="meeting" class="Meeting">
+	<constructor-arg value="10"/>
+	<property name="agenda" value="standup call"/>
+	<property name="root" ref="room"/>
+</bean>
+
+<util:properties id="applicationProperties" location="classpath:application.properties"/>
+<context:component-scan base-package="com.annotation5.xmlannon"/>
+
+Test.java
+------------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+Meeting meeting = context.getBean("meeting", Meeting.class);
+sop(meeting);
+
+application.properties
+----------------------
+roomNo=10
+capacity=15
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

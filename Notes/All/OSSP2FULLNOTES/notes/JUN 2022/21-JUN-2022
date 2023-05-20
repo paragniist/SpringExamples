@@ -1,0 +1,111 @@
+We can apply commmon pre/post processing logic for a group of requests comming into the application by using intercepting filters in case of servlet/jsp api
+
+We can bind intercepting filters to be executed for our application/group of requests in 3 ways
+1. through url pattern 
+2. we can bind the filter to be executed to a specific servlet
+3. based on http request method
+we can even bind the filter to the request using any/all of the #3 combinations we discussed.
+	
+
+<filter>
+	<filter-name>UserPreferenceFilter</filter-name>
+	<filter-class>UserPreferenceFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>UserPreferenceFilter</filter-name>
+	<url-pattern>'/product/*'</url-pattern>
+	<request-method>GET</request-method>
+	<servlet-name>ProductDetailsServlet</servlet-name>
+</filter-mapping>
+
+<servlet>
+	<servlet-name>ProductDetailsServlet</servlet-name>
+	<servlet-class>com.eshop.servlet.ProductDetailsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>ProductDetailsServlet</servlet-name>
+	<url-pattern>/product/details</url-pattern>
+</servlet-mapping>
+	
+In case of spring mvc application we cannot use Filters for performing pre/post processing logic. Because ServletContainer will tries to execute a Filter upon resolving a request to a Servlet.But in spring mvc application a request will be identified to be valid only when the request has been resolved to an Controller, which is not aware by the ServletContainer.
+	
+So the servlet container upon identifying the DispatcherServlet for a request, even though there is no controller for the request, it treats as a valid request and execute intercepting filter which leans to unnecessary execution of pre/post processing logic
+
+To overcome the above problem spring mvc has introduced HandlerInterceptor
+
+HandlerInterceptor is used for applying pre/post processing logic for a group of request coming into spring webmvc application
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

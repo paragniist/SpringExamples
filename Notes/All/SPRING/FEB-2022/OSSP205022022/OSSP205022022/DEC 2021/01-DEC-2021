@@ -1,0 +1,176 @@
+How many types of dependency injection are there?
+There are 2 types of dependency injection are there
+1. setter injection
+The dependent object will be injected into the target class attribute via setter method
+
+2. constructor injection
+The dependent object will be injected into target class by passing dependent as an argument to the constructor of the target class
+
+What is the different between setter and constructor injection?
+#1
+In case of constructor injection, the dependent object will be injected into target class during the time of instantiating the object of target class, by passing dependent as constructor argument.
+whereas in case of setter injection the dependent will be injected into target class, after instantiating the target class object.
+	
+if we want to access the dependent within the target class constructor to perform initialization or any operation then you need to use construction injection otherwise you can go for setter injection
+
+#2 the dependents are optional in case of setter injection
+whereas manadatory in constructor injection
+
+#3 
+circular dependencies between the classes cannot be managed via constructor injection,
+setter injection can manage circular dependencies between the classes
+----------------------------------------------------------------------------------------------------
+Primitive dependency injection
+ioc container not only supports injecting dependents as object types, we can even pass primitive value as dependent to the ioc container asking to inject into target class attribute which is called primitive dependency injection
+	
+class Address {
+	private String addressLine1;
+	private String addressLine2;
+	private String city;
+
+	// getters
+	public void setCity(String city) {}
+	public void setAddressLine2(String addressLine2) {}
+	public void setAddressLine1(String addressLine1) {}
+}	
+
+application-context.xml
+------------------------
+<bean id="address" class="Address">
+	<property name="city" value="hyderabad"/>
+	<property name="addressLine2" value="2nd lane"/>
+	<property name="addressLine1" value="chirag galli"/>
+</bean>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+Address address = beanFactory.getBean("address", Address.class);
+System.out.println(address.getAddressLine1());
+
+----------------------------------------------------------------------------------------------------
+Collection Dependency Injection
+ioc container not only supports injecting object types or primitive values as dependents, it supports even injection collection class objects as dependents into target classs, which is collection dependency injection
+
+ioc container supports 4 types of collection classes to be injected as dependents into target class
+	1. set
+	2. list
+	3. map
+	4. properties
+	
+collection dependency injection doesnt mean instantiate empty collection object and inject it as dependent into target class. we want to instantiate collection class objects with populated values/objects and inject them as dependents into target class attributes.
+	
+In the below example there is no use of injecting an empty List (l).	
+class A {
+	List<String> l;
+	
+	public void setL(List<String> l) {}
+}
+
+application-context.xml
+
+<bean id="a" class="A">
+	<property name="l" ref="l"/>
+</bean>
+
+<bean id="l" class="java.util.ArrayList"/>
+
+The ioc container only supports injection values into a bean definition object via seter / constructor injection only. unfortunately none of the collection class has setter methods or constructor args to populate values into them.
+	
+since the collection classes in java doesnt have either setter/constructor we cannot make them as bean definitions with populated values. where as collection classes are very popular being used in java programs if ioc container doesnt support injecting them with values its a drawback in spring.
+	
+So to help us in injecting collection class objects with values as dependents the spring has provided special tags for each of the collection
+
+
+class Product {
+	int productNo;
+	String productName;
+	List<String> features;
+	
+	public Product(int productNo) {
+		this.productNo = productNo;
+	}
+	public void setProductName(String productName) {}
+	public void setFeatures(List<String> features) {}
+}
+
+application-context.xml
+------------------------
+<bean id="product" class="Product">
+	<constructor-arg value="393"/>
+	<property name="productName" value="Samsung 32inch HD Led TV"/>
+	<property name="features">
+		<list>
+			<value>Full HD</value>
+			<value>3.1 Dolby sorround sound</value>
+			<value>Andriod Smart TV</value>
+			<value>Voice Remote</value>
+		</list>
+	</property>
+</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

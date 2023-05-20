@@ -1,0 +1,108 @@
+class LoanManager {
+	public boolean approveLoan(long loanNo) {
+		return true;
+	}
+}
+
+class UserCredentials {}
+
+class AuthenticationManager {
+	private static AuthenticationManager instance;
+	private ThreadLocal<UserCredentials> userCredentialLocal;
+	
+	private AuthenticationManager() {
+		userCredentialLocal = new ThreadLocal<>();
+	}
+	
+	public static synchronized AuthenticationManager getInstance() {
+		if(instance == null) {
+			instance = new AuthenticationManager();
+		}	
+		return instance;
+	}
+	public void login(String un, String pwd) {}
+	public void logout() {}
+	public boolean authenticate() {}
+	public String getLoggedInUser() {}
+}
+
+
+class SecurityAndAuditAspect {
+	private AuthenticationManager authenticationManager;
+	
+	public SecurityAndAuditAspect(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;
+	}
+	
+	public void audit(JoinPoint jp) {
+		String methodName = null;
+		Object[] args = null;
+		
+		methodName = jp.getSignature().getName();
+		args = jp.getArgs(); // cloned parameters
+		sop(authenticationManager.getLoggedInUser() + " has called " + methodName +"(" + args[0]+")"); // auditing				
+	}
+	
+	public void applySecurity(JoinPoint jp) {
+		if(authenticationManager.authenticate() == false) {
+			throw new BadCredentialsException("invalid un/pwd");
+		}
+	}
+	
+	
+}
+
+
+application-context.xml
+-----------------------
+<bean id="loanManager" class="LoanManager"/>
+<bean id="authenticationManager" class="AuthenticationManager" factory-method="getInstance"/>
+
+<bean id="securityAndAuditAspect" class="SecurityAndAuditAspect">
+	<constructor-arg ref="authenticationManager"/>
+</bean>
+
+<aop:config>
+	<aop:pointcut id="pc1" expression="execution(* com.mba.beans.LoanManager.*(..))"/>	
+	<aop:aspect ref="securityAndAuditAspect">
+		<aop:before method="audit" pointcut-ref="pc1"/>		
+		<aop:before method="applySecurity" pointcut-ref="pc1"/>
+	</aop:aspect>
+</aop:config>
+
+
+Test.java
+----------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+
+LoanManager lm = context.getBean("loanManager", LoanManager.class);
+boolean loanStatus = lm.approveLoan(93893L);
+sop("loan status : " + loanStatus);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

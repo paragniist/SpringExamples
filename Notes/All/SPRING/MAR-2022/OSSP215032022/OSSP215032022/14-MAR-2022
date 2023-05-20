@@ -1,0 +1,61 @@
+Lookup Method Injection
+------------------------
+
+interface IEngine {
+	void start();
+}
+
+class YamahaEngineImpl implements IEngine {
+	public void start() {
+		sop("yamaha engine started..");
+	}
+}
+
+class Car implements BeanFactoryAware {	
+	public void drive() {
+		IEngine engine = null;
+		
+		engine = beanFactory.getBean("engine", IEngine.class);
+		engine.start();
+		sop("driving");
+	}
+	
+	public void setBeanFactory(BeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="car" class="Car"/>
+<bean id="engine" class="YamahaEngineImpl" scope="prototype"/>
+
+Test.java
+-----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Car car1 = beanFactory.getBean("car", Car.class);
+Car car2 = beanFactory.getBean("car", Car.class);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

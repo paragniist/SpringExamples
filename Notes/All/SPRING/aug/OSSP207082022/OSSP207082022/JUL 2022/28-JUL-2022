@@ -1,0 +1,41 @@
+Internationalization (i18n)
+Internationalization is localizing the application to the locale/language of the user who is accessing the application.
+There are 3 levels of internationzliation are there
+1. data internationalization
+storing the data in underlying source system (database or file) by enabling the support of multiple languages
+
+2. native language support (nls) programming
+
+3. content internationalization
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

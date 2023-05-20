@@ -1,0 +1,96 @@
+appClasses.properties [classes and their dependencies]
+----------------------
+htmlMessageFormatter.class=com.sdp.beans.HTMLMessageFormatterImpl
+pdfMessageFormatter.class=com.sdp.beans.PDFMessageFormatterImpl
+
+messageWriter.class=com.sdp.beans.MessageWriter
+messageWriter.messageFormatter=htmlMessageFormatter
+
+messageBoard.class=com.sdp.beans.MessageBoard
+messageBoard.messageFormatter=htmlMessageFormatter
+
+#1 Dont write classname of a class in another java class, it makes our classes tightly coupled
+#2 Dont manage the dependencies in java class, to switch dependencies again we need to modify the code
+declare classes and their dependencies in non-java files (properties). then write the code in reading the class declarations and dependency information in creating the objects of your application
+  
+We have to write complex logic in AppFactory in creating the objects for the classes we delcared and to manage their dependency to achieve loosely coupling
+class AppFactory { (enhance the code)
+  private static Properties props = new Properties();
+  static {
+    props.load(AppFactory.class.getClassLoader().getResourceAsStream("appClasses.properties"));
+  }
+  
+  public static Object createObject(String lclassname) {
+    String fqnClass = null;
+    Class<?> clazz = null;
+    Object obj = null;
+    
+    fqnClass = props.getProperty(lclassname);
+    clazz = Class.forName(fqnClass);
+    obj = clazz.newInstance();
+    
+    return obj;
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = (MessageWriter) AppFactory.createObject("messagerWriter.class");
+    MessageBoard messageBoard = (MessageBoard) AppFactory.createObject("messageBoard.class");
+    
+    /*IMessageFormatter htmlMessageFormatter = (IMessageFormatter) AppFactory.createObject("htmlMessageFormatter.class");    
+    IMessageFormatter pdfMessageFormatter = (IMessageFormatter) AppFactory.createObject("pdfMessageFormatter.class");*/
+    
+    /*messageWriter.setMessageFormatter(htmlMessageFormatter);        
+    messageBoard.setMessageFormatter(pdfMessageFormatter);*/
+    
+    messageWriter.writeMessage("Welcome to SDP");
+  }
+}
+
+class MessageWritter {
+  private IMessageFormatter messageFormatter;
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {}
+}
+
+class MessageBoard {
+  private IMessageFormatter messageFormatter;
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {}
+}
+
+
+
+How to make the classes loosely-coupled in an Application?
+#1 use Strategy Design Patter in desiging the application classes
+#2 externalize the classes and their dependencies information in external configuration files
+#3 write the code for reading class declarations and depenency information in instantiating the objects of the application classes.
+  
+Spring Core is all about instantiating the objects and managing the dependencies between the classes.
+  
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+

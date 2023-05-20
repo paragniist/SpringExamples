@@ -1,0 +1,139 @@
+Spring Transactions
+-------------------
+What is spring transactions, why do we need to use spring transactions?
+There are 2 types of transactions are there
+1. local transactions = we can work with local transactions using jdbc api, we need to commit/rollback the transaction using Connection 
+
+2. global transactions = jdbc api doesnt support global transactions, we need to use jta api. we need to commit/rollback the transaction using UserTransaction 
+
+
+In our application we need to write jdbc api logic for working with local transactions and while working with global transactions we need to use jta api logic
+So if we want to switch from local transaction to global transaction or viceversa, we need rewrite the code of transactionality in all the classes whereever we are managing the transactions in our application
+
+In addition while working with different frameworks they have provided their own transaction management apis like
+1. Hibernate Framework
+2. Jpa api
+3. MyBatis
+4. EclipseLink
+
+Now while switching from local to the global or one framework to other framework we need to rewrite the code for managing transactions in our application, which is an huge maintainance problem
+
+So to overcome the above problem spring framework has provided spring transaction module. Spring Tx is an module that has provided unified api, that allows you to work with any of the transaction management mechanisms available in the market
+
+
+There are 3 ways we can work with Spring Transactions
+1. programmatic api approach
+2. delcarative approach
+3. annotation-driven approach
+
+
+
+beneficiary
+--------------
+beneficiary_no
+fullname  
+aadhar_no  
+dob  
+gender
+mobile_no
+email_address
+
+
+grant_application
+------------------
+grant_application_no
+grant_type [crop/dwakra/mudra/fisheries]
+grant_amount
+interest_amount
+tenure
+status
+beneficiary_no
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

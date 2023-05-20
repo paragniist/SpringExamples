@@ -1,0 +1,35 @@
+Method Replacement
+------------------
+
+person -> medical insurance provider -> policies (freely) = enrollment
+	        |-information about the person 
+
+|-gps (government program system) = reconcillation process
+	
+
+
+
+Medical Insurance Providers
+	- uhg
+	- athena
+	- wellpoint
+
+Medical Insurance Policies
+benefits:-
+	1. In-Network hospital coverage / Out of Network hospital coverage
+	2. copay (20%)
+	3. Cashless Facility
+	4. Pre-existing conditions
+		- diabities
+		- hypertension
+		- asthama
+	5. Riders
+		- Dental
+		- Opthomology
+		- Cosmetic Surgeries
+		
+		
+	
+
+	
+

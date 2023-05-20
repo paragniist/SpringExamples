@@ -1,0 +1,102 @@
+What is a singleton class when do we call a class as singleton?
+For any given class, it it allows us to create only one single object within the scope of the application or hierarchy of classloaders then the class is called Singleton class.
+	
+When do we need to create a class as singleton class?
+There are 3 different circumstances under which we need to create a class as singleton class.
+	
+State of an object:  is defined by the attributes declared within the class. if we create 2 objects for a class, both the objects has different copies of memory for the attributes defined within the class, so that each object can hold their own values within those attributes thus the attributes defines the state of an object.
+	
+The member methods are scoped to the class-level wherein only one copy of the method is loaded within the Method area of the jvm memory and all the objects of the class will reuse the same method for execution.
+While accessing the methods, based on the object with which the method is being called the corresponding attribtues of the object are reffered inside the method.
+	
+
+#1 I have a class, wherein there are no member variables defined but there member methods within the class. The objects of the class holds zero state and the methods are not using any of the state of the object.
+	
+The methods are taking the data interms of parameters to perform operation and return the output as a return value.
+	
+In this case if we create multiple objects also there is no use since all of the objects contains zero state and the methods are not using the state of the object to perform operation. 
+So instead of permitting the class to create multiple objects by wasting the jvm memory declare the class as singleton class.
+	
+#2 I have a class, there are member variables declared and there are member methods defined. The member methods are using the state of the object. But the state of the objects of my class are completely readonly
+	
+class Circle {
+	private final double PI=3.1412;
+	
+	public double area(int r) {
+		return PI * r * r;		
+	}
+}	
+Circle c1 = new Circle();
+Circle c2 = new Circle();
+
+double area1 = c1.area(2);
+double area2 = c2.area(2);
+
+In the above code we are calling c1.area(2), c2.area(2) where the outcome will not differ because both the objects are holding the same state. The outcome of the method execution differs based on parameter with which we are calling the method not based on object we are using in calling the method.
+	
+So what is the use of creating multiple objects where all of them holds same state. Dont allow your class to have multiple objects, because it wastes jvm member declare the class as singleton.
+	
+#3	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

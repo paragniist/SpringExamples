@@ -1,0 +1,61 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message){}
+  public void setMessageFormatter(IMessageFormatter messageFormatter){}
+}
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+class HTMLMessageFormatterImpl implements IMessageFormatter {}
+class PDFMessageFormatterImpl implements IMessageFormatter {}
+
+application-context.xml
+------------------------
+<bean id="messageWriter" class="com.coredi.beans.MessageWriter">  
+</bean>
+
+
+<bean id="htmlMessageFormatter" class="com.coredi.beans.HTMLMessageFormatterImpl"/>
+<bean id="pdfMessageFormatter" class="com.coredi.beans.PDFMessageFormatterImpl"/>
+
+d:\work:/>
+coredi
+|-src
+  |-main
+    |-java
+    |-resources
+|-pom.xml
+|-target
+  |-classes (classpath location)
+    |-com
+      |-coredi
+        |-common
+          |-application-context.xml
+
+Test.java
+----------
+BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("com/coredi/common/application-context.xml"));
+
+MessageWriter messageWriter = beanFactory.getBean("messageWriter", MessageWriter.class);
+MessageWriter messageWriter1 = beanFactory.getBean("messageWriter", MessageWriter.class);
+
+beanFactory.getBean("htmlMessageFormatter");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

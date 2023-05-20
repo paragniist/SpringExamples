@@ -1,0 +1,4 @@
+What are the advantages of using annotations?
+1. annotations are short in nature and spans at max 1 word and easy to memorize and write it as part of source code of the java class
+2. annotations are also java types only we dont need to learn something other than java to work with annotations
+3. since we write annotations directly as part of source code during the time compilation the compiler will validate and displays any mis-configuration issues which saves lot of roundtrips in validating the configuration while working with xml

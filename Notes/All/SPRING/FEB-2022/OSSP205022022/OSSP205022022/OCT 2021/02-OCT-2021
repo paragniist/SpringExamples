@@ -1,0 +1,119 @@
+Strategy Design Pattern
+1. Favor composition over inheritance
+2. always design to interfaces, never design to concreate classes
+3. code should be open for extension and should be closed for modification
+
+#1 Favor composition over inheritance
+When we are reusing the functionality of another class, preferrably use composition rather than inheritance.
+Why Strategy Design Pattern is suggesting us to use Composition than Inheritance?
+There are problems with using Inheritance are there due to which it is recommending us to use Composition
+1. Most of the realtime usecases are solvable through composition rather than inheritance, because many of times a class wants to use partially the functionality of another class.
+2. Many programming languages including java doesnt support multiple inheritance, so in case if our class wants to reuse the functionality of multiple classes, we need to use composition only
+3. code will be fragile when we use inheritance, and would be less fragile when we go for composition
+
+Fragile: quickly/easily breakable (or) delicate to handle
+If we use inheritance to reuse the functionality of another class, then our classes becomes highly fragile.
+
+How to modify the functionality of a method, without changing the code inside the class?
+Through method overriding, so that we can replace or enhance the logic of an existing method by overriding in a subclass. by using runtime polymorphism we can invoke the new method with parent class reference variable which is nothing but replacing.  
+  
+class A {
+  double m2(int i) {
+    // logic
+    return 39.1;
+  }
+}  
+
+class B extends A {
+  double m2(int i) {
+    int j = super.m2(i);
+    // add some additional logic
+    return 40;
+  }
+}
+
+class C {
+  public void m3(int i) {
+    B b = new B();
+    double j = b.m2(i);
+    // do some operation
+    sop(j);
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    C c = new C();
+    c.m3(10);
+  }
+}
+
+What is overriding?
+overriding happens between the classes which are under inheritance relationship. A method to participate in overriding, the name of the super class method and subclass method should be same including parameters and returnType. 
+  
+What is overloading?
+overloading may happen within the classes or across the classes of inheritance hierarchy. A method is said to be overloaded if the method name should be same, but parameters should be different between those 2 methods. but it doesnt consider returnType in overloading.
+  
+class A {
+  int m2(int i) {
+    return 10;
+  }
+  int m2(int i, int j) {
+    return 20;
+  }
+  double m2(int i) {
+    
+  }
+}  
+
+A a = new A();
+a.m2(10);
+
+The above problem can be solved through composition, let us see.
+class A {
+  double m2(int i) {
+    // logic
+    return 24;
+  }
+}
+
+class B {
+  A a;
+  int m2(int i) {
+    int j = 0;
+    
+    a = new A();
+    j = (int) a.m2(i);
+    // logic
+    return j;
+  }
+}
+
+
+class C {
+  void m3(int i) {
+    B b = new B();
+    int k = b.m2(i);
+    sop(k);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

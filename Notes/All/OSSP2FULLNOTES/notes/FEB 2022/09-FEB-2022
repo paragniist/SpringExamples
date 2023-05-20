@@ -1,0 +1,109 @@
+one way we can avoid accessing the data from database repeatedly in rending the jsp page is fetch cities, states and countries and place them as part of application scope and reuse across the requests, but holding the data as part of application scope has few down sides
+1. The data stays for longer time until the shutdown of the application wherein we use the data barely in  few requests which will unnecessary wastes the jvm memory in dumping such a huge data
+2. the non-web application components of the application cannot access the data placed as part of scope of the container
+
+The another solution is:
+1. read the data once and place it in instance variables of the servlet, reuse the same data from the instances variables in serving all the requests 
+2. to read the data only once we need to write the logic in init() method of the servlet so that it would be executed only once per servlet during its instantiation
+
+Even though the above solutions works, incase if multiple servlets of our application wants the data of cities, states and countries per each servlet they have to fetch once the data from database to render, so still this is not an optimal solution
+
+To solve the above problem we need to employ cache technics:
+What cache what is the purpose of cache?
+Cache is used for storing the data and distributing the data across the components of our application.
+The sole purpose of cache is to store (in organized way) and manage the data along with distribute the data to the components of our application.
+	
+while storing the data in the cache we need to bind/attach an identifier for each data we store inside it, so that cache can locate/identify and can return the data whenever we requested data. In-short cache stores the data in key/value pair
+
+class Cache {
+	private Map<String, Object> dataMap;
+	private static Cache instance;
+	
+	private Cache() {
+		dataMap = new HashMap();;
+	}
+	public static synchronized Cache getInstance() {
+		if(instance == null) {
+			instance = new Cache();
+		}
+		return instance;
+	}
+
+	public void put(String key, Object value) {
+		dataMap.put(key, value);
+	}
+	public Object get(String key) {
+		return dataMap.get(key);
+	}
+	public boolean containsKey(String key) {
+		return dataMap.containsKey(key);
+	}
+}
+
+class SignupServlet extends HttpServlet {} = Cache object with data
+class ManageProfileServlet extends HttpServlet {} = Cache object with same data
+
+
+
+global variable = only way to share the data across the functions is by declaring global variables, in such case how to find which functions are modifying what data, highly complex and makes us difficult to debug the application
+
+encapsulation: is a technic through which we wrap the data along with the methods around it, so that we can easily keep track of which data is managed/accessed in what methods of our application, we achieve encapsulation through class in java
+	
+abstraction: hide the underlying datastructure information in which the data is being stored within a class and expose it through the essential methods, so that in future if there is a change in the datastructure representation of the data, none of the class of our application will be impacted
+	
+How to store the data within the Cache?
+Store the data within the cache in organized way, which means group the related data together and store it within the cache so that it can easily retrieved and used within our application
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,173 @@
+Spring Boot with Microservices
+Duration: 3 months
+Fee: 8k
+Timings: 7:05 am - 8:05 am
+Sunday: 6:30 am - 8:30 am 
+Notes: Live classroom notes will be given to the students at the end of every week including live examples
+No youtube, no recordings and students are not allowed to record the sessions.
+if found will cancel admission without fee refund 
+
+1. daily while explaining, revision of the previous session will be done, so that you can grasp todays session easily
+2. you will be added to the telegram group so that you can talk to your friends to understand missed session
+
+#3. 1 week missed = drop an email to us at durgasoftonlinetraining@gmail.com, will provided backup in next batch for those lost classes
+--------------------------------------------------------------------------------------------
+Contents:-
+#1 spring webmvc 5.0 [20 days] [end-end 2/3 examples]
+1. Basics of an Web Application
+2. Why do we need Web Mvc Framework, why not we can use Servlet/Jsp for building web applications
+3. Architecture of Spring WebMVC
+4. DispatcherServlet [web.xml/annotation-driven approach]
+5. HandlerMapping
+6. HandlerInterceptors
+7. Controllers
+8. ViewResolvers
+9. View [Jsp/Excel/Pdf]
+10. Java Bean Validation api
+11. Annotation-driven controller programming
+	1. @ModelAttribute parameter
+	2. @Valid
+	3. @ModelAttribute method level
+	4. RequestMapping, GetMapping, PostMapping
+12. Exception Management
+	1. @ControllerAdvice (Global Exception Handler)
+	2. @ExceptionHandler (Local Exception Handler)
+
+#2. spring orm
+integrating 
+	- Spring + Hibernate
+	- Spring + Jpa api
+	
+#3. Spring DataJpa (Hibernate Will not be taught) [pre-requisite: Hibernate/Jpa] [7 days]
+1. What is DataJpa, why do we need to use it
+2. What are Repositories, how many types of repositories are there
+3. How does Repositories internally work?
+4. How to write query methods using DSL language in repository interfaces representing various different query clauses
+5. How to declare queries using @Query annotation on repository method
+6. how to work with NamedParameters
+7. How to use Sort and Pagination capabilities in repositories
+8. Projections (interface, class)
+9. Modifying queries in datajpa
+
+#4. Spring Security [5-7 days]
+1. How to work with Spring Security, why do we need to use Spring Security
+2. Architecture of Spring security
+3. How to implement security for an web application
+	1. declarative approach
+	2. annotation-driven approach
+	
+#5. Spring Boot [20-25 days]
+1. What is Spring boot, why do we need to use Spring Boot module
+2. SpringApplication, @SpringBootApplication
+3. Building the First Spring Boot Application
+4. Spring Boot Executable Jar, how do we build them, how do they work internally
+5. Dependency Management in Spring boot and understanding starter dependencies
+6. Ways of creating spring boot application
+	- spring-boot-parent project
+	- dependencyManagement
+7. FluentBuilderApi
+	- Changing Spring Boot Banner
+	- Turnoff Banner
+8. ApplicationEvents in SpringBoot
+9. Command-line runners and ApplicationRunners
+10. Application Properties
+11. ConfigurationProperties
+12. Springboot profiles
+13. Spring Boot autoconfigurations, and creating our own custom auto configurations
+14. Working with SpringBoot mvc
+15. Spring boot actuator endpoints
+--------------------------------------------------------------------------------------------
+
+Spring Microservices
+#1. Spring Cloud
+Cloud Config Server
+Cloud Config Client
+
+#2. Spring MicroServices
+What are microservices, why do we need it
+What is Monolithic application architecture?
+What is microservices application architecture?
+How to migrate an typical jee application into microservices architecture
+Patterns:-
+	1. Domain Driven Approach
+	2. Single Responsibility
+	3. Database per service
+	4. Database per application
+	5. Api Compose
+	6. CQRS
+	7. Saga
+Tools:-
+	1. Eureka Discovery Server
+	2. Feign Client
+	3. Spring Cloud Gateway
+	4. Spring Cloud Loadbalancer
+	5. Ribbon
+	6. Spring Circuit Breaker
+			- Resilience4j
+	7. Example demonstrating kafka in microservices
+	8. ELK Stack
+	9. OAUTH2
+
+Pre-requisite (You should know below concepts to join this course) :-
+1. Spring Framework
+	- core (good)
+	- aop
+	- jdbc (good)
+	- tx
+2. Restful Services [1 month new batch restful services] (parallely) [5k]
+		= corejava, advanced java
+		= 8:15 am - 9:15 am
+		
+3. Hibernate Framework (learning: orm, datajpa)
+	
+
+Spring Mvc and Spring Boot = 6k
+MicroServices: 5k
+Spring Mvc + Spring Boot + Microservices = 8k
+
+Jun 8th = AWS Cloud Platform (new batch) [6:00 - 7:00 am] (online)
+duration: 3 months
+Fee: 6k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

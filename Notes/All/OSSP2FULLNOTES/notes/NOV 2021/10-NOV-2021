@@ -1,0 +1,141 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+    
+    // messageFormatter = new HTMLMessageFormatterImpl();
+    // messageFormatter = MessageFormatterFactory.createMessageFormatter("html");
+    
+    /**
+      When we are not creating or not pull the object, we will not references of another class inside our class, which makes our class completely loosely-coupled
+    */
+    
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {
+    this.messageFormatter = messageFormatter;
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+class HTMLMessageFormatterImpl implements MessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>"
+  }
+}
+
+class PDFMessageFormatterImpl implements MessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>";
+  }
+}
+
+class MessageFormatterFactory {
+  public static IMessageFormatter createMessageFormatter(String type) {
+    IMessageFormatter messageFormatter = null;
+    
+    if(type.equals("html")) {
+      messageFormatter = new HTMLMessageFormatterImpl();
+    }else if(type.equals("pdf")) {
+      messageFormatter = new PDFMessageFormatterImpl();
+    }
+    return messageFormatter;
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = (MessageWriter) AppFactory.createObject("messageWriter.class");
+    IMessageFormatter messageFormatter = (IMessageFormatter) AppFactory.createObject("messageFormatter.class");
+    
+    messageWriter.setMessageFormatter(messageFormatter);
+    messageWriter.writeMessage("Welcome to SDP");
+  }
+}
+
+
+when we use classname or logical classname of another class inside a java class we will always be tightly coupled. So inorder to switch between the classes we need to modify the source code of the java class, even though the change seems to be simple to reflect the changes we made
+  1. need to recompile the application
+  2. repackage and redeploy
+  3. restart the server
+  4. need to certify the changes by testing the application by qa
+  5. should follow the complete stages of delivery to release the application in production with the changes
+from the above looks like a simple change in java class seems to be very costly and time taking process.
+  
+dont write the classname or logical classname of another java class inside a java class, rather write it somewhere else, read the classname and instantiate the object
+
+to help us in accessing the classnames easily let us write the classnames in properties file. properties is a key/value format file in which we can store key as identifier of the class and value as full qualified name of the class.
+  
+app-classes.properties
+messageWriter.class=com.sdp.entities.MessageWriter
+messageFormatter.class=com.sdp.entities.PDFMessageFormatterImpl
+
+
+class AppFactory {
+  public static Object createObject(String lclassname) {
+    String fqnClass = null;
+    
+    Properties props = new Properties();
+    props.load(new FileInputStream(new File("d:\\app-classes.properties")));
+    
+    fqnClass = props.getProperty(lclassname);
+    Class clazz = Class.forName(fqnClass);
+    
+    Object obj = clazz.newInstance();
+    return obj;        
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+

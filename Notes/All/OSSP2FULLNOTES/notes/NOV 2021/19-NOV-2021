@@ -1,0 +1,67 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+        
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {
+    this.messageFormatter = messageFormatter;
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }
+}
+class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>";
+  }
+}
+
+Spring Bean = If a class is instantiated and managed by the Spring then it is called Spring Bean  
+Declare information about our application classes in spring bean configuration file
+
+application-context.xml
+<beans>
+  <bean id="messageWriter" class="com.sdp.beans.MessageWriter"/>
+  <bean id="htmlMessageFormatter" class="com.sdp.beans.HTMLMessageFormatterImpl"/>
+  <bean id="pdfMessageFormatter" class="com.sdp.beans.PDFMessageFormatterImpl"/>
+</beans>
+
+class Test {
+  public static void main(String[] args) {
+    BeanFactory beanFactory = new XMLBeanFactory("d:\\application-context.xml");
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

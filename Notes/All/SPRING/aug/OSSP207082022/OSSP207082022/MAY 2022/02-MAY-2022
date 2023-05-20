@@ -1,0 +1,45 @@
+@Component
+class Calculator {
+	public int add(int a, int b) {
+		sop("in add()");
+		return a+b;
+	}
+}
+
+@Component
+@Aspect
+class LoggingAspect {
+	@Around("execution(* com.aa.beans.Calculator.add(..))")
+	public Object log(ProceedingJoinPoint pjp) {
+		String methodName = null;
+		Object[] args = null;
+		methodName = pjp.getSignature().getName();
+		args = pjp.getArgs();
+		sop("entered into " + methodName + "("+args[0]+","+args[1]+")");
+		Object ret = pjp.proceed();
+		sop("exiting from " + methodName + " with ret : " +ret);
+		return ret;
+	}
+}
+
+class Test {
+	public static void main(String[] args) {
+		ApplicationContext context = new AnnotationConfigApplicationContext({"com.aa.beans", "com.aa.aspect"});
+		Calculator calculator = context.getBean("calculator", Calculator.class);
+		int sum = calculator.add(10, 20);
+		sop("sum : " + sum);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

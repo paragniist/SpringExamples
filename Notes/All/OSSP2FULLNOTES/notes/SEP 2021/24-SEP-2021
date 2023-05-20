@@ -1,0 +1,100 @@
+There are 2 key features of the Spring Framework that made it unique in the market.
+1. versatile application development framework
+Due to versatality we dont need to re-write the existing application to use Spring Framework rather, rather we can intergate with other technologies of the project and enrich the application.
+  
+2. non-invasive application development framework.
+usually while working with an api/framework, we need to use api/framework provided class within our application classes to build the functionality/application.
+  
+For eg.. to write an Action class in struts framework  
+
+class MyAction extends Action {
+  public ActionForward execute(HttpServletRequest request, HttpServletResponse response, ActionForm form, ActionMappings mappings) {
+    
+  }
+}  
+  
+Here Action
+ActionForm
+ActionForward
+ActionMappings
+are the classes provided the Struts Framework, in our code we are using Framework/api classes to use that framework or api
+Here our code is tightly coupled with Framework/api since we are using Framework/api classes directly within our code. let us say we want to remove Struts Framework in our application and want to use a different framework, now how to separate the application from Struts Framework?
+
+goto each class of our application and identify where we are using Struts Framework classes and remove the references of them, looks like we need to rewrite the entire code of our application since we are using Struts Framework everywhere.
+This is called invasive, which means the framework or api code will be creeped into our code.
+  
+While working with Spring Framework, we dont need to write our code either by extending/implementing or referring Spring Framework classes. So our code is loosely coupled from Spring Framework, but still we can use the functionality of the Spring Framework. The real benefit is to separate our application from Spring Framework we need to modify zero lines code of our application, which is called non-invasive application development framework.
+---------------------------------------------------------------------------------------------------------
+we are going to build an application, by writing several classes, these classes can be broadly classified into 4 types based on the nature of the code we are writing with them, those are as below.
+  
+  1. pojo = plain old java object
+  if we can compile/run the code without using any of the external third-party libraries under classpath, then the class is called pojo class.
+  
+  2. java bean
+  A class written with attributes, it should have 0-arg constructor and setters and getters for all of the attributes declared in that class, then the class is called java bean.
+    
+class Bike {
+  int bikeNo;
+  String manufacturer;
+  double price;
+  
+  public int getBikeNo(){}
+  public void setBikeNo(int bikeNo){ }
+  public String getManufacturer() {}
+  public void setManufacturer(String manufacturer) {}
+  public double getPrice() {}
+  public void setPrice(double price){}
+}  
+
+  
+  3. bean
+  4. component
+  
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

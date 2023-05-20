@@ -1,0 +1,77 @@
+Aware Interface
+----------------
+
+class Car {
+	private IEngine engine;
+	
+	public void drive() {
+		BeanFactory beanFactory = null;
+		
+		beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+		engine = beanFactory.getBean("yamahaEngine");
+		
+		engine.start();
+		System.out.println("driving the car");
+	}
+	/*
+	public void setEngine(IEngine engine) {
+		this.engine = engine;
+	}
+	*/
+}
+
+interface IEngine {
+	void start();
+}
+
+class YamahaEngineImpl implements IEngine {
+	public void start() {
+		System.out.println("Yamaha engine started...");
+	}
+}
+
+class SuzkiEngineImpl implements IEngine {
+	public void start() {
+		System.out.println("Suzki engine started...");
+	}
+}
+
+class EngineFactory {
+	public IEngine createEngine(String engineName) {
+		if(engineName.equals("yamaha")) {
+			return new YamahaEngineImpl();
+		}else if(engineName.equals("suzki")) {
+			return new SuzkiEngineImpl();
+		}
+		return null;
+	}
+}
+
+application-context.xml
+-----------------------
+<bean id="car" class="Car">
+	<!-- <property name="engine" ref="yamahaEngine"/> -->
+	
+</bean>
+
+<bean id="yamahaEngine" class="YamahaEngineImpl"/>
+<bean id="suzkiEngine" class="SuzkiEngineImpl"/>
+
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+Car car = beanFactory.getBean("car", Car.class);
+car.drive();
+
+
+
+
+
+
+
+
+
+
+
+

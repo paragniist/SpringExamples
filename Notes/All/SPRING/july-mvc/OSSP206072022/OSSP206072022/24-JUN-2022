@@ -1,0 +1,100 @@
+What are controllers, what is the purpose of them?
+Controllers are used for performing the request specific logic in handling the request for an application, the programmer has to write the controller component with an relevant logic based on the type of the request so perform appropriate operation
+
+The spring mvc controllers can be categorized into 2 types
+1. < 3.x controllers
+These are the rich programmatic api controllers provided as part of < spring 3.x to support building web applications
+
+2. > 3.x controllers
+In support annotation-driven programming, the spring framework has revamped the total controller apis offering annotation-driven controllers, in > 3.x mvc module, majority of programmatic api controllers are deprecated and eventually removed in the future version of spring framework
+
+Let us explore programmatic api controllers
+For all the controllers in spring mvc, the base interface is Controller
+Controller
+|-AbstractController
+|-ParameterizableViewController
+|-UrlFileNameViewController
+------------------------------- (removed)
+|-AbstractCommandController
+|-SimpleFormController
+|-MultiActionController
+|-AbstractWizardController
+--------------------------------------------------------------------------------------------
+In spring 5.x version we have only 3 programmatic api controllers are available
+1. AbstractController
+2. ParameterizableViewController
+3. UrlFilenameViewController
+let us explore one after the other
+
+Forwarding Controller
+---------------------
+The ParameterizableViewController and UrlFilenameViewControllers are called forwarding controllers in spring mvc, the job of these controllers is to forward a request to an static webpage of our application.
+Since these controllers only performs forwarding of a request, these are called "forwarding controllers"	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+What are controllers what is the purpose of them?
+For various different types of requests that are comming to our application, we need to apply different processing logic to handle the request. The programmer knows for which request what logic has to be applied in handling the request. So, the programmer has to write the controller component in which he has to write appropriate logic to perform the operation for each request type
+
+So, the Controllers are used for applying the request processing logic for each type of request of an application
+
+There are 2 ways we can work with controllers
+
+1. <3.x
+Prior to the spring 3.x mvc module has provided strong programmatic apis to build controller components as part of spring mvc application
+2. >3.x
+From 3.x onwards in support of working with annotation-driven programming most of the programmatic api controllers are deprecated and removed in mvc module
+
+at this point we want to learn the programmatic api controllers that are available in spring > 3.x only. at later point we can focus on annotation driven controllers
+
+For all the controllers in spring mvc, it has provided an base interface called Controller
+interface Controller {
+	ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response);
+}
+
+In addition spring mvc module has provided several abstract and concreate implementations of the Controller interface as below.
+Controller
+1. AbstractController
+2. ParameterizableViewController
+3. UrlFileNameViewController
+------------------------------- >3.x (deprecated/removed)
+4. AbstractCommandController
+5. SimpleFormController
+6. AbstractWizardController
+7. MultiActionController
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+aop
+----
+aop stands for aspect oriented programming, aop is used for applying/managing the cross-cutting logic across various different components of our application
+
+why cannot we manage the secondary logic or cross-cutting logic by enabling a flag? why do we need to use aop only?
+OfCourse, we can take a global flag at system-level	through which we can control applying the cross-cutting logic by turning it on/off. In case if we wanted to completely get rid of secondary logic from our application, flag based approach is not an ideal solution
+
+by using flag enabling or disabling the secondary logic creates lot of problems as below.
+	1. since we never wanted the secondary logic to applied further, still the code remains in the application and for each request an un-necessary conditional evaluation will be performed which always evaluates to false in skipping the execution which wastes the cpu cycles
+	2. even the secondary logic is never being executed as part of our application, it remains to be presented as a dead-code, and should be maintained as part of our application. whenever we make changes in the application logic, we need to ensure these changes will not result in incompatibility in secondary logic
+	3. since both the logics are written together, while debugging we need spend additional time in evaluating the flow of execution of program to understand where problem lies.debugging becomes harder
+	4. readability of the code is gone
+by the above we can understand flag based approach in managing the secondary logic of our application is not efficient solution
+------------------------------------------------------------------------------------------
+Aop is not an api or a language rather it is an programming paradigm. There are lot of programming paradigms are there like
+
+programming paradigms are nothing but methodologies or ways of programming. these paradigms provides principles/rules overwhich developers has to build applications/build the code
+
+procedural programming paradigm (pop) is a programming style/methodology, it states break the code into small executable modules called "functions".
+function is the primary means of achieving reusability. pass the control across various different blocks of code by calling through functions and pass the data and collect the return values.
+				
+object oriented programming paradigm (oop): everything should be defined interms of objects. the key problem in pop programming is identifying what parts of data are modified by which code modules (functions) in the program is difficult.
+		
+To overcome the problem oops has introduced ecapsulation, wrap the data together with the methods to understand which data is modified by which code modules of your application.
+(logic is being built around the data).
+principles:-
+	1. class
+	2. object
+	3. encapsulation
+	4. abstraction
+	5. inheritance
+	6. polymorphism
+	
+similar to the above aop is also an programming paradigm that states about how to manage secondary logic as part of an application. it also provides principles.
+1. aspect
+2. advice
+3. joinpoint
+4. pointcut
+5. proxy
+6. target
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+project architechture
+project architecture is an composite design pattern, where multiple classes of our project that are being designed based on standardized design patterns are put together to work with each other is nothing but "architecture"
+	
+Architecture of a project will not differ from each project, because the projects of similar technology and of same in nature will have the similar type of architecture. So we can learn project architectures by considering the technologies and nature of the application
+
+How does the project architecture will looks like while working with Servlet/Jsp technology?
+What are presentation-tier components?
+The presentation-tier components are the components through which the enduser will directly interact with the application. A jsp/servlet are the components that are directly accessible to the enduser,so that these can be called as "presentation-tier" components
+
+There are lot of technologies/apis available in building presentation-tier of an application like
+1. servlet/jsp technology
+2. structs framework
+3. spring framework (mvc module)
+4. jsf 
+by using any of these apis/frameworks we can build presentation-tier components of our application.
+	
+What are business/persistence tier components?
+business-tier components are the once in which the application business logic is being performed.	
+persistence-tier components are the once in which only the logic for performing persistence operations are being written, those components are called "persistence-tier" components
+
+Roles of components:
+html/jsp page plays the role of an view component in rendering the data out of an webapplication request to the user
+
+The servlet plays the role of an controller class.
+upon receiving the request by the servlet, he is going to make the ultimate decision making on what action/operation should be performed in fullfilling the request
+Controller is the one who makes the decision making of carrying out the oepration
+
+The servlet might make the decision upon various different factors/parameters like
+1. based on the request method of the request
+For eg if the request method with which the request is coming is a GET request then servlet might perform one type of operation. if it is an different request method like a post/put it may perform different operation
+
+2. based on the urlpattern of the request
+based on the incomming request url pattern the servlet might decide what operation or action to be performed. for eg..
+/employee?op=add
+/employee?op=delete
+
+It is often not recommended to write business/persistence logic aspart of the servlet class, rather it is recommended to write in a separate class a "java bean", why?
+	
+There are several reasons behind in avoiding writing the business/persistence logic within the servlet
+1. If we write the business and persistence logic within the servlet class, we cannot reuse the same functionality across any other place within our application, since the servlet component can be called/invoked by an servlet container only. So there is no point of reusability of the functionality
+
+2. if we write business/persistence logic directly within the servlet component of our application, our business logic/persistence logic will be tightly coupled with the presentation-tier technology, so that in future if we are changing the presentation-tier technology we need to rewrite along with presentation-tier logic the business/persistence logic also.
+So it is oftne advised to write business /persistence logic away from presentation-tier technology components.
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

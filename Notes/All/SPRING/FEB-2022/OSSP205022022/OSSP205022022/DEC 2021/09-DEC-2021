@@ -1,0 +1,144 @@
+What is autowiring?
+instead of we declaring the dependencies between the bean definitions, ioc container will takes care of identifying the dependencies and inject them automatically when we use autowiring.
+	
+by default autowiring is off, for which bean we want ioc container to automatically identify and manage the dependencies on that bean definition we need to write autowire="mode"	to enable/turn-on autowiring.
+	
+Mode of autowiring indicates 2 things:
+1. how to identify the dependencies
+2. how to inject the dependencies
+
+There are total 4 modes are there
+1. byName
+2. byType
+3. constructor
+4. autodetect (deprecated and removed > 3.x)
+	
+#1 byName
+identify the dependency matching with attributeName of target class with bean id and inject the dependency via setter injection. if the bean definition with id matching with attributeName is not found, ioc container ignores the injection and proceeds in creating the object of target class (since setter injection is optional).
+	
+#2 byType
+identify the dependency matching with attribute Type with the bean classType of the ioc container, and perform the dependency injection via setter.
+- if there is no bean definition found matching with classType == attributeType, ignore dependency injection and proceed in creating the object of target class
+- if more than one bean definition found matching with attributeType with ClassType, ioc container runs into ambiguty error
+How to resolve the ambiguty error?
+we need to mark one of the bean definition as autowire-candidate = "false", so that the bean definition marked will not be considered for autowiring
+
+#3 constructor
+identify the dependent bean matching with target class constructor argument type with bean classType in ioc container,if found perform the injection by passing the dependent bean as argument to the constructor of target class while creating the object of target class.	
+- if no dependent bean found matching above?	since constructor injection is mandatory we run into Runtime exception
+- if more than one bean definition found matching with the argType = bean ClassType? runs into ambiguty error
+- if more than one constructor is available in the target class?
+apply the below rules:
+1. go with max argument constructor and identify the dependent beans matching with artType == classType, if found inject and create
+2. if the bean definitions matching with argType==classType is not found for all of them, go with next max parameters constructor and apply the same process
+3. if there are more than 1 constructors of the same no of arguments are there, then ioc container picks one of them randomly and checks to see the argType matching bean definition is available or not and performs injection otherwise process to the next constructor
+
+if all of the constructors failed in matching with argType = classType then we run into exception as (constructor injection is mandatory) unless otherwise we have default constructor
+----------------------------------------------------------------------------------------------
+Nested bean factories
+---------------------
+
+class A {
+	B b;
+	public void setB(B b) {}
+}
+
+class B {}
+
+a-c1.xml
+<bean id="a" class="A">
+	<property name="b" ref="b"/>
+</bean>
+
+a-c2.xml
+<bean id="b" class="B"/>
+
+BeanFactory beanFactory1 = new XmlBeanFactory(new ClassPathResource("a-c1.xml"));
+BeanFactory beanFactory2 = new XmlBeanFactory(new ClassPathResource("a-c2.xml"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

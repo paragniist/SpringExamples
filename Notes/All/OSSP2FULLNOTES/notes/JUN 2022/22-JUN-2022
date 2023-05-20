@@ -1,0 +1,57 @@
+HandlerInterceptor
+HandlerInterceptor are used for applying common pre/post processing logic for a group of requests that are coming to the application
+
+We should not use intercepting filters while working with spring webmvc for performing pre/post processing logic, because before the request has been resolved to a controller itself the Filter will be executed by the ServletContainer, so that even for invalid requests also unnecessarily the Filter will be applied, to avoid this problem HandlerInterceptors are introduced.
+	
+There are 2 ways we can bind HandlerInterceptors to be applied for a group of requests
+1. we can bind the HandlerInterceptors with urlPatterns for whom those has to be executed for 
+2. since every request will be resolved through HandlerMapping, we can bind HandlerInterceptors to the HandlerMapping saying apply the HandlerInterceptor to all the requests that are resolved through this HandlerMapping
+
+We can bind a list of HandlerInterceptors to HandlerMapping asking the HandlerMapping to apply all these interceptors for the request that are mapped through him
+
+
+How to write an HandlerInterceptor?
+Every HandlerInterceptor has to be written by implementing from Spring provider interface called "HandlerInterceptor"	
+	
+interface HandlerInterceptor {
+	boolean preHandle(httpRequest, httpResponse, object handler);
+	void postHandle(httpRequest, httpResponse, object handler, ModelAndView mav);
+	void afterCompletion(httpRequest, httpResponse, object handler);
+}
+
+
+preHandle = upon resolving the request to the Controller, before dispatching the request to the controler, the preHandle method is being called for perform pre-processing logic
+
+postHandle = after the Controller has successfully completed execution and returned ModelAndView to the DispatcherServlet, then it calls postHandle
+
+afterCompletion = is similar to finally block, where the afterCompletion method would be executed irrespective of the success/failure of execution of the Controller class
+	
+The spring mvc has provided HandlerAdapter which is an adapter class, which has provided concreate implementation of HandlerInterceptor  interface with no logic. Instead of we implementing our HandlerInterceptor from HandlerInterceptor interface we can write our class extending from HandlerAdapter and override only the methods we want.
+	
+	
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

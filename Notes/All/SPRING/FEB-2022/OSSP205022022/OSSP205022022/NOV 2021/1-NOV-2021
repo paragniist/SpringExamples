@@ -1,0 +1,97 @@
+class MessageWriter {
+  IMessageFormatter messageFormatter;
+  
+  void writeMessage(String message) {
+    String cMessage = null;
+    
+    // messageFormatter = MessageFormatterFactory.getMessageFormatter("html");
+    // messageFormatter = new HTMLMessageFormatterImpl();
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+  
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {
+    this.messageFormatter = messageFormatter;
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }  
+}
+class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>";
+  }  
+}
+
+class MessageFormatterFactory {
+  public static IMessageFormatter createMessageFormatter(String type) {
+    IMessageFormatter messageFormatter = null;
+    
+    if(type.equals("html")) {
+      messageFormatter = new HTMLMessageFormatterImpl();
+    }else if(type.equals("pdf")) {
+      messageFormatter = new PDFMessageFormatterImpl();
+    }
+    return messageFormatter;
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    IMessageFormatter messageFormatter = new PDFMessageFormatterImpl();
+    
+    messageWriter.setMessageFormatter(messageFormatter);    
+    messageWriter.writeMessage("Welcome to SDP");
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

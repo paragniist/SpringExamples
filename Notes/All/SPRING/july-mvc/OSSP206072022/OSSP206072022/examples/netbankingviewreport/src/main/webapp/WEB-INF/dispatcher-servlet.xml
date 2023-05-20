@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/account-dashboard.htm">accountDashboardController</prop>
+				<prop key="/account-statement.htm">accountStatementController</prop>
+				<prop key="/view-statement.htm">statementController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="accountDashboardController"
+		class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="account-dashboard" />
+	</bean>
+
+	<bean id="accountStatementController"
+		class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="account-statement" />
+	</bean>
+
+	<bean id="statementController"
+		class="com.nbvr.controller.StatementController" />
+
+	<bean
+		class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<bean id="account-statement-xls"
+		class="com.nbvr.views.StatementExcelView" />
+
+	<bean id="account-statement-pdf"
+		class="com.nbvr.views.StatementPdfView" />
+
+</beans>
+
+
+
+
+
+
+

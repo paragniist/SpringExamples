@@ -1,0 +1,54 @@
+If we write the lookup logic in getting the remote reference of the distributed object across all the classes of our application, then the code gets duplicated across all the classes of our application which will put us in to several problems
+1. The lookup logic we are writing here is environment specific lookup logic, if the remote application has been moved from one env to another env again we need to modify the lookup logic in pulling the remote object from a different env (ip, port etc) which requires changes across all the classes whereever we wrote the lookup logic
+2. lookup logic we wrote is platform specific lookup logic if the underlying distributed object has been moved from one platform to the another, then we need modify the lookup logic jndiURL, factory class and few more properties we populate in looking up the object in all the classes of our application
+3. The lookup logic we are writing is technology specific lookup logic if we switch the distributed object from one technology to another for eg.. from ejb to rmi, then the entire lookup logic we have written should be scrapped out and should rewrite again from scratch in all the classes of our application
+since we have duplicated the lookup logic across all the classes of our application any change in distributed object will affect all of the components of our application.
+	
+From the upstox pointing of view the bse/nse stock exchange exposed distributed components becomes services since these components are provided functionality to the external application components.
+	
+1. where do we write the ServiceLocator class, is it on client-side application or server-side application?
+2. what is the difference between ServiceLocator and Factory class?
+----------------------------------------------------------------------------------------------
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

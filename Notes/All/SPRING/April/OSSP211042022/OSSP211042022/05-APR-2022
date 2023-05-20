@@ -1,0 +1,164 @@
+Classic Approach
+------------------
+Classic approach resembles closely with java jdbc api approach only. There are 2 main aspects of programming are there
+1. Classic approach works based on Callback mechanism
+2. Always in classic approach every operation will be performed in 2 phases.
+2.1 prepare phase = prepare the statement and substitute the parameters
+2.2 callback back = execute the statement and collect the data from resultset
+
+To use PreparedStatement in executing the above sql query we need to write our code implementing 2 interfaces
+
+interface PreparedStatementCreator {
+	PreparedStatement createPreparedStatement(Connection con);
+}
+
+interface PreparedStatementCallback {
+	Object doInPreparedStatement(PreparedStatement pstmt);
+}
+
+class ProductBo {
+	private int productNo;
+	private String productName;
+	private String description;
+	private String manufacturer;
+	private float price;
+	// accessors
+}
+	
+class ProductDao {
+	private final String SQL_GET_PRODUCTS_BY_NM = "select * from product where product_nm like ?";
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	public ProductDao(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	public List<ProductBo> getProductsByProductName(String productName) {
+		List<ProductBo> productBos = null;
+		GetProductsByNamePreparedStatementCreator getProductsByNamePreparedStatementCreator = null;
+		GetProductsByProductNameCallback getProductsByProductNameCallback = null;
+		
+		getProductsByNamePreparedStatementCreator = new GetProductsByNamePreparedStatementCreator(productName);
+		getProductsByProductNameCallback = new GetProductsByProductNameCallback();
+		
+		productBos = jdbcTemplate.execute(getProductsByNamePreparedStatementCreator, getProductsByProductNameCallback);
+		return productBos;
+	}
+	
+	
+	private final class GetProductsByNamePreparedStatementCreator implements PreparedStatementCreator {
+		private String productName;
+
+		public GetProductByNamePreparedStatementCreator(String productName) {
+			this.productName = productName;
+		}
+		
+		public PreparedStatement createPreparedStatement(Connection con) {
+			PreparedStatement pstmt = null;
+			pstmt = con.preparedStatement(SQL_GET_PRODUCTS_BY_NM);
+			pstmt.setString(1, productName);
+			
+			return pstmt;
+		}
+	}
+	
+	private final class GetProductsByProductNameCallback implements PreapredStatementCallback<List<ProductBo>> {
+		List<ProductBo> doInPreparedStatement(PreparedStatement pstmt) {
+			ResultSet rs = null;
+			ProductBo bo = null;
+			List<ProductBo> productBos = null;
+			
+			productBos = new ArrayList();
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				bo = new ProductBo();
+				bo.setProductNo(rs.getInt(1));
+				bo.setProductName(rs.getString(2));
+				bo.setDescription(rs.getString(3));
+				bo.setManufacturer(rs.getString(4));
+				bo.setPrice(rs.getFloat(5));
+				productBos.add(bo);
+			}
+			return productBos;
+		}		
+	}
+}
+
+// spring jdbc api
+class JdbcTemplate {
+	private DataSource dataSource;
+	
+	public JdbcTemplate() {}
+	public JdbcTemplate(DataSource dataSource) {}
+	public void setDataSource(DataSource dataSource) {}
+	
+	public Object execute(PreparedStatementCreator psc, PreparedStatementCallback pscb) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		Object obj = null;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = psc.createPreparedStatement(con);
+			obj = pscb.doInPreparedStatement(pstmt);
+			// line
+		}catch(SqlException e) {
+			
+		}finally {
+			try {
+				if(pstmt!= null) {
+					pstmt.close();
+				}
+			}catch(SqlException e) {
+				
+			}
+			try {
+				if(con != null) {
+					con.close();
+				}
+			}catch(SqlException e) {}
+		}
+		return obj;
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,238 @@
+What is collection dependency injection?
+ioc container supports injection collection class objects with prepopulated data as dependents into the target class. to support this ioc container has introduced special tags.
+There are 4 types of collections are supported
+1. list
+<list value-type="ClassType">
+	<value></value> (or) <ref bean="beanId"/>
+	<value></value> (or) <ref bean="beanId"/>
+</list>
+
+2. set
+<set value-type="ClassType">
+	<value></value> (or) <ref bean="beanId"/>
+	<value></value> (or) <ref bean="beanId"/>
+</set>
+
+3. map
+Map is an key/value pair based collection where it stores collection of entiries inside it, each entry contains key/value pair.
+
+class Person {
+	String uidai;
+	String fullname;
+	int age;
+	String gender;
+	// setter
+}	
+
+class ElectionComission {
+	Map<String, Person> electrolList;
+	// setter
+}
+
+application-context.xml
+------------------------
+
+<bean id="person1" class="Person">
+	<property name="uidai" value="u39833"/>
+	<property name="fullname" value="blake"/>
+	<property name="age" value="33"/>
+	<property name="gender" value="Male"/>
+</bean>
+
+<bean id="person2" class="Person">
+	<property name="uidai" value="u58487"/>
+	<property name="fullname" value="Johnson"/>
+	<property name="age" value="32"/>
+	<property name="gender" value="Male"/>
+</bean>
+
+<bean id="electionComission" class="ElectionComission">
+	<property name="electrolList">
+		<map key-type="java.lang.String" value-type="Person">
+			<entry key="v90383" value-ref="person1"/>
+			<entry key="v92873" value=ref="person2"/>
+		</map>
+	</property>
+</bean>
+
+syntax:-
+	
+<map key-type="KEY-TYPE" value-type="VALUE-TYPE">
+	<entry key="" value=""/>	
+	<entry key="" value=""/>	
+</map>
+
+(or)
+	
+<map key-type="KEY-TYPE" value-type="VALUE-TYPE">
+	<entry key-ref="id" value-ref="id"/>	
+</map>	
+
+(or)
+	
+nested tag notation:-
+----------------------	
+<map key-type="KEY-TYPE" value-type="VALUE-TYPE">
+	<entry key="" (or) key-ref="">
+		<value></value> (or) <ref bean="id"/>
+	</entry>
+</map>
+---------------------------------------------------------------------------------------------------
+
+#4. Properties
+properties collection is also an key/value pair based collection, but the key/value both should be of String type only.
+
+syntax:-
+map -> entry [key|value] (both can be any type)
+properties -> property [key|value] (both are string)
+	
+<props>
+	<prop key="k1">
+		v1
+	</prop>
+	<prop key="k2">
+		v2
+	</prop>
+</props>
+
+class Profile {
+	String fullname;
+	int age;
+	String gender;
+	private Properties wishlist;
+	
+	// setter	
+}	
+
+application-context.xml
+--------------------------
+<bean id="profile" class="Profile">
+	<property name="fullname" value="kevin"/>
+	<property name="age" value="32"/>
+	<property name="gender" value="Male"/>
+	<property name="wishlist">
+		<props>
+			<prop key="bike">
+				Harley davidson
+			</prop>
+			<prop key="car">
+				porche
+			</prop>
+			<prop key="house">
+				Duplex Villa
+			</prop>
+		</props>
+	</property>
+</bean>
+
+The above way of working with collection dependency injection has few limitations:-
+	1. we cannot choose the collection implementation class we want to create for the interface
+		List<String> l = new ArrayList<>();
+                   = new Vector<>();
+                   = new LinkedList();
+                   = new Queue();
+  2. we cannot define collection class object as a bean definition independently and cannot reuse across the bean definitions, we only have to define collection object inside the <property> tag or <constructor-arg> where you want to inject as shown below.
+		
+		<bean id="a" class="A">
+			<property name="l">
+				<list value-type="java.lang.String">
+					<value>v1</value>
+					<value>v2</value>
+					<value>v3</value>
+				</list>
+			</property>
+		</bean>
+		
+		<bean id="b" class="B">
+			<property name="l">
+				<list value-type="java.lang.String">
+					<value>v1</value>
+					<value>v2</value>
+					<value>v3</value>
+				</list>
+			</property>
+		</bean>
+		the above way of defining collections will duplicate list twice
+
+To overcome the above dis-advantages spring has provided newer tags for support collections under util namespace. instead of writing <list> <set> <map> <props> tags we need to write them from util namespace as below.
+	<util:list>
+	<util:set>
+	<util:map>
+	<util:props>
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

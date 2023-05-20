@@ -1,0 +1,125 @@
+In a typical application there are lot of classes will be there, based on nature of the code within the class, we can classify the classes into 3 types.
+1. pojo
+plain old java object. if we can compile and run the class, without any external third-party references then that class can be called as pojo class.
+  
+2. java bean
+java beans are used for holding the data. These classes are declared with attributes with zero-argument constructor and accessor methods.
+
+3. bean/component
+A class which may container attributes and methods, in which the arbitary logic will be written as part of those classes are called "bean/component".
+  
+The majority of application logic will be written as part of component classes of our application those places a crucial role in building an application.
+We should not write the entire application logic into one or few component classes, we need to break down and distribute the code into adequate number of component classes for readability, maintainability and reusablity.
+  
+From the above we understood we broke the code into multiple component classes, so looks a component class may need to talk to another component class to complete its functionality. 
+A class cannot be complete by itself, it may have to talk to someother class within our application to complete its functionality, which are called dependent classes.
+  
+How to manage dependency between the classes?
+The Spring Core is all about managing the dependencies of the classes.
+---------------------------------------------------------------------------------------------------------
+What is Spring Core?
+Spring core is an module that help us in managing the dependency between the classes. Spring core can manage dependencies between any 2 arbitary set of classes, but it provides recommendations in designing the classes, so that those can be better managed through spring core and we take lot of advantage of using Spring Framework.
+    
+Spring Core recommends us to design our application classes based on Strategy Design Pattern, so that we can get more benefit of using Spring Framework in developing our application.
+  
+What is a design pattern?
+For a recurring problem always, they is a proven and best applicable solution is available which can be applied in solving the problem under given circumstances.
+design pattern is altogether documenting the problem and applicable solution under given circumstances together is a pattern.  
+
+In-Short, design patterns are pre-identified and best applicable solutions for a problem under a context which can be used for quickly solving a problem.
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,101 @@
+In a spring mvc application we need 2 ioc containers, to separate business/persistence tier components from spring mvc. Irrespective of whether we are using spring mvc or not these components should exit as part of the ioc container
+
+when does the business/persistence tier components should be instantiated as part of ioc container?
+since the business/persistence tier components are being used as part of mvc components, before the mvc components are instantiated as part of ioc container, we should instantiate business/persistence tier components ioc container
+
+during the time of deployment of the application, after servlet container has created the ServletContext object for the application, before any other web application components are instantiated and before the application is been made available for accepting the request we need to create the business/persistent components ioc container
+To do this spring mvc has provided ContextLoaderListener (it is an implementation ServletContextListener) which will be invoked by the Servlet Container during the startup
+
+We need to configure ContextLoaderListener as a listener in web.xml
+<listener>
+	<listener-class>org.springframework.web.listener.ContextLoaderListener</listener-class>
+</listener>
+
+The ContextLoaderListener looks for /WEB-INF/applicationContext.xml file for instantiating the ioc container with business/persistence tier components
+
+To make the spring mvc components which are part of one ioc container to use the bean definitions objects that are part of different ioc container we need to use nested ioc containers (one is parent another one is child)
+	
+The ContextLoaderListener created ioc container acts as an Parent ioc container and should be created first, Now the DispatcherServlet should take the ContextLoaderListener created ioc container as an input and create child ioc container by nesting the parent container
+
+To let the DispatcherServlet create child ioc container by taking the parent ioc container created by ContextLoaderListener, the ContextLoaderListener upon creating the ioc container, it places the ioc container in ServletContext object with key as WebApplicationContext.class
+	
+	
+class DispatcherServlet extends HttpServlet {
+	ApplicationContext context;
+	
+	public init(ServletConfig config) {		
+		#1 takes the parent ioc container from ServletContext if available
+		#2 reads the spring bean configuration file with name <servlet-name>-servlet.xml and creates one more ioc container by nesting the parent ioc container 
+		#3 keeps the ioc container in the attribute of the class
+	}
+	
+	public void service(httpReq, httpResp) {
+		Controller controller = null;
+		
+		HandlerMapping handlerMapping = context.getBean(HandlerMapping.class);
+		controller = handlerMapping.getHandler(httpReq);
+		
+		ModelAndView mav = controller.handleRequest(req, resp);
+		String lvn = mav.getViewName();
+		
+		ViewResolver vr = context.getBean(ViewResolver.class);
+		View view = vr.resolveViewName(lvn);
+		view.render(req, resp, mav.getModel());		
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

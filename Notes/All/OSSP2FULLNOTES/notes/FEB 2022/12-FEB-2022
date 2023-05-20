@@ -1,0 +1,284 @@
+Bean Scopes
+-----------
+Bean Scopes are used to let ioc container understand how to manage in instantiating the objects for a bean definition, there are total 4 scopes are there
+1. singleton = create only one object per a given bean definition, and default scope
+2. prototype = each reference in getting the bean definition object, create a new object and return
+3. request = for every http request create a new object
+4. session = for every http session create a new object
+where request and session are only applicable incase of web applications.
+	
+class A {}
+
+a-c.xml
+---------
+<bean id="a" class="A" scope="singleton"/>
+
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+A a1 = beanFactory.getBean("a", A.class);
+A a2 = beanFactory.getBean("a", A.class);
+
+In the above since we declare a as singleton bean definition there will be only 1 object will be created irrespective how many times we are calling getBean() method.
+a1 == a2 = true, since both references are pointing to same object
+
+singleton bean definition doesnt mean the underlying class also as singleton, in the above case we can create as many number of objects we want for A class.
+	
+A a3 = new A();
+A a4 = new A();
+
+if we configure one more bean definition for A class with scope as singleton below
+<bean id="aa" class="A" scope="singleton"/>
+now ioc container creates a new object for "aa" bean defintion once as it is a different bean defintion.
+	
+	
+class DateConverter {
+	private static DateConverter instance;
+	private DateConverter(){}
+	public static synchronized DateConverter getInstance() {
+		if(instance == null) {
+			instance = new DateConverter();
+		}
+		return instance;
+	}
+}	
+a-c.xml
+--------
+<bean id="dateConverter" class="DateConverter" factory-method="getInstance"/>
+
+DateConverter dc1 = DateConverter.getInstance();
+DateConverter dc2 = beanFactory.getBean("dateConverter", DateConverter.class);
+here within ioc container and outside ioc container we will have same object since both are referring to the same singleton class and using getInstance method to get the object.
+	
+<bean id="dateConverter" class="DateConverter"/>
+we can configure DateConverter class above even its constructor is declared as private
+	
+snippet of code showing instantiation through reflection:-
+Constructor[] constructors =	DateConverter.class.getDeclaredConstructors();
+constructors[0].setAccessible(true);
+Object obj = constructors[0].newInstance();
+
+the ioc container will directly call the private zero-constructor through reflection api shown above to instantiate the object of the DateConverter in this case we will have 2 different objects outside the container and inside the container.
+	
+DateConverter dc1 = DateConverter.getInstance();
+DateConverter dc2 = beanFactory.getBean("dateConverter", DateConverter.class);
+DateConverter dc3 = beanFactory.getBean("dateConverter", DateConverter.class);
+
+if we declare the bean definition as prototype again we get as many number of objects we want for the bean definition
+
+
+Calendar c = new Calendar();
+Calendar.getInstance();
+
+<bean id="c" class="java.util.Calendar" factory-method="getInstance" scope="prototype"/>
+c1 = bf.getBean("c", Calendar.class);
+c2 = bf.getBean("c", Calendar.class);
+
+P and C Namespace
+------------------
+Instead of writing a length property tag or constructor argument tags to perform dependency injection, we can use p and c namespace respectively to quickly configure the bean defintion.
+	
+class Car {
+	String regNo;
+	String manufacturer;
+	String model;
+	String color;
+	String chasisNo;
+	String engineNo;
+	Engine engine;
+	// setter
+}
+
+class Engine {}
+
+a-c.xml
+-------
+<bean id="engine" class="Engine"/>
+<bean id="car" class="Car" p:regNo="1" 
+	p:manufacturer="Maruthi" p:model="swift" p:color="red"
+	p:engine-ref="engine">
+</bean>
+
+
+class Person {
+	int id;
+	String name;
+	int age;
+	String gender;
+	Passport passport;
+	// constructor
+}
+class Passport {}
+
+<bean id="passport" class="Passport"/>
+<bean id="person" class="Person" c:id="10" c:name="james"
+	c:age="23" c:gender="Male" c:passport-ref="passport"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

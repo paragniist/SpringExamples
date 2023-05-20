@@ -1,0 +1,93 @@
+HandlerMapping
+---------------
+HandlerMapping is a component through which we map an incomming request to an Controller class. 
+Every handler mapping in spring mvc has to implement from HandlerMapping interface
+	
+interface HandlerMapping {
+	HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception;
+}
+
+We can write our own implementations of HandlerMapping interface and can choose our own strategies of mapping a request to a controller.
+Most of the times we wanted to map a request based on the urlPattern to the Controller class, unless we have a special requirement.
+	
+addressing the default requirement the spring mvc has provided concreate implementations for HandlerMapping interface, so we dont have to write our own implementations of HandlerMapping unless we wanted to customize the way we want to map the request
+
+There are 6 HanderMapping interface implementations are provided by Spring Mvc
+HandlerMapping
+1. SimpleUrlHandlerMapping
+2. BeanNameUrlHandlerMapping
+-----------------------------------------
+3. ControllerClassNameHandlerMapping     |-deprecated from spring 5.0
+4. ControllerBeanNameHandlerMapping      |
+-----------------------------------------
+	
+below HandlerMapping implementations are added from spring 3.x in favour of annotation-driven programming
+------------------------------------	
+5. DefaultAnnotationHandlerMapping -- in spring 3.5, deprecated and removed in spring 5.0
+6. RequestMappingHandlerMapping
+
+
+5.0 - we have only 3 HandlerMapping implementations are available
+1. SimpleUrlHandlerMapping
+2. BeanNameUrlHandlerMapping
+3. RequestMappingHandlerMapping (annotation-driven approach)
+	
+	
+#1. SimpleUrlHandlerMapping
+The programmer can make use of this HandlerMapping in quickly configuring the incomming request to the controller using url pattern. 
+It has an property called "mappings", of type Properties collection into which programmer should populate requestURL -> Controller Bean Id to which the request should be dispatched.
+	
+advantages:-
+	1. we can bind a controller with multiple url-patterns
+	for e.g..
+	<bean id="homeController" class="HomeController"/>
+	<bean class="org.springframework.web.mappings.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/home.htm">homeController</prop>
+				<prop key="/index.htm">homeController</prop>
+			</props>
+		</property>
+	</bean>
+	2. We can quickly identify the request urls and the corresponding controllers to which the request is dispatched centrally by looking at SimpleUrlHandlerMapping. so debugging and understanding the application is very easy
+	
+dis-advantage:-
+	1. Too much configuration we need to write, takes lot of time and difficult to maintain
+	
+#2. BeanNameUrlHandlerMapping
+The default HandlerMapping in spring webmvc application if we havent configured any is BeanNameUrlHandlerMapping.
+The BeanNameUrlHandlerMapping takes the incomming requestURL of the request, and searches directly for a Controller class, whose name is equal to urlPattern of the request.
+	
+advantage:- 
+	1. by looking at the controller we know it would be called for which url-pattern
+	
+In an spring mvc application we can use multiple handler mappings, so that those works as HandlerMapping chain
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

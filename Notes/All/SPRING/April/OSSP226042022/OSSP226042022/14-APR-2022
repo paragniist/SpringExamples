@@ -1,0 +1,133 @@
+#3. Rollup logic
+------------------
+vehicles
+vehicle_no(pk) model_nm manufacturer color registration_no fuel_type lease_amount
+v1             corala   toyota       black NY98 WM         petrol     300
+v2             accord   honda        white CA 938 MM       petrol     500
+v3             civic    honda        blue  TX 93 MM        petrol     450
+	
+customer
+customer_no (pk)  customer_nm   dob         gender
+c1                joseph        02/10/1989  male
+c2                patrik        03/23/1990  male
+c3                annie         05/28/1992  female
+
+vehicle_lease
+lease_no(ai)(pk) vehicle_no(fk) customer_no(fk)
+1                v1              c1
+2                v2              c1
+3                v1              c2
+4                v3              c1
+5                v2              c3
+6                v3              c2
+7                v2              c3
+
+
+select c.*, v.* from customer c inner join vehicle_lease vh on c.customer_no = vh.customer_no inner join vehicles v on vh.vehicle_no = v.vehicle_no;
+
+join queries:-
+	
+c1   joseph  02/10/1989  male   v1 corala   toyota  black NY98 WM   petrol     300
+c1   joseph  02/10/1989  male	  v2 accord   honda   white CA 938 MM petrol     500
+c2   patrik  03/23/1990  male	  v1 corala   toyota  black NY98 WM   petrol     300
+c1   joseph  02/10/1989  male	  v3 civic    honda   blue  TX 93 MM  petrol     450
+c3   annie   05/28/1992  female v2 accord   honda   white CA 938 MM petrol     500
+c2   patrik  03/23/1990  male   v3 civic    honda   blue  TX 93 MM  petrol     450
+c3   annie   05/28/1992  female v2 accord   honda   white CA 938 MM petrol     500
+
+
+class CustomerBo {
+	int customerNo;
+	String customerName;
+	Date dob;
+	String gender;
+	Set<VehicleBo> leasedVehicles;
+}
+
+class VehicleBo {
+	int vehicleNo;
+	String modelName;
+	String manufacturer;
+	String color;
+	String registrationNo;
+	String fuelType;
+	double leaseAmount;
+}
+
+class CustomerVehicleLease { // this is wrong
+	int customerNo;
+	String customerName;
+	Date dob;
+	String gender;
+	int vehicleNo;
+	String modelName;
+	String manufacturer;
+	String color;
+	String registrationNo;
+	String fuelType;
+	double leaseAmount;
+}
+
+
+class CustomerDao {
+  String sql = "select c.*, v.* from customer c inner join vehicle_lease vh on c.customer_no = vh.customer_no inner join vehicles v on vh.vehicle_no = v.vehicle_no;";
+	private JdbcTemplate jdbcTemplate;
+	
+	public List<CustomerBo> getCustomersWithLeasedVehicles() {
+		return jdbcTemplate.query(sql, new CustomerLeasedVehiclesResultSetExtractor());
+	}
+	
+	private final class CustomerLeasedVehiclesResultSetExtractor implements ResultSetExtractor<List<CustomerBo>> {
+		public List<CustomerBo> extractData(ResultSet rs) {
+			Map<Integer, CustomerBo> customerBoMap = null;
+			CustomerBo customerBo = null;
+			VehicleBo vehicleBo = null;
+			int customerNo = null;
+			
+			customerBoMap = new HashMap<>();
+			while(rs.next()) {
+				customerNo = rs.getInt(1);
+				if(customerBoMap.containsKey(customerNo) == false) {
+					customerBo = new CustomerBo();
+					customerBo.setCustomerNo(customerNo);
+					customerBo.setCustomerName(rs.getString(2));
+					customerBo.setDob(rs.getDate(3));
+					customerBo.setGender(rsgetString(4));
+					
+					vehicleBo = new VehicleBo();
+					vehicleBo.setVehicleNo(rs.getInt(5));
+					vehicleBo.setModelName(rs.getString(6));
+					// populate vehicle data
+					Set<VehicleBo> vbos = new HashSet();
+					vbos.add(vehileBo);
+					customerBo.setLeasedVehicles(vbos);
+					customerBoMap.put(customerNo, customerBo);
+				}else {
+					customerBo = customerBoMap.get(customerNo);
+					vehicleBo = new VehicleBo();
+					vehicleBo.setVehicleNo(rs.getInt(5));
+					vehicleBo.setModelName(rs.getString(6));
+					// populate vehicle data
+					customerBo.getLeasedVehicles().add(vehicleBo);					
+				}
+			}
+			List<CustomerBo> customerBos = new ArrayList();
+			for(CustomerBo bo : customerBoMap.values()) {
+				customerBos.add(bo);
+			}
+			return customerBos;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

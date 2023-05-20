@@ -1,0 +1,10 @@
+What are ViewResolvers, what is the purpose of them?
+ViewResolvers are used for resolving the logical viewname to the View component.
+There are basically 5 types of ViewResolvers are there
+1. InternalResourceViewResolver = rendering jsp page
+2. ResourceBundleViewResolver = supports internationalization
+3. BeannameViewResolver = identifies lvn to a bean definition object of a view
+4. XmlViewResolver = looks into an xml file to identify the bean definition
+5. UrlBasedViewResolver = same as InternalResourceViewResolver, but ViewName is mandatory
+
+

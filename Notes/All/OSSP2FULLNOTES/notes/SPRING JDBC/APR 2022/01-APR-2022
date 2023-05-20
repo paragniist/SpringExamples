@@ -1,0 +1,189 @@
+Spring jdbc [7 days - 10 days]
+------------------------------
+Spring jdbc is all about performing persistence operation on the relational database management system.
+	
+What are the advantages of using spring jdbc over java jdbc?
+#1. 
+jdbc: jdbc is an api, api stands for application programming interface. apis are always partial and they will not provide boiler-plate logic in building the applications. The programmer has to endup in writing lot of code in handling the persistence aspects of an application while working with jdbc api
+
+spring jdbc: is an module provided as part of spring framework. The frameworks provides bunch of classes which contains pre-identified functionality as part of them. So the programmer dont need to write the boiler-plate logic while building the application using spring jdbc 
+
+#2. 
+jdbc: while working with jdbc api we need to write lot of code in opening the resources like 
+- creating connection
+- creating prepared statement
+- iterating resultset
+along with that we need to take excess care on closing of these resources as well. in proper handling these resources will results in resource leakage issues. 
+	
+try {
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	con = DriverManager.getConnection(url, un, pwd);
+	pstmt = con.preparedStatement(sql);
+	// substitute the parameters
+	rs = pstmt.executeQuery();
+	// extract the resultset
+}	catch(ClassNotFoundException | SqlException e) {
+	
+} finally {
+	try {
+		if(rs != null) {
+			rs.close();
+		}
+	}catch(SqlException e) {}
+	try {
+		if(pstmt != null) {
+			pstmt.close();
+
+		}
+	}catch(SqlException e) {}
+	try {
+		if(con != null) {
+			con.close();
+		}
+	}catch(SqlException e) {}
+		
+}
+by looking at the above piece of code we can understand the programmer has to endup in writing lot of lines of code in opening the resources and closing the resources which is quite difficult
+
+spring jdbc:
+we never need to write the code for creating any of the resources, same way we never need to write the code for managing in closing these resources. automatically spring jdbc takes care of creating/closing these resources, so that there is zero-chance of running into resource leakage issue and we dont need write complex logic in managing the resources
+
+#3. 
+jdbc: all the exceptions in jdbc api are checked exceptions, which means we need to must and should write our code sourrounding the try/catch block otherwise the code will not be compiled even. The try/catch block we write while working with jdbc api are called annoying/un-necessary try/catch blocks which makes the code cluttered and difficult to understand
+
+
+checked exceptions and un-checked exceptions both of these exceptions comes at runtime only
+
+checked exceptions are recoverable: means programmer can provide alternate path of execution in handling the failure and continue to execute the program without terminating
+
+un-checked exception may or may not be recoverable: means there is no guarantee that upon encountering such failures program continue to execute, it may have to be terminated
+for error reporting : to understand failure information
+
+void saveProduct(Product product) {
+	try{
+		Class.forName(driverClassname);
+		Connection con = DriverManager.getConnection(url, un, pwd); // database is down
+		PreparedStatement pstmt = con.preparedStatement(sql);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			// grab the data
+		}
+	}catch(SqlException e) {
+		// alternate path of code
+	}
+}
+most of the jdbc failures are non-recoverable, but the jdbc api programmers made these exceptions as checked exceptions, for which we need to write unnecessary try/catch block
+
+spring jdbc: all the exceptions provided by spring jdbc module are un-checked exceptions where we never need to write the code sourrounding the try/catch block.
+if we wanted to handle a specific type of failure then only we need to write the catch block with that un-checked exception.
+Now the code becomes easy to understand and can avoid writing unnecessary try/catch blocks while working with spring jdbc
+
+The base class in reporting all the exceptions in spring jdbc exception hierary is "DataAccessException".
+
+#4. 
+jdbc: jdbc api doesnt support working with global transactions, it supports only local transactions
+spring jdbc: while working with spring jdbc it very well integrates with spring tx which supports both working with local/global transactions as well
+-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1
+	

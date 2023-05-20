@@ -1,0 +1,129 @@
+There are 2 ways we can execute a query while working with jdbc api
+1. Statement
+2. PreparedStatement
+
+What is the difference between Statement and PreparedStatement?
+#1. 
+Statement should be used for executing static sql queries only and it is not recommended to  use for executing dynamic sql queries (which are supplied with values at runtime). Where as PreparedStatement can be used for executing both static/dynamic sql queries as well
+If we use Statement for executing dynamic sql queries, there is a possibility of sql injection can takes place, to avoid sql injection we should use PreparedStatement only for executing dynamic sql queries
+
+
+class EmployeeDao {
+	public List<Employee> getEmployee(String name) {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driverClassname);
+			con = DriverManager.getConnection(url, un, pwd);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("select * from emp where emp_nm like " + name);
+			while(rs.next()) {
+				// extract resultset and return				
+			}
+		}catch(SqlException e) {
+			
+		}finally {
+			// close resources
+		}
+		
+	}
+}
+
+class EmployeeDao {
+	public List<Employee> getEmployee(String name) {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driverClassname);
+			con = DriverManager.getConnection(url, un, pwd);
+			pstmt = con.preparedStatement("select * from emp where emp_nm like ?");
+			
+			pstmt.setString(1, name); // validates, is it query or value
+			
+			while(rs.next()) {
+				// extract resultset and return				
+			}
+		}catch(SqlException e) {
+			
+		}finally {
+			// close resources
+		}
+		
+	}
+}
+In the above code while substituting the values for the parameters defined in the query, the prepared statement validates whether the value is a "simple value" or another "query", if it looks like a query, it throws an exception indicating an sql attack
+
+The morale is avoid Statement and use PreparedStatement while executing dynamic sql queries
+
+#2. 
+If we are reusing the prepared statement object in repeatedly executing it, by substituting different set of values as an input while execution then only performance optimization takes place otherwise there is not big deal interms of performance between Statement and PreparedStatement
+
+class EmployeeDao {
+	public List<Employee> findEmployeesByNames(List<String> names) {
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driverClassname);
+			con = DriverManager.getConnection(url, un, pwd);
+			pstmt = con.preparedStatement("select * from emp where emp_nm like ?"); // query compilation takes place, and the query plan will be generated in the session
+			
+			for(String name: names) {
+				pstmt.setString(1, name); // validates, is it query or value
+
+				while(rs.next()) {
+					// extract resultset and return				
+				}
+			}
+		}catch(SqlException e) {
+			
+		}finally {
+			// close resources
+			// close pstmt
+			// close con
+		}
+		return employees;
+	}
+}
+------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

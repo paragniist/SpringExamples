@@ -1,0 +1,189 @@
+Strategy Design Pattern
+1. Favor composition over inheritance
+2. always design to interfaces never design to concreate classes
+3. code should be open for extension and closed for modification
+
+#1. Favor composition over inheritance
+While reusing the functionality of another class preferrable use composition rather than inheritance, why?
+There are problems in reusing the functionality of another class through Inheritance so to avoid them use Composition.
+1 Many of the realtime usecases are solvable through composition rather than inheritance, because a class wants to use few functionalities of another class only.
+  
+2 Most of the languages including java doesnt support multiple inheritance, so if a class wants to reuse the functionality of multiple other classes, the only way is through composition
+
+3 Inheritance makes the classes more fragile, whereas composition makes them less fragile.
+Fragile: easily/quickly breakable (or) very delicate  
+class A {
+  int m2(int i) {
+    // logic
+    return 93;
+  }
+}
+
+we want to reuse the functionality of m2() method in class A and want to add additional logic without modifying the m2() method of class A. how can we achieve this?
+Through method overriding
+
+class B extends A {
+  int m2(int i) {
+    int j = super.m2(i);
+    // additional logic
+    return j;
+  }
+}
+
+another class using the functionality of B
+
+class C {
+  public void m3(int i) {
+    B b = new B();
+    int j = b.m2(i);
+    // logic
+    sop("j " + j);
+  }
+}
+
+over the time the developer of class A wanted to change the return type of method m2() from int to double and has made the change without the knowledge of who is using his class.
+  
+class A {
+  double m2(int i) {
+    // logic
+    return 93;
+  }
+}  
+
+With the above change in class A, will B and C class will work?
+Now the m2() method in class B doesnt qualifies to be overriding or neither overloading because
+overriding = the super class and sub class method signature and returnType must be same.
+overloading = the method name should be same with differred parameters, but doesnt matter returnType  
+
+class B extends A {
+  int m2(int i) {
+    int j = super.m2(i);
+    // additional logic
+    return j;
+  }
+}
+
+but here the m2() of class B is not having same signature and returnType of class A, so it is not overriding, sameway the parameters are same in number so it is not overloading. Now it becomes duplicate method which results in Rutime Error during execution.
+The only way to make B class works is by changing the returnType of method m2() of class B to double
+class B extends A {
+  double m2(int i) {
+    double j = super.m2(i);
+    // additional logic
+    return j;
+  }
+}
+
+with this change the C class will not work as it is using B. So again we need to modify the code in C class to make it compatible with the changes in B
+class C {
+  public void m3(int i) {
+    B b = new B();
+    double j = b.m2(i);
+    // logic
+    sop("j " + j);
+  }
+}
+
+If we see a change in parent class is not only going to affect child class B, even it leaves the other classes which are using B class in error state, which is nothing but highly fragile.
+  
+Instead of using Inheritance if we go for composition our classes will become less fragile, lets see how does it
+
+class A {
+  double m2(int i) {
+    // logic
+    return 93;
+  }
+}
+here B class is reusing the functionality of A class through composition rather than inheritance.
+class B {
+  A a;
+  int m2(int i) { // local method of B class
+    int j = 0;
+    
+    a = new A();
+    j = a.m2(i);
+    // additional logic
+    return j;
+  }
+}
+
+class C {
+  public void m3(int i) {
+    B b = new B();
+    int j = b.m2(i);
+    // logic
+    sop("j : " + j);
+  }
+}
+Now the developer of class A has changed the returnType of m2() from int to double
+class A {
+  double m2(int i) {
+    // logic
+    return 93;
+  }
+}
+with this change, the class B will be effected and it will not work. How to fix the problem and make B compatible with the changes of A?
+  
+class B {
+  A a;
+  int m2(int i) { // local method of B class
+    int j = 0;
+    
+    a = new A();
+    j = (int) a.m2(i);
+    // additional logic
+    return j;
+  }
+}  
+here to make B compatible with A changes, we just only to typecast the return value return from method call on A, we dont need to change the returnType of m2() in B class to double unlike inheritance. with this change my class works and would not affect other classes in my application.
+  
+A change in A will effect the B and only B but not other classes in the application, we can control the propagation of changes in composition.
+
+4. Testability of your code is difficult when we use Inheritance, composition higly supports testability of the code.
+  (or)
+Inheritance makes your classes difficult to test, where as composition supports testability of the code
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+

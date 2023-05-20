@@ -1,0 +1,35 @@
+How does the bse/nse stock exchange employees/agents by themself provide trading services to the stock traders?
+they cannot directly go and perform operations on the underlying database in offering the trading services to the customers, because there are lot of problems in manually performing the operations on the underlying database.
+	1. the bse/nse stock exchange agents/employees must of the sql engineers or it engineers to carry out the business operations which is quite impossible
+	2. agents have to perform business calculations in providing the services if these business computations are carried manually.
+		2.1 it takes lot of time in performing the operations
+		2.2 accuracy is not guaranteed, because of human errors
+	3. the bse/nse stock exchange employees has to construct manually the sql queries in order to perform the operation, where these queries are not validated and there high chance where while executing the queries the data on the underlying database may be modified wrongly or corrupted due to incorrect query/conditions
+	
+to overcome the above problems, let the bse/nse exchanges built an software application with adequate functionality and provide it to the agents or employees of the exchanges.
+
+There are lot of advantages in providing an access to application in offering business services rather than perform the operations directly on the underlying database.
+		
+1. agent/employee need not be an IT engineer
+2. as the business computations are taken care by the application itself
+	2.1 time required to perform the business computations are very very less
+	2.2 there is no chance of human errors and accuracy will be very high
+3. no chance of data corruption or incorrectly modifying the data, as the software application has been pre-tested and provided to the agents.
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

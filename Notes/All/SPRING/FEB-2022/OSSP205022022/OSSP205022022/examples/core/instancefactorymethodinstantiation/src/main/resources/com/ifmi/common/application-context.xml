@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="getStockPriceController"
+		class="com.ifmi.beans.GetStockPriceController">
+		<property name="stockTradeManager" ref="stockTradeManager" />
+	</bean>
+
+	<bean id="agentTradingSystemServiceLocator"
+		class="com.ifmi.helper.AgentTradingSystemServiceLocator" />
+
+	<bean id="stockTradeManager"
+		factory-bean="agentTradingSystemServiceLocator"
+		factory-method="lookupAgentTradingSystemServiceLocator">
+		<constructor-arg value="java://bseStockTradeManager" />
+	</bean>
+</beans>

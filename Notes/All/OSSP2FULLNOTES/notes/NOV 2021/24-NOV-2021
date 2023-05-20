@@ -1,0 +1,69 @@
+BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("com/coredi/common/application-context.xml"));
+What will happens when we execute the above line of code?
+  (or)
+How does the ioc container would gets created?
+  
+1. The ClassPathResource object will be created by taking the relative location of the Spring Bean Config  file.
+2. The XMLBeanFactory will be created by taking the reference of ClassPathResoure Object.
+3. While creating the object of XMLBeanFactory it does several things as below.
+  3.1 It quickly goes to ClassPathResource object and ask for the XML File/Spring Bean Configuration File
+  3.2 Now the ClassPathResource goes to classpath location of the project and will tries to identify the Spring Bean Configuration directly under the classpath location or any of the sub directories under it as specified and returns the reference of XML as an InputStream/URL to XMLBeanFactory
+  3.3 Once the XMLBeanFactory has received the XML, it checks for Web-formness and Validity of the XML, if it is not well-formed or not valid it throws an exception and terminates the application
+  3.4 if the given XML is well-formed and valid, then it creates the logical memory partition within the jvm memory, quickly reads the XML and places it as in-memory metadata within the logical memory partition. This logical memory partition is called "ioc container" or "core container"
+Now returns the reference of the ioc container as BeanFactory object to us
+
+application-context.xml
+------------------------
+<bean id="messageWriter" class="com.coredi.beans.MessageWriter"/>
+<bean id="htmlMessageFormatter" class="HTMLMessageFormatterImpl"/>
+<bean id="pdfMessageFormatter" class="PDFMessageFormatterImpl"/>
+
+MessageWriter messageWriter = beanFactory.getBean("messageWriter", MessageWriter.class);
+What will happens when we execute the above line of code?
+  
+1. The BeanFactory goes to the in-memory metadata of the ioc container searching for the bean definition with the given id (here: "messageWriter"). 
+2. if it is not able to identify the bean definition with the given id, it throws BeanDefinitionNotFoundException and terminates the application.
+3. Once it is able locate the bean definition with the give id, it picks the corresponding fqnClass and tries to load the class into the jvm memory.
+4. After the class has been loaded into jvm memory, it will tries instantiate the object of the class by calling default constructor and takes the reference of the object and stores in ioc container with bean id, object
+5. Then returns the reference of the object to the application
+
+
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {}
+}
+
+application-context.xml
+------------------------
+<bean id="messageWriter" class="com.coredi.beans.MessageWriter">
+  <property name="messageFormatter" ref="htmlMessageFormatter"/>
+</bean>
+
+<bean id="messageBoard" class="com.coredi.beans.MessageBoard">
+  <property name="messageFormatter" ref="pdfMessageFormatter"/>
+</bean>
+
+<bean id="htmlMessageFormatter" class="HTMLMessageFormatterImpl"/>
+<bean id="pdfMessageFormatter" class="PDFMessageFormatterImpl"/>
+
+MessageWriter messageWriter = beanFactory.getBean("messageWriter", MessageWriter.class);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

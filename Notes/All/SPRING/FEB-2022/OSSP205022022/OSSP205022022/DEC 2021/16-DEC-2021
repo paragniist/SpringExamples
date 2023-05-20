@@ -1,0 +1,107 @@
+What is aware interfaces/injection, why do we need to use it?
+There are some internal objects of the ioc container which are not being exposed publicly. if our class wants the internal object of the ioc container, only ioc container has to give the object to our class. Inorder to get the object from ioc container, we need to get into an contractual agreement with the ioc container to acquire the dependent object. 
+	
+The ioc container has provided an interface for each type of internal object, the interface that is provided by the ioc container is called "Aware Interface". depends on which internal object we want, we need to write our class implementing from the interface and override the method taking dependent as a parameter. The ioc container will call the contractual method by passing the dependent object during the time of instantiating the object for the bean definition, which is called aware injection	
+	
+Short:- Aware Injection is used for acquring the internal objects of ioc container as dependents into our class, which is a form of Contextual dependency lookup
+
+The Aware injection is also called as "Aware Interfaces" and even "Interface Injection" also.
+----------------------------------------------------------------------------------------------
+	
+class Car implements BeanFactoryAware {
+	private IEngine engine;
+	private String engineId; 
+	private BeanFactory beanFactory;
+	
+	// dont hardcode engine id, rather pass it as input to the class at the of creating the class
+	/**
+	Since the car is instantiated by the ioc container there are only 2 ways we can pass the data at the time of instantiating the car, either as setter/constructor injection
+	*/
+	public Car(String engineId) {
+		this.engineId=engineId;
+	}
+	
+	public void drive() {		
+		//BeanFactory beanFactory = null;
+		
+		/**
+		here instead of creating one more ioc container, we can get the yamaha and suzki engine bean definition objects from the existing ioc container itself, so that we can save resources
+		*/
+		
+		//beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+		
+		engine = beanFactory.getBean(engineId, IEngine.class);
+		
+		engine.start();
+		System.out.println("driving...");
+	}	
+	
+	public void setBeanFactory(BeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
+	}
+}
+
+interface IEngine {
+	void start();
+}
+
+class YamahaEngineImpl implements IEngine {
+	public void start() {
+		System.out.println("yamaha engine started...");
+	}
+}
+
+class SuzkiEngineImpl implements IEngine {
+	public void start() {
+		System.out.println("Suzki engine started...");
+	}
+}
+	
+application-context.xml
+-------------------------
+<bean id="car" class="Car">	
+	<constructor-arg value="suzkiEngine"/>
+</bean>
+
+<bean id="yamahaEngine" class="YamahaEngineImpl"/>
+<bean id="suzkiEngine" class="SuzkiEngineImpl"/>
+	
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Car car = beanFactory.getBean("car", Car.class);
+car.drive();
+	
+
+dependency pulling:
+-------------------
+when we are using dependency pulling, our class will be tightly coupled through logical class name of another class, but we can still make them loosely coupled by removing hardcoded logical classnames and pass them as input to the class.
+	
+Inside the Car class if we want YamahaEngine or SuzkiEngine bean definition objects, we need an ioc container, to have the ioc container we are creating new here.
+instead of creating a new ioc container if car can use the same ioc container in which it living we avoid resource wastage.
+	
+For eg.. if Car class wants object of the bean definition "ClutchPlates", if the other class is declared as a bean, then car can get it from ioc container by using ref="clutchplates".
+	
+But here the Car wants the ioc container itself, which is a kind of internal object referring itself, how does car will ask ioc container to inject itself. To inject the internal object of ioc container the Car has to go into contractual agreement with ioc container asking him to inject himself.
+
+How does aware injection works?
+When we call beanFactory.getBean("beanId", ClassType);
+The BeanFactory goes to the in-memory metadata of the ioc container searching for the bean definition with the id provided. there after it tries to instantiate the object of the class by performing constructor injection and setter injection if any. After performing constructor injection and setter injection it checks to see if the class is implementing from Aware interface or not, if yes it calls the contractual method by passing dependent internal object and performs aware injection there after place the object in ioc container.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

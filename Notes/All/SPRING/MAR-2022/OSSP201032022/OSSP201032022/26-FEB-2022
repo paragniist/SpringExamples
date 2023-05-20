@@ -1,0 +1,139 @@
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	
+	private Cache() {
+		dataMap = new ConcurrentHashMap();
+	}
+	public static synchronized getInstance() {
+		if(instance == null) {
+			instance = new Cache();
+		}
+		return instance;
+	}
+	public void put(String key, Object val) {
+		dataMap.put(key, val);
+	}
+	public Object get(String key) {
+		return dataMap.get(key);
+	}
+	public boolean containsKey(String key) {
+		return dataMap.containsKey(key);
+	}
+}
+
+@WebServlet(urlPatterns={"/loanManager"})
+class LoanManagerServlet extends HttpServlet {
+	public void service(req, resp) {
+		float ri = 0.0;		
+		Cache cache = null;
+		Properties props = null;
+		
+		long principleAmount = Long.parseLong(req.getParameter("principleAmount"));
+		int tenure = Integer.parseInt(req.getParameter("tenure"));
+		String city = req.getParameter("city");
+		
+		cache = Cache.getInstance();
+		if(cache.containsKey("ri") == false) {
+			props = new Properties();
+			String propsFile = req.getServletContext().getRealPath("/WEB-INF") + "/city-ri.properties";
+			props.load(new FileInputStream(new File(propsFile)));
+			dataMap.put("ri", props);
+		}else {
+			props = (Properites) cache.get("ri");
+		}
+		// props collection with city and ri
+		ri = Float.parseFloat(props.getProperty(city));
+		interestAmount = (principleAmount * tenure * ri)/100;
+		repaymentAmount = principleAmount + interestAmount;
+		PrintWriter out = resp.getWriter();
+		out.println("interest amount : " + interestAmount +  " repayment amount : " + repaymentAmount);
+	}
+}
+
+@WebServlet(urlPatterns={"/loanApprover"})
+class LoanApproverServlet extends HttpServlet {
+	public void service(req, resp) {
+		Cache cache = null;
+		Properties props = null;
+		
+		cache = Cache.getInstance();
+		if(cache.containsKey("ri") == false) {
+			props = new Properties();
+			String propsFile = req.getServletContext().getRealPath("/WEB-INF") + "/city-ri.properties";
+			props.load(new FileInputStream(new File(propsFile)));
+			dataMap.put("ri", props);
+		}else {
+			props = (Properites) cache.get("ri");
+		}
+		
+	}
+}
+
+In the above examples LoanManagerServet and LoanApproverServlet wants the city rate interest values, so both of them has been written with the logic of verifying the data in cache and load from properties file and store in cache. Looks like we are writing in every class whoever wants to access the data from Cache should check for data is there are not there, if not load from the source system and store in cache.
+	
+	
+If we write the logic for loading the data into the Cache across all the classes of our application as above we run into several problems:
+1. The code for loading the data into the Cache gets duplicated across all the classes whoever wants the data, which will brings all the maintainability problems due to code duplication
+2. If the underlying source system from where data is being populated has been changed, again all the classes would gets affected in rewriting the logic for loading the data into cache
+3. In future if we want to get rid of using cache, then identifying across which classes we are storing the data in cache and removing them becomes complex job
+
+
+
+@WebServlet(urlPatterns={"/loanManager"})
+class LoanManagerServlet extends HttpServlet {
+	public void service(req, resp) {
+		float ri = 0.0;		
+		Cache cache = null;
+		Properties props = null;
+		
+		long principleAmount = Long.parseLong(req.getParameter("principleAmount"));
+		int tenure = Integer.parseInt(req.getParameter("tenure"));
+		String city = req.getParameter("city");
+		
+		
+		props = (Properites) cache.get("ri");
+		
+		// props collection with city and ri
+		ri = Float.parseFloat(props.getProperty(city));
+		interestAmount = (principleAmount * tenure * ri)/100;
+		repaymentAmount = principleAmount + interestAmount;
+		PrintWriter out = resp.getWriter();
+		out.println("interest amount : " + interestAmount +  " repayment amount : " + repaymentAmount);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

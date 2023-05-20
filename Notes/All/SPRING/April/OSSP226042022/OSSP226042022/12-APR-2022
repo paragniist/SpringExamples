@@ -1,0 +1,58 @@
+account
+account_no (pk) (ai), account_holder_nm, account_type, balance
+
+final static String sql = "insert into account(account_holder_nm, account_type, balance) values(?,?,?)";
+
+int saveAccount(AccountBo bo) {
+	KeyHolder kh = new GeneratedKeyHolder();
+	
+	jdbcTemplate.update(new PreparedStatementCreator(){
+		public PreparedStatement createPreparedStatement(Connection con) {
+			PreparedStatement pstmt = null;
+			
+			pstmt = con.preparedStatement(sql, new String[]{"account_no"});
+			// substitute the positional parameters
+			return pstmt;
+		}
+	}, kh);
+	return kh.getKey().intValue();	
+}
+------------------------------------------------------------------------------------------
+pagination
+-----------
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+

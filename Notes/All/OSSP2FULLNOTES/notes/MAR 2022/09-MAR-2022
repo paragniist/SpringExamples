@@ -1,0 +1,257 @@
+#1. Can we replace multiple methods of a class using one single Replacer?
+It is possible to replace multiple methods with one single replacer, we can identify the replacer has been called onbehalf of which method by using Method object passed as a parameter, so that we can reuse the same replacer in replacing multiple methods.
+	
+But it is not recommended to replace multiple methods using the same replacer as the complexity and maintainability is going to be high
+
+#2. How to replace overloaded methods?
+by default the overloaded methods will not be replaced since it runs into ambiguty. so we need to specify which method we want to replace using argument types of the method to uniquely identify among the overloaded methods
+
+<replaced-method name="findPlans" replacer="findPlansReplacer">
+	<arg-type>java.lang.String</arg-type>
+	<arg-type>int</arg-type>
+</replaced-method>
+------------------------------------------------------------------------------------------
+How is Method Replacement works?
+
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		return Arrays.asList(new String[]{"plan1","plan2"});
+	}
+}	
+
+class FindPlansReplacer implements MethodReplacer {
+	public Object reimplement(Object obj, Method method, Object[] args) {
+		return Arrays.asList(new String[]{"plan3","plan4"});
+	}
+}
+
+application-context.xml
+-----------------------
+<bean id="findPlansReplacer" class="FindPlansReplacer"/>
+
+<bean id="planFinder" class="PlanFinder">
+	<replaced-method name="findPlans" replacer="findPlansReplacer"/>
+</bean>
+
+Test.java
+---------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+PlanFinder pf = beanFactory.getBean("planFinder", PlanFinder.class); // returns proxy
+List<String> plans = pf.findPlans("5-7", 1, 1, true);
+
+
+cglib and asm libraries which are runtime proxy generation libraries
+
+class PlanFinder$Proxy extends PlanFinder {
+	MethodReplacer methodReplacer;
+	
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		StackTrace st  = Thread.currentThread().getStack();
+		Method method = st.getMethod();
+		
+		Object[] args = new Object{ageGroup, copay, coverageType, cashless};
+		return methodReplacer.reimplement(this, method, args);
+	}	
+}
+
+whenever we call beanFactory.getBean("planFinder", PlanFinder.class), the bean factory quickly goes to in-memory metadata of the ioc container to identify the bean definition with name "planFinder"
+	
+by looking at replaced-method tag, ioc container understands it has to replace "findPlans"  method with the "findPlansReplacer" so it creates an runtime proxy class by injecting bytecode into the jvm memory using the help of cglib and asm libraries
+	
+The proxy class it is generating will be extended from original class, because the only way to replace a method within a class without modifying the code is through overriding and injects the method replacer object into the proxy while creating
+
+Now in the proxy it overrides the method we specified replaced-method tag and generates the logic for invoking reimplement() of the method replacer and creates the object of Proxy class and keeps it in the ioc container and returns reference of the proxy to us.
+	
+so when we are calling pf.findPlans(...) method it invokes the method on proxy/sub class which has logic for invoking reimplement method rather then original method. So we are able replace the logic of original class without modifying the code.
+------------------------------------------------------------------------------------------
+
+How many ways we can create ioc container?
+(or)
+How many types of ioc container are there?	
+There are 2 ways we can create ioc container
+1. BeanFactory
+2. ApplicationContext
+
+#1. BeanFactory
+DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+BeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+reader.loadBeanDefinitions(new ClassPathResource("a-c.xml"));
+
+
+BeanFactory    ConfigurableListableBeanFactory
+         |      |
+       XmlBeanFactory
+       DefaultListableBeanFactory
+
+#2. ApplicationContext
+ApplicationContext is also an interface similar to BeanFactory. it has lot of implementations
+
+ApplicationContext  ConfigurationApplicationContext
+|-FileSystemXmlApplicationContext
+|-ClassPathXmlApplicationContext
+|-AnnotationConfigApplicationContext
+
+ApplicationContext context = new ClassPathXmlApplicationContext("com/di/common/application-context.xml");
+
+What is the difference in creating an ioc container using BeanFactory and ApplicationContext?
+	
+BeanFactory vs ApplicationContext
+----------------------------------
+#1
+BeanFactory is an lazy initializer where as an ApplicationContext is an eager initializer
+
+class GasStation {}
+
+application-context.xml
+-----------------------
+<bean id="gasStation" class="GasStation"/>
+
+Test.java
+---------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+
+while creating the ioc container using BeanFactory, the BeanFactory just instantiates the ioc container by loading the xml configuration as an in-memory data and returns the reference of ioc container as an BeanFactory, but it will not instantiates the objects for the BeanDefinition
+
+The bean definitions are instantiated only when we call beanFactory.getBean("gasStation"), since the bean definitions are instantiated only on-demand lazily it is called lazy initializer
+
+where as in case of ApplicationContext, after checking for wellformness and validity the ioc container reads the spring bean configuration file and loads as metadata into the ioc container.
+after creating the ioc container, the ApplicationContext will quickly goes to the in-memory metadata and checks to see all the bean definitions whose scope are "singleton"	
+	
+if finds, it instantiates the object for all the singleton scope bean definitions places them in the ioc container and returns the reference of ioc container to us
+
+The object for bean definitions will be created during the time of instantiating the ioc container itself so it is called eager loading
+
+	
+It is often recommended to use ApplicationContext rather than BeanFactory to create the ioc container because
+while using ApplicationContext it fail-fast which means at the time of creating the ApplicationContext as it instantiates all the bean definitions if there any mis-configuration issues we will run into exception during creation of ioc container itself due to which we dont run into RuntimeException during execution of the program
+
+but where as BeanFactory doesnt instantiates the Bean definitions due to which there is an high chance during the execution of the program our program might terminate abnormally due to mis-configuration issue in bean definitions which is always not-safe
+
+That is the reason it is recommended to use ApplicationContext rather than BeanFactory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

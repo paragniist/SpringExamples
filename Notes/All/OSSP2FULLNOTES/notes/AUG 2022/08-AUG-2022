@@ -1,0 +1,178 @@
+Field Formatter
+----------------
+FieldFormatters are used for converting string value into object type and viceversa to support web databinding. 
+	
+The developer has to write the FieldFormatter with logic for converting string to object and object to string. The WebDataBinder takes care of invoking the Formatter in coverting request parameters into object and object to parameters back.
+	
+So the WebDataBinder to invoke the Field Formatter class we need to write Field Formatter implementing an spring spi interface and write the relevant logic to support coversion.
+	
+interface Formatter<T> extends Printer<T>, Parser<T> {
+	
+}
+	
+interface Printer<T> {
+	default String print(T fieldValue, Locale locale);
+}	
+
+interface Parser<T> {
+	default T parser(String value, Locale locale);
+}
+	
+Printer = interface supports converting objectType into String
+Parser = interface supports converting String into ObjectType
+
+Formatter extends from both these interface to support convert to/fro, depends on the requirement we can override any of these 2 methods in converting the values
+
+class DateFormatter implements Formatter<Date> {
+	private String pattern;
+	
+	public DateFormatter(String pattern) {
+		this.pattern = pattern;
+	}
+	
+	public Date parse(String textDate, Locale locale) throws ParserException {
+		SimpleDateFormat sdf = null;
+		Date date = null;
+		
+		sdf = new SimpleDateFormat(pattern, locale);
+		date = sdf.parse(textDate);
+		return date;
+	}
+	
+	public String print(Date date, Locale locale) {
+		SimpleDateFormat sdf = null;
+		String sDate = null;
+		
+		sdf = new SimpleDateFormat(pattern, locale);
+		sDate = sdf.format(date);
+		return sDate;
+	}
+}
+
+To let the WebDataBinder understand the Formatter to be used for converting the object to String or String to Object for a form of its attribute we need to define configuration. Instead of using configuration we can define annotation through which we tell which formatter to be applied when we use this annotation.
+	
+From the above we can understand for each Formatter we need to associate an Annotation to apply it
+
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DateFormatter {
+	String patttern() default "dd/MM/yyyy";
+}
+
+To bind the annotation with the Formatter to be used we need to write AnnotationFormatterFactory, it will determine based on annotation which formatter to be used for conversion and returns the object.
+
+class DateAnnotationFormatterFactory implements AnnotationFormatterFactory<DateFormatter> {
+	public Set<Class<?>> getFieldTypes() {
+		return new HashSet(Arrays.asList(new Class<?>[]{Date.class}));
+	}
+	
+	public Printer<?> getPrinter(DateFormatter annotation, Class<?> fieldType) {
+		DateFormatter dateFormatter = new DateFormatter(annotation.getPattern());
+		return dateFormatter;	
+	}
+	
+	public Parser<?> getParser(DateFormatter annotation, Class<?> fieldType) {
+		DateFormatter dateFormatter = new DateFormatter(annotation.getPattern());
+		return dateFormatter;	
+	}
+}
+
+
+place all the formatter factories in ioc container so that WebDataBinder can search through the FormatterFactories to identify the Formatter to be used for a given annotation of given classType to convert
+So we need place all these Formatter factories within ioc container in FormatterRegistry
+
+@Configuration
+@EnableWebMvc
+class MyWebMvcConfigurer implements WebMvcConfigurer {
+	public void addFormatters(FormatterRegistry registry) {
+		registry.addFormatterForFieldAnnotation(new DateFormatterAnnotationFactory());
+	}
+}
+
+class NewParcelForm {
+	@DateFormatter(pattern="dd/MM/yyyy")
+	Date bookingDate;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

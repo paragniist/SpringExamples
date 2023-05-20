@@ -1,0 +1,28 @@
+To programmatically configure DispatcherServlet and ContextLoaderListener for our application without web.xml, spring has provided an interface WebApplicationInitializer
+We need to write our own implementation of WebApplicationInitializer in which we need to write logic for creating/configuring DispatcherServlet and ContextLoaderListener of our application.
+	
+class ProgWebApplicationInitializer implements WebApplicationInitializer {
+	public void onstartup(ServletContext context) {
+		XmlWebApplicationContext rootApplicationContext = null;
+		XmlWebApplicationContext servletApplicationContext = null;
+		ContextLoaderListener contextLoaderListener = null;
+		DispatcherServlet dispatcherServlet = null;
+		
+		rootApplicationContext = new XmlWebApplicationContext(); // empty
+		rootApplicationContext.setConfigLocation("/WEB-INF/application-context.xml");
+		
+		
+		
+		
+		
+	}
+}	
+	
+
+
+
+
+
+
+
+

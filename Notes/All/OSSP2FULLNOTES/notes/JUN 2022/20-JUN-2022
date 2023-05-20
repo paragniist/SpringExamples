@@ -1,0 +1,35 @@
+HandlerMapping
+1. SimpleUrlHandlerMapping
+2. BeanNameUrlHandlerMapping
+6. RequestMappingHandlerMapping (annotation)
+	
+#1. SimpleUrlHandlerMapping
+The programmer can quickly/easily can configure requestURL to a controller class by using SimpleUrlHandlerMapping
+	
+#2. BeanNameUrlHandlerMapping (default handler mapping)
+It takes the requestURL as an input and tries to match with name of the bean definition to identify the object/handler/controller to be used for that request
+--------------------------------------------------------------------------------------------
+#2. HandlerInterceptor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

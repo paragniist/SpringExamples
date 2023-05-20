@@ -1,0 +1,178 @@
+BeanFactoryPostProcessor
+-------------------------
+BeanFactoryPostProcessor is used for applying some post processing logic ontop of the BeanFactory or ioc container after the ioc container has been created, after loading the metadata before the ioc container begins instantiating the objects for the bean definitions.
+	
+Within the ioc container we have only metadata, and using BeanFactoryProcessor we can modify the in-memory metadata of the ioc container, so that with modified metadata ioc container will begins instantiating the objects for the bean definitions
+
+(or)
+	
+BeanFactoryPostProcessor is used for modifying the in-memory metadata of the ioc container at runtime during the time of creating the ioc container
+------------------------------------------------------------------------------------------
+class AccountDao {
+	private ConnectionManager connectionManager
+	
+	public AccountDao(ConnectionManager connectionManager) {
+		this.connectionManager = connectionManager;
+	}
+	
+	public Account getAccount(int accountNo) {
+		Connection con = null;
+		
+		con = connectionManager.newConnection();
+		// jdbc operation
+	}
+}
+
+
+class ConnectionManager implements InitializingBean {
+	private String driverClassname;
+	private String url;
+	private String username;
+	private String password;
+	
+	public ConnectionManager(String driverClassname, String url, String username, String password) {
+		this.driverClassname = driverClassname;
+		this.url = url;
+		this.username = username;
+		this.password = password;						
+	}
+	
+	public void afterPropertiesSet() {
+		Class.forName(driverClassname);
+	}
+	
+	public Connection newConnection() {
+		Connection con = null;
+		
+		con = DriverManager.getConnection(url, username, password);
+		return con;
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="connectionManager" class="ConnectionManager">
+	<constructor-arg value="com.mysql.jdbc.cj.Driver"/>
+	<constructor-arg value="jdbc:mysql://localhost:3306/db"/>
+	<constructor-arg value="root"/>
+	<constructor-arg value="encryptedpassword"/>
+</bean>
+
+<bean id="accountDao" class="AccountDao">
+	<constructor-arg ref="connectionManager"/>
+</bean>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+AccountDao dao = beanFactory.getBean("accountDao", AccountDao.class);
+
+dbsecret.txt
+encrypted password
+
+
+Why do we need to use BeanFactoryPostProcessor?
+	(or)
+Why do we need to modifying the in-memory metadata at runtime during the time of instantiating the ioc container?
+There are different scenarios or factors that drives us to modify the in-memory metadata let us explore
+#1 when we are moving our application across the environments, the configuration with which we want to run the application will not be same across all environment. So we need to modify the spring bean configuration file everytime while deploying/running the application on an environment, so maintaining the spring bean configuration file and modifying it is an tedious job because
+1. we need to manually modify the bean definitions before deploying the application on that env
+2. which are all the bean definitions to be modified we should keep track before running the application on the env
+3. there is a chance that we might modifying something wrong syntactically that breaks the deployment or functionality of the application
+So instead of directly modifying the spring bean configuration file, if we can replace the configuration in-memory during the time of creating the ioc container by reading environment specific configuration automatically then the job of maintaining the configuration for each environment becomes easy, so go for BeanFactoryPostProcessor
+
+#2
+while working in an application there are lot of credentials/secrets we use as part of the configuration, writing these secrets/passwords/credentails as plain-text values in spring bean configuration poses security breach as those credentials are exposed to everyone through your code
+
+So instead of writing or configuring plain-text passwords we need to use encryptedPassword to be injected for the bean definitions
+
+The ioc container instantiates the objects of these bean definitions with encrypted passwords which leads to failure of the functionality as the passwords on the source system will not match
+
+So we can can take the help of BeanFactoryPostProcessor for modifying in-memory metadata of encryptedPasswords and decrypt them before instantiating the objects for the bean definitions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

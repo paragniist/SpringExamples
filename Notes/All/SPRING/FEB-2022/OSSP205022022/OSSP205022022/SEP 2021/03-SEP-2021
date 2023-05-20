@@ -1,0 +1,93 @@
+Spring Framework supports multiple types of application development types in par with JEE. Then why do we need to learn Spring Framework to build applications when it supports same type of application development types similar to JEE.
+  
+There are problems with JEE api:
+#1
+JEE Stands for Java Enterprise Edition, it is an API. API Standards for Application programming interface, always api are partial they provide only interfaces and abstract classes, we need to use implementation from vendor to work with API. So a beginner in java always find it difficult to understand working with API due to this.
+  
+#2 API are huge in nature, the number of classes provided by the API are more, so it takes more time in learning the API
+
+#3 The classes provided by the API are inter-dependent with each other, thus making it more complex to understand and requires more learning curve in learning an api
+
+#4 We cannot partial learn an API in developing an application, as the classes are inter-dependent on each other we need to completely learn api to start building an application
+
+#5 API doesnot provide boiler-plate logic.
+boiler-plate logic: The piece of code that has to be redundantly written across various applications in accomplishing the functionality. Programmers while working with API has to write the boiler-plate logic in building an application.
+Due to which we endup in writing more number of lines of code which will push us into several problems more lines of code requires :
+  1. more time for developing the application
+  2. amount of efforts required in building the application is high
+  3. more no of resources required in building the application
+  4. The cost of building the application goes high
+  5. The chances of increasing the bugs is more, because of more no of lines of code
+  6. The amount of time it takes in testing the application also will be more if more lines of code is there  
+From the above we can understand, API doesnt support rapid application development. So, go for frameworks.
+
+What is a Framework?  
+Frameworks provides bunch of classes, all the classes provided by the framework are concreate in nature. 
+What does these Framework classes will contain?
+The Framework provided classes will contain pre-identified functionality, which is nothing but boiler plate logic where while developing the application with Framework we can directly use the Framework classes without writing boiler-plate logic
+
+advantages:-
+#1 
+Since Frameworks directly provides concreate classes to us, the complexity of api/implementation is gone, now developer can directly work with Framework classes.
+  
+#2 Unlike API Framework will have less number of classes, so learning Frameworks is quick when compared with API
+
+#3 Since they provide concreate classes, there is no or minimal inter-dependency between the classes, so it is obvious that those are less complicated and quick to learn and use it.
+  
+#4 Framework supports jump start in building an application which means, we can partially learn a Framework and can begin development of the application.
+  
+#5 Framework provides boiler-plate logic, thus the number of lines of code we need to write in building the application is very less when compared with API.
+  5.1 it takes less time in building an application
+  5.2 efforts of developing the application is very less when compared with API
+  5.3 less number of resources are required
+  5.4 cost of building the application comes down
+  5.5 chances of creeping up the bugs in the application will be very less due to less number of lines of code
+  5.6 The framework developers has written the boiler-plate logic by adopting the best-practices and optimizations in implementation, so while using the Framework all those best practices would comes to our project as well, so we are indirectly getting benefited
+  5.7 Since we are writing less number of lines of code, the time required for testing/certifying the application will be less.    
+From the above we can understand frameworks support rapid application development.
+
+Due to the above reasons we prefer to build application using Spring Framework rather than use JEE api.
+    
+
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  

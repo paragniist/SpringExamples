@@ -1,0 +1,163 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  
+  public void writeString(String message) {
+    String cMessage = null;
+    
+    messageFormatter = new HTMLMessageFormatterImpl();
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+final class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }
+}
+
+final class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>"
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    messageWriter.writeMessage("Welcome to SDP");
+  }
+}
+
+If a class is creating the object of another class, we will run into 2 problems
+1. to create the object we need to use new operator and need to pass concreate classname, so that we will tightly coupled with the classname of another class.
+2. we will be exposed to the complexity in creating the object of another class, so that if instantiation process has been changed for other class, we will be impacted.
+  
+How to overcome both the problems?
+Factory design pattern
+Factories are used for creating the object of another class, there are 2 reasons why we use factory class.
+  
+1. Factories helps us in abstracting the complexity in creating the object of another class.
+Every class cannot be instantiated by using new operator, there are few class who requires complex instantiation process in creating the object.
+for eg..
+class A {                   class B {         class C{}  class D {}
+  B b;                       C c;
+  void m1() {                D d;
+    want object of B         B(C c, D d){}             
+  }                         }
+}
+
+here if A wants the object of B, then A has to create the object B, but in order to create the object B he has to create C class and D class objects and pass to B, where in A has to know the complete details and has to write lot of lines of code in creating the Object B, which is complex instantiation process.
+In future if the process of creating the Object of B has been modified then A will gets effected, because it is instantiating, not only A there could be several class who are creating B, those all classes also will be effected.
+  
+  
+So to hide the complex in creating the object of B from aother class, let us use Factory as show below.
+  
+class BFactory {
+  public static B createB() { // static factory method
+    B b = new B();
+    return b;
+  }
+}  
+class A {
+  B b;
+  void m1() {
+    b = BFactory.createB();
+  }
+}
+
+2. To decouple the class from the classname of another class.
+class A {
+  IB b;
+  void m1() {
+    b = new B();
+  }
+}
+here A class has to use the classname of B to create object, if the name of the class has been changed in future from B to C, we need to modify the code inside the A and all of the classes who are instantiating the B class.
+  
+How to get the object of another class, without using name of the another class?
+class IBFactory {
+  public static IB createIB() {
+    return new B();
+  }
+}
+
+class A {
+  IB b;
+  void m1() {
+    b = IBFactory.createIB();
+  }
+}
+Without knowing the classname of another class, our class can get the object of another class so that we will be decoupled from the classname of another class.
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

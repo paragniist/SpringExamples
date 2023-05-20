@@ -1,0 +1,72 @@
+Method Replacement
+------------------
+gps - reconcillation
+
+Medical Insurance Providers
+1. uhg
+2. athena
+3. well point
+
+Medical Insurance policies
+benefits:-
+1. In-Network / out of network coverage
+2. Copay
+3. Cashless Treatment
+4. Pre-existing conditions
+
+open enrollment period (90 days) [october - december]
+medical insurance providers
+- others different mediums in enrolling for the medical insurance policies
+	- online enrollment systems
+	- spot appointments
+	- campaings
+	- poc counters/kiosk
+	- partner channels (petrol pumps, banks, postal)
+	
+Policy Finder Tool (artificial intelligence) 
+rule engine apis (drools)
+	
+	
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		// conditional evaluations
+		return Arrays.asList(new String[] {"plan1", "plan2"});		
+	}
+}
+
+joining company
+- team
+	initiate knowledge transfer (kt)
+	kt plan
+		- which date&time - project setup
+		                  - module#1
+											
+enrollment
+plan finder
+-----------------------------------------
+planfinder = recently launched a year back 
+- few times of a certain combination of inputs, the tools is failing and getting crashed (bug) (99%)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

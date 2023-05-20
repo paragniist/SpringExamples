@@ -1,0 +1,161 @@
+How many types of transactions are there?
+There are 2 types of transactions are there
+1. global transactions
+within the transactional boundary if there are more than one global transactional participating resource is there on whom we are issuing a commit or rollback then it is called global transactions.
+	
+2. local transactions
+within the transactional boundary if there is only one single transactional participating resource on whom we are issuing commit or rollback directly then it is called local transaction.
+	
+jdbc api supports only local transactions, it doesnt support global transaction. To work with global transaction we need to use JTA api
+
+JTA stands for Java Transaction Manager api, it is used for managing transactions on multiple global transactional participating resources. JTA api works in jee environment only.
+The jee containers only supports 2-phase or global transactions
+1. weblogic server
+2. jboss server/wildfly server
+3. glassfish
+4. websphere server
+or any other jee containers supports global transactions
+
+A datasource within the jee container acts as an resource manager, when we are working with global transactions we need to create xa datasource in jee container.
+xa jdbc driver to perform global transactions (2-phase commit driver)
+each database that supports global transactions provides an xa jdbc driver which has to be used in creating xa datasource in the container
+
+
+The jee containers provided an Transaction Manager called "UserTransaction", UserTransaction is an interface for which the jee containers provided implementation to support global transactions.
+The UserTransaction implementation object is instantiated and binded to the jndiRegistry by the jee containers with default jndiName: "javax/UserTransaction"
+
+try {
+	HashTable ht = new HashTable();
+	// populate all the jndiRegistry details
+	InitialContext ic = new InitialContext(ht);
+	UserTransaction ut = (UserTransaction) ic.lookup("java:/UserTransaction");
+	ut.beginTransaction();
+
+	DataSource hrDataSource = (DataSource) ic.lookup("java:/hrDataSource");
+	Connection hrCon = hrDataSource.getConnection();
+
+	DataSource payRollDataSource = (DataSource) ic.lookup("java:/payrollDataSource");
+	Connnection payrollCon = payRollDataSource.getConnection();
+
+	PreparedStatement pstmt1 = hrCon.preparedStatement("insert into emp...");
+	// substitute parameters
+	pstmt1.executeUpdate();
+
+	PreparedStatement pstmt2 = payrollCon.preparedStatement("insert into payroll...");
+	// substitute parameters
+	pstmt2.executeUpdate();
+	flag = true;
+}catch(SqlException e) {
+	flag = false;
+}finally {
+	if(ut != null) {
+		if(flag) {
+			ut.commit();
+		}else {
+			ut.rollback();
+		}
+	}
+}
+
+class EmployeeDao {
+	public int saveEmployee(EmployeeBo bo) {
+		boolean flag = false;
+		Connection con = null;
+		PreparedStatement ptsmt = null;
+		
+		try {
+			Class.forName(driverClassname);
+			con = DriverManager.getConnection(url, un, pwd);
+			pstmt = con.preparedStatement("insert into emp...");
+			// substitute parameters
+			pstmt.executeUpdate();
+			flag = true;
+		}catch(ClassNotFoundException | SqlException e) {
+			flag = false;
+		}finally {
+			if(con != null) {
+				if(flag) {
+					con.commit();
+				}else {
+					con.rollback();
+				}
+			}
+		}
+	}
+}
+
+class PayrollDao {
+	public int savePayroll(PayrollBo bo) {
+		boolean flag = false;
+		Connection con = null;
+		PreparedStatement ptsmt = null;
+		
+		try {
+			Class.forName(driverClassname);
+			con = DriverManager.getConnection(url, un, pwd);
+			pstmt = con.preparedStatement("insert into payroll...");
+			// substitute parameters
+			pstmt.executeUpdate();
+			flag = true;
+		}catch(ClassNotFoundException | SqlException e) {
+			flag = false;
+		}finally {
+			if(con != null) {
+				if(flag) {
+					con.commit();
+				}else {
+					con.rollback();
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

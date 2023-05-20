@@ -1,0 +1,178 @@
+interface Validator {
+	List<String> validate(Object object);
+}
+
+class NewDoctorFormValidatorImpl implements Validator {
+	List<String> validate(Object obj) {
+		NewDoctorForm doctorForm = null;
+		List<String> errors = null;
+		
+		doctorForm = (NewDoctorForm) obj;
+		errors = new ArrayList();
+		
+		if(doctorForm.getDoctorName() == null || doctorForm.getDoctorName().trim().length==0) {
+			errors.add("doctor name is blank");
+		}
+		if(doctorForm.getAge() < 0 || dotorForm.getAge()>100) {
+			errors.add("age should be between 0 to 100");
+		}
+		if(doctorForm.getGender() == null || doctorForm.getGender().trim().length==0) {
+			errors.add("gender is blank");
+		}
+		if(doctorForm.getQualification() == null || doctorForm.getQualification().trim().length==0) {
+			errors.add("qualification is blank");
+		}
+		if(doctorForm.getExperience() < 0 || dotorForm.getExperience()>80) {
+			errors.add("experience is not valid");			
+		}
+		if(doctorForm.getSpecialization() == null || doctorForm.getSpecialization().trim().length==0) {
+			errors.add("gender is not valid");
+		}
+		if(doctorForm.getMobileNo() == null || doctorForm.getMobileNo().trim().length==0) {
+			req.setAttribute("error", "mobile no is not valid");
+			req.getRequestDispatcher("/validate-error.jsp").forward(req, resp);
+			return;
+		}
+		if(doctorForm.getEmailAddress() == null || doctorForm.getEmailAddress().trim().length==0) {
+			errors.add("email address is not valid");			
+		}
+		return errors;
+	}
+}
+
+class NewDoctorServlet extends HttpServlet {
+	public void service(HttpServletRequest req, HttpServletResponse resp) {
+		boolean flag = false;
+		DoctorService doctorService = null;
+		
+		flag = PreRequestHandler.handleRequest(req, resp, NewDoctorForm.class, NewDoctorFormValidator.class, "/new-doctor.jsp");
+		if(flag == false) {
+			return;
+		}
+		
+		doctorService = new DoctorService();
+		int doctorNo = doctorService.addDoctor(doctorForm);
+		
+		req.setAttribute("doctorNo", doctorNo);
+		req.getRequestDispatcher("/success.jsp").forward(req, resp);
+	}
+}
+
+new-doctor.jsp
+---------------------
+<html>
+	<head>
+		<title>validation errors</title>
+	</head>
+	<body>
+		<h2>add doctor</h2>
+		<c:if test="${errors not empty}">
+			<c:forEach items="${errors}" var="error">
+				<p style="color:red;">${error}</p>
+			</c:forEach>
+		</c:if>
+		<form action="${pageContext.request.contextPath}/newDoctor" method="post">
+			<c:choose>
+				<c:when test="${doctorForm eq null}">
+					doctorName: <input type="text" name="doctorName"/><br/>
+					age: <input type="text" name="age"/><br/>
+					gender: Male: <input type="radio" name="gender" value="M"/> Female <input type="radio" name="gender" value="F"/><br/>
+					qualification: input type="text" name="qualification"/><br/>
+					experience: <input type="text" name="experience"/><br/>
+					specialization: <input type="text" name="specialization"/><br/>
+					mobile no:<input type="text" name="mobileNo"/><br/>
+					email address: <input type="text" name="emailAddress"/><br/>	
+				</c:when>
+				<c:otherwise>
+					doctorName: <input type="text" name="doctorName" value="${doctorForm.doctorName}"/><br/>
+					age: <input type="text" name="age" value="${doctorForm.age}"/><br/>
+					gender: Male: <input type="radio" name="gender" value="M"/> Female <input type="radio" name="gender" value="F"/><br/>
+					qualification: input type="text" name="qualification" value="${doctorForm.qualification}"/><br/>
+					experience: <input type="text" name="experience" value="${doctorForm.experience}"/><br/>
+					specialization: <input type="text" name="specialization" value="${doctorForm.specialization}"/><br/>
+					mobile no:<input type="text" name="mobileNo" value="${doctorForm.mobileNo}"/><br/>
+					email address: <input type="text" name="emailAddress" value="${doctorForm.emailAddress}"/><br/>	
+				</c:otherwise>
+			</c:choose>
+			<input type="submit" value="add doctor"/>
+		</form>
+	</body>	
+</html>
+--------------------------------------------------------------------------------------------
+
+
+class AddPatientServlet extends HttpServlet {
+	public void service(req, resp) {		
+		NewPatientForm patientForm = null;		
+		
+			
+		flag = PreRequestHandler.handleRequest(req, resp, NewPatientForm.class, NewPatientFormValidator.class, "/new-patient.jsp");
+		if(flag == false) {
+			return;
+		}
+		
+		PatientService patientService = new PatientService();
+		int patientNo = patientService.addPatient(patientForm);
+		req.setAttribute("patientNo", patientNo);
+		req.getRequestDispatcher("/success.jsp").forward(req, resp);
+	}
+}
+
+class PreRequestHandler {
+	boolean handleRequest(req, resp, Class<?> formClass, Class<?> validatorClass, String formPage) {
+		Object formObject = null;
+		Validator validator = null;
+		List<String> errors = null;
+
+		formObject = RequestWrapper.wrap(req, formClass);
+		validator = (Validator) validatorClass.newInstance();
+		
+		errors = validator.validate(formObject);
+		if(errors.size() > 0) {
+			req.setAttribute("errors", errors);
+			req.setAttribute("form", formObject);
+			req.getRequestDispatcher(formPage).forward(req, resp);
+			return false;
+		}
+		return true;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

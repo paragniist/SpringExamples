@@ -1,0 +1,28 @@
+What is an view component, what is the purpose of it?
+View is a component used for rendering the view/data to the enduser. To decouple spring mvc from the underlying view technology used for rendering the view spring mvc has introduced View component.
+	
+By the above spring mvc can support any technology view to be rendered as an output to the enduser. Now the programmer can implement his own View implementation for the View interface in rendering the data 
+	
+Spring mvc has provided an interface View
+interface View {
+	void render(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Map<String, Object> modelMap);
+}
+Let us say in our application we want to render a pdf page as an view to the enduser, now programmer can write his own implementation of a view interface, in which he can write his own implementation logic for constructing pdf and rendering to the enduser
+
+In general we go for displaying a pdf/excel views in an reporting requirements.
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,171 @@
+There are 2 ways we can create the ioc container
+1. BeanFactory
+2. ApplicationContext
+
+#2. ApplicationContext
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+
+implementations:
+1. ClassPathXmlApplicationContext
+2. FileSystemXmlApplicationContext
+3. AnnotationConfigApplicationContext
+
+What is the difference between creating ioc container using BeanFactory vs ApplicationContext?
+	
+#1. BeanFactory is an lazy instantiator/initializer at the time of creating the ioc container it loads the spring bean configuration and loads it as an in-memory metadata into ioc container and returns the reference of it as BeanFactory, but it doesnt instantiates the objects for the Bean Definitions
+
+When we request the object for the bean definition using beanFactory.getBean("beanId") then only the object is created, so it is called lazy instantiator or initializer
+
+whereas in case of ApplicationContext while creating the ioc container itself all the singleton scoped bean definitions are instantiated and placed inside ioc container, as the bean definitions are instantiated much earlier before requested it is called eager instantiator/initializer
+
+since ApplicationContext is an fast-fail it is recommended to use for creating ioc container in enterprise large applications, so that we know the failures during the startup of the application rather than using BeanFactory
+
+#2. BeanFactory doesnt support internationalization, where as ApplicationContext supports internationalization
+
+#3. BeanFactory doesnt support Event processing, where as ApplicationContext supports event processing
+
+#4. Incase of BeanFactory we need to manually register BeanFactoryPostProcess and BeanPostProcessors to the ioc container, whereas when we create ioc container using ApplicationContext the BeanFactoryPostProcessor and BeanPostProcessor gets registered automatically
+------------------------------------------------------------------------------------------
+PostProcessors
+PostProcessors means after anything has been created, we wanted to apply some processing logic on top of it before it is being used which is called PostProcessor
+
+There are 2 types of PostProcessors are supported by ioc container
+1. BeanFactoryPostProcessor
+we can apply post processing logic on the ioc container/BeanFactory after it has been created before the ioc container begins instantiating the bean definition objects
+
+2. BeanPostProcessor
+we can apply post processing logic on the bean definition object after it has been created, but before it is being used
+
+BeanFactoryPostProcessor is used for applying post processing logic on ioc where as BeanPostProcessor is also used for applying post processing logic only but on bean definition object 
+------------------------------------------------------------------------------------------
+#1 BeanPostProcessor
+BeanPostProcessor is used for applying common post construction logic to all the bean definitions that are instantiated by the ioc container
+
+whereas the Post Construction bean lifecycle management method is used for applying post processing logic specific to the bean definition object
+
+since we are trying to apply common post processing logic across all the bean definitions instantiated by the ioc container, we have to write the post processing logic in a separate class which is BeanPostProcessor class
+	
+as the ioc container has to invoke the BeanPostProcessor for each bean it has created, we need to write this class by impelementing ioc container provided interface called "BeanPostProcessor"
+	
+interface BeanPostProcessor {
+	public Object postProcessBeforeInitialization(String beanId, Object bean);
+	public Object postProcessAfterInitialization(String beanId, Object bean);
+}	
+
+There are #2 methods are there in BeanPostProcessor interface, the postProcessBeforeInitialization() method will be called after the ioc container has instantiated the object of the bean definition after injecting all the dependencies, before it invokes bean lifeycycle management init method.
+	
+There afer the ioc container takes the returned object from BeanPostProcessor postProcessBeforeInitialization() method and applies beanlifecycle init method.
+	
+once the bean lifecycle post construction logic has completed execution again the ioc container calls postProcessAfterInitialization() again to perform common post construction logic there after it places the return object in the ioc container and returns to the user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

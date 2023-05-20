@@ -1,0 +1,187 @@
+How to handle exceptions as part of an application?
+#1
+always prevent running our application into exception by validating the data that has been received from the user. within the presentation-layer perform the validation and if the data is not valid then display the validation errors to the enduser, rather than passing the invalid data to the business-tier of our application and running into exceptions.
+	
+#2. 
+even though we validated the data and passed it as an input to the business-tier, there is always a chance our application might run into exception.
+whenever the dao/persistence-tier components of our application are throwing/reporting exception, it will be propagated to business delegate.
+	
+The business delegate should not report the exception to presentation-tier components since the presentation-tier components will be exposed to
+1. database specific error information
+2. persistence-tier technology specific information
+so that a change in persistence-tier will effect presentation tier components.
+	
+instead the business delegate should be responsible for wrapping the persistence-tier exception into application specific exception and report to the presentation-tier of our application.
+The programmer has to create one base exception class for the application.
+1. per each module derive an sub exception class from base exception grouping all the module exceptions from module exception
+2. per each type of failure we arise within our classes report them using a new exception indicating the failure by extending the exception from module exception
+
+Now the presentation-tier components handles the application specific exception and map them to business friendly error message to the enduser
+
+#3. no matter how better we organized and handled exceptions in our application there is always a chance where our components might run into Runtime Exceptions which are propogated to default exception handler of the container, which will result into ugly error page to the enduser.
+To manage in handling such unknown failues and prevent display stacktrace page to the user we need to write error-page configuration in web.xml
+
+by using all the above technics we are managing exceptions as part of our application.
+--------------------------------------------------------------------------------------------
+doctor.jsp
+<form action="" method="post">
+	doctorName: <input type="text" name="doctorName"/>
+	age: <input type="text" name="age"/>
+	gender: <input type="text" name="gender"/>
+	mobile number: <input type="text" name="mobileNo"/>
+	email address: <input type="text" name="emailAddress"/>
+	<input type="submit" value="add doctor"/>
+</form>
+	
+	
+class DoctorActionForm extends ActionForm {
+	String doctorName;
+	String age;
+	String gender;
+	String mobileNo;
+	String emailAddress;
+}
+	
+ActionForm attributes are declared as String types only, because if we declare any primitive type attributes in ActionForm, while struts framework binding the request data into ActionForm attributes if it encountered an TypeMis-match failures it runs into Runtime Exception and displays ungly error page to the enduser, to avoid this always declare attributes of your ActionForm as String types only.
+	
+The Action class cannot pass ActionForm as an input while calling BusinessDelegate since ActionForm is an Struts Framework specific component, so if we pass ActionForm as an input to Business-Tier/Persistence-Tier then those will be tightly coupled with Presetation-tier of our application.
+A change in presentation-tier will effects the business/persistence tiers.
+	
+So to pass values between the presentation-tier and business-tier of our application use ValueObject 
+ValueObject is an java bean/pojo declared with attributes same as ActionForm only, here we need to declare all the attributes as String type only similar to ActionForm.
+	
+So that action class binds all the data it has received interms of ActionForm into ValueObject and passes it as an input to BusinessDelegate.
+	
+Now inorder to perform business/persistence operation we need the data in business-tier representation format. so we need to create one more java bean class called "Business Object"	which holds the data in business/persistence-tier representation format.
+	
+Business Object may container same or more number of attributes than value object since it holds the data produced out of an business operation. 
+	
+The business delegate is responsible for receiving ValueObject data as an input (presentation-tier format) and convert into business-tier format and bind to Business Object.
+Now business delegate passes this business object as an input to dao asking to perform persistence operation.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

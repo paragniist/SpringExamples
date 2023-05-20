@@ -1,0 +1,90 @@
+e:\labs:/>
+sdpattern
+|-src
+  |-main
+    |-java (java sourcecode)
+      |-com
+      |-sdp
+        |-beans
+          |-MessageWriter.java
+          |-HTMLMessageFormatterImpl.java
+          |-PDFMessageFormatterImpl.java
+        |-test
+          |-SDPTest.java
+        |-helper
+          |-AppFactory.java
+    |-resources (non-java sourcecode)
+      |-appClasses.properties
+|-pom.xml
+|-target
+  |-classes
+    |-com
+      |-sdp
+        |-beans
+          |-MessageWriter.class
+          |-HTMLMessageFormatterImpl.class
+          |-PDFMessageFormatterImpl.class
+        |-test
+          |-SDPTest.class
+        |-helper
+          |-AppFactory.class
+    |-appClasses.properties
+
+How many types of sources codes are there?
+There are 2 types of source code are there
+1. java / compilable sourcecode
+2. non-java / non-compilable sourcecode
+both will acts as an input for executing the program. 
+To help maven build-tool and ide to distinguish which or java sourcecode and non-java sourcecode there are 2 separate directories src/main/java (java sourcecode), src/main/resources (non-java sourcecode) defined by maven.
+  
+The maven or ide compiles the code under src/main/java and copies the class files into target/classes directory under the project. Similarly if we write any non-java files in src/main/resources/ directory it will copy those files under target/classes as the non-java files are also required for executing the program.
+  
+in-short:-  
+when packaging the application as a jar/war/ear to deliver to the customer both java/non-java source should be included.
+  
+So maven build-tool or ide will include both the class files / non-java source code into end artifact.
+  
+class AppFactory {
+  public static Object createObject(String lClassname) {
+    Properties props = new Properties();
+    
+    InputStream in = MessageWriter.class.getClassLoader().getResourceAsStream("appClasses.properties");
+    props.load(in);
+    
+    String fqnClass = props.getProperty(lClassname);
+    Class clazz = Class.forName(fqnClass);
+    Object obj = clazz.newInstance();
+    return obj;
+  }
+}  
+
+In the above AppFactory class we are reading the properties file pointing to the file location using absolute path. if we use the absolute path, when we move the application from one location to another location the path to the resource we are reading will be broken, again we need to modify the code in pointing to the correct location, this will put ourself into maintainability issues of always modifying and redeploying or re-running the application.
+  
+Instead of using absolute path we can use relative path relative from the directory location of the classpath of our project.
+Classloaders knows the resources of our project based on CLASSPATH variable we set, so we can easily ask the classloader to read the resources of our project by providing relative path location from the CLASSPATH of our project as 
+
+AppFactory.class.getClassLoader().getResourceAsStream("appClasses.properties") 
+  ClassLoader goto the classpath location of the project and read a file appClasses.properties and create InputStream object and return.
+  
+set classpath=e:\labs\sdpattern\target\classes
+java com.sdp.test.SDPTest
+
+  
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

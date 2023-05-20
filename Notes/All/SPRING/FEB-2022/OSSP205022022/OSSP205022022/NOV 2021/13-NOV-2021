@@ -1,0 +1,30 @@
+app-classes.properties
+-----------------------
+messageWriter.class=com.sdp.beans.MessageWriter
+messageFormatter.class=com.sdp.beans.HTMLMessageFormatterImpl
+
+
+
+class AppFactory {
+  public static Object createObject(String lclassname) {
+    String fqnClass = null;
+    
+    Properties props = new Properties();
+    props.load(new FileInputStream(new File("d:\\app-classes.properties")));
+    // with above line of code, all the key/value pairs in the properties file are loaded into Properties collection
+    fqnClass = props.getProperty(lclassname);
+    
+    Class clazz = Class.forName(fqnClass);
+    Object obj = clazz.newInstance();
+    return obj;
+  }
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,79 @@
+How to develop restful services using spring framework?
+The Spring Framework has redesigned the Spring mvc module from 3.0+ onwards enhancing its capabilities in building 
+1. web applications = using annotation-driven programming
+2. extended api classes designed to fit for both mvc application as well as restful service 
+
+so, if we have a good knowledge on spring mvc module, we can quickly understand how to develop restful services using spring mvc module.
+	
+Rest is an adoption of http protocol in design and building business components and exposing to the world/partners in-an interoperable manner
+we want to expose the business component to the external world and make it accessible over http req/resp
+
+if we can build an api class using spring framework (mvc module), designed to receive the http request, perform processing and dispatch the http response back to the client, we can say we know how to work with restful services using spring framework
+------------------------------------------------------------------------------------------------------------------------
+
+restful services = 5/6 days
+- cache
+- asynchronous programming
+- swagger/openapi
+
+java microservices
+8:00 am - 9:00 am
+
+
+Framework batch 
+Microservices = 10 days = 7:00 am - 8:00 am 
+
+	
+Spring Framework 7:00 am - 8:00 am = 15 days
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

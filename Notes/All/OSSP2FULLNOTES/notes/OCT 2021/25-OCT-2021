@@ -1,0 +1,38 @@
+How to create an maven project?
+d:\workspace\spring\core:/>
+mvn archetype:generate -DgroupId=core -DartifactId=strategydp -Dversion=1.0 -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4
+  
+The project will be created with the below directory structure:
+d:\workspace\spring\core:/>
+  strategydp
+  |-src
+    |-main
+      |-java (sourcecode)
+      |-resources (sourcecode, non-compile)
+        |-*.xml
+        |-*.properties
+    |-test
+      |-java (testclasses sourcecode)        
+      |-resources (test sourcecode non-compile)
+  |-pom.xml (project object model) = information about the project
+  |-target
+    |-classes
+      |-*.class
+    |-strategydp.jar
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

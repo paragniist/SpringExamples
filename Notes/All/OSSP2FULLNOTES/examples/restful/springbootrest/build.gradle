@@ -1,0 +1,26 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.sbr'
+version = '1.0.0'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.1'
+	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

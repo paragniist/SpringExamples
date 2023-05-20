@@ -1,0 +1,54 @@
+While working with Spring, we dont need to convert persistence-tier exceptions into application specific exceptions because
+1. While working with Spring, we use Spring Jdbc for performing persistence operation, so any failures during persistence operation are reported as Spring Jdbc Exception
+Spring Jdbc Exceptions are runtime exceptions and for each type of database failure spring jdbc has provided an sub exception class of DataAccessException.
+	
+Based on the type of the database failure, spring jdbc creates an appropriate exception and reports to us irrespective of database we are using
+
+If we switch from one database to another database also, the exception reported by spring jdbc is same
+
+2. while working with other persistence technologies like hibernate or jpa etc the exceptions reported by those frameworks and apis are different
+but spring has provided persistence exception translator, which takes care of translating persistence technology exceptions into Spring Jdbc Exceptions only
+
+So that no matter what we are using in persistence tier always the exceptions are spring jdbc exceptions only so we can map these exceptions into friendly error messages to the enduser at the controller class without the need of Application Specific Exceptions.
+	
+But within the service we write business logic using apis, which might report exceptions, if these exceptions are reported to the controller directly then the presentation-tier will be tightly coupled with business-tier
+In future if we change business-tier logic (third-party apis),again we need to modify the code in mapping exceptions in Controller
+So we need to report business-tier exceptions by converting them into Application specific exceptions.
+	
+Instead of writing logic for converting technology exception into application specific exception in all the service classes,spring has provided ExcpetionMapper which will takes care of receiving exception from service classes and maps them into Application specific exception and reports to Controller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

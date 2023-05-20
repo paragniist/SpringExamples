@@ -1,0 +1,128 @@
+[phases of classloaders]
+-------------------------
+- version mis-match
+- tampered bytecode
+- linkage error
+- delayed static-block execution
+
+[principles of classloaders]
+-----------------------------
+principle of delegation
+principle of visibility
+principle of uniqueness
+-----------------------------------------------------------------------------------------------
+How does the classloaders works in jee/webserver environment?
+The jee containers or the servlet containers works on top of jdk only, so the corejdk classloaders which are boostrap, extension and system/application classloaders are still exists in the jee environment.
+	
+The core jdk classloaders helps in loading the java.lang or classes that are distributed as part of core sdk libraries.
+But we need additional classloaders to load the class from deployed applications.	
+
+The sun microsystems/oracle hasnt provided or distributed any classloaders as part of jee api, it is left to the vendors to have their own implementations of the classloaders. but the packaging and deployability aspects of loading these classes are standardized by the jee api or sun microsystems.
+	
+The jee specification has defined 2 packaging standards that has to be supported by every container.
+	1. war = web application archive
+	2. ear = enterprise application archive
+	
+The war packaging standard should be used for packaging and deploying the java web applications and has defined standard directory structure of war
+
+webroot (directory)
+|-[html,css,js,jsp,images] (public resources)
+|-WEB-INF
+	|-lib 
+	|-classes
+	|-web.xml (deployment descriptor)
+	
+and should packaged with an extension ".war". each vendor should support loading the classes from an war packaging structure only.
+	
+ear packaging standard should be use for packaging and deploying multi-module enterprise application.
+	
+earapplication (directory)	
+|-META-INF
+	|-application.xml (deployment descriptor)
+|-lib
+|-webmodule.war
+|-webmodule.war
+
+and should be packaged with an extension ".ear" and the jee container should support deployment of ear application
+-----------------------------------------------------------------------------------------------
+Each container has their own deployment directory in which we need to package and deploy our applications as .war or .ear. The respective classloaders of those containers will look for the .war or .ear files under that location and loads the classes into the jvm memory.
+	
+for eg.. incase of tomcat server the deployment directory is $TOMCAT_HOME/webapps
+The classloaders that are provided differ from container to container as stated earlier but they must be a classloader that supports loading classes from a war file, so we can assume as WarClassLoader
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

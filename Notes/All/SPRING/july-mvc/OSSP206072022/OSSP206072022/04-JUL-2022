@@ -1,0 +1,109 @@
+How to configure web application components in an application without using web.xml?
+we can configure web application components in an application by writing annotations on the components directly. if we dont have the sourcecode of the classes, then we cannot use annotations and we need to use programmatic approach in configuring the web application components.
+	
+all the configuration information about an application is configured and loaded as part of ServletContext of an application. The servlet container during the runtime lookat the configuration information within the ServletContext only for serving the requests.
+	
+So programmatically configuring the web application components means somehow some way we need to add these components into the ServletContext of the application.
+	
+The process of registering our webapplication components of the application should be done directly during the phase of deployment of the application itself.	
+	
+#1.	
+one way to achieve the job of programmatically registering the components of our application is using ServletContextListener.
+	
+We can write our own implementation class implementing from ServletContextListener and write code for registering our own application components (like servlets or filters)	etc
+
+class ApplicationInitializationServletContextListener implements ServletContextListener {
+	public void onContextCreated(ServletContextEvent event) {
+		SerlvetContext context = event.getServletContext();
+		// write the code for programmatically add our application components into servlet context
+	}
+	
+	public void onContextDestroyed(ServletContextEvent event){
+	
+	}
+}
+	
+The above approach of registering the application components works greatly without any issues.
+
+But the above approach of configuring the application components will not work incase of frameworks or third-party libraries, because the developers might turn off the annotation-based configuration by writing metadata-complete="true" in web.xml.
+	
+Then how to enable the frameworks to register their components programmatically irrespecitve of the application configuration, the servlet container has provided an extension api (spi) through which a framework by itself can register during deployment phase which is
+
+interface ServletContainerInitializer {
+	void onStartup(ServletContext context, Set<Class<?>> classes);
+}
+
+add the information about the implementation class within the jar or application classpath under
+META-INF/services
+	|-javax.servlet.ServletContainerInitializer
+	add the FQN of the implementation class of the ServletContainerInitializer
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

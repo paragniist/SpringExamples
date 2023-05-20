@@ -1,0 +1,84 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  
+  public void writeString(String message) {
+    String cMessage = null;
+    
+    messageFormatter = new PDFMessageFormatterImpl();
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+final class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }
+}
+
+final class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>"
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    messageWriter.writeMessage("Welcome to SDP");
+  }
+}
+
+In the above example even though MessageWriter is talking to HTMLMessageFormatterImpl through the help of interface still they are not completely loosely coupled. In order to switch from HTML to the PDF format we need to still modify the instantiation logic in creating the object of another class. So we can say our class has still some amount of coupling being left.
+  
+Even though we used interface, why there is a coupling?
+1. If a class wants the object of another class, in general our class has to create the object of another class.
+For eg.. if class A wants the object of class B then inside the A we have to write the logic for creating the object of B.
+In order to create the object of another class, we need to use new operator and has to pass concreate classname of another class in our class. if we are using concreate classname to switch from one class to another we need to change the classname again which means our classes are tightly coupled.
+  
+2. If a class is creating the object of another class means, our class will be exposed to the complexity in creating the object of another class. 
+If the instantiation of another class requires complex logic, then all the classes whichever want the object of another class has to write the same complex logic in instantiating the object of another class, so that the instantiation logic will be duplicated accross all the classes. If there is change in instantiation logic then all the class will be impacted.
+
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+

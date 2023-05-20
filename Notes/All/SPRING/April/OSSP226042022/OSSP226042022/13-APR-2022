@@ -1,0 +1,83 @@
+How to implement pagination from a persistence-tier aspect of the application?
+
+sql = "select * from customer order by customer_nm"; // mysql
+	
+List<CustomerBo> getCustomerByPagination(int pageNo, int pageSize, String sortColumn) {
+	// load driver
+	// create con
+	// create preparedStatement with sql
+	rs = pstmt.executeQuery();
+	startIndex = ((pageNo -1) * pageSize) +1;
+	endIndex = (pageNo) * pageSize;
+	
+	index = 1;
+	
+	while(rs.next() && index > endIndex) {
+		if(index >= startIndex && index <= endindex) {
+			bo = new Customer();
+			bo.setCustomerNo(rs.getInt(1));
+			bo.setCustomerName(rs.getString(2));
+			bo.setDob(rs.getDate(3));
+			bo.setGender(rs.getString(4));
+			customers.add(bo);
+		}
+		index++;
+	}
+	return customers;
+}	
+
+List<CustomerBo> getCustomerByPagination(int pageNo, int pageSize, String sortColumn) {
+	List<CustomerBo> bos = jdbcTemplate.query(sql, new CustomerResultSetExtractor());
+	return bos;
+}
+
+private CustomerResultSetExtractor implements ResultSetExtractor<List<CustomerBo>> {
+	List<CustomerBo> extractData(ResultSet rs) {
+		startIndex = ((pageNo -1) * pageSize) +1;
+		endIndex = (pageNo) * pageSize;
+	
+		index = 1;
+	
+		while(rs.next() && index < endIndex) {
+			if(index >= startIndex && index <= endindex) {
+				bo = new Customer();
+				bo.setCustomerNo(rs.getInt(1));
+				bo.setCustomerName(rs.getString(2));
+				bo.setDob(rs.getDate(3));
+				bo.setGender(rs.getString(4));
+				customers.add(bo);
+			}
+			index++;
+		}
+		return customers;
+	}
+}
+
+private CustomerBoRowMapper implements RowMapper<CustomerBo> {
+	public CustomerBo mapRow(ResultSet rs, int rowNum) {
+		CustomerBo bo = null;
+		
+		bo = new CustomerBo();
+		bo.setCustomerNo(rs.getInt(1));
+		bo.setCustomerName(rs.getString(2));
+		bo.setDob(rs.getDate(3));
+		bo.setGender(rs.getString(4));
+		return bo;
+	}
+}
+
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+

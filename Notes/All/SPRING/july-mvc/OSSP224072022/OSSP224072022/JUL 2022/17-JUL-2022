@@ -1,0 +1,148 @@
+Why spring mvc has introduced annotation driven controllers by deprecating and removing programmatic api based controllers?
+In core java applications, the objects for the classes are created by the programmers and the methods are called by us, but when it comes to jee/enterprise applications build on java platform, the objects for our classees are instantiated by the platforms/containers/runtimes and the methods of our classes are invoked by the containers/platforms itself
+
+because the containers/platforms or runtimes handles/takescare of managing the boiler-plate logic or infrastructure logic which is common for many of the applications.
+	
+How does underlying container/runtime/platform knows the details of our classes and the methods to invoke them?
+The underlying container dont know the details of the our application classes, so the programmer has to provider the information about the classes to be managed by the containers. There are many ways the programmers can provide information about the application classes to the underlying containers/platforms.
+	
+#1. declarative or metadata-driven programming model
+The underlying container or platform provides an standard configuration file in which the programmer has to describe the information about the class like
+- The fqn of the class
+- methods, their parameters and returnType of those methods
+in a configuration file like an xml or properties or another other format which is supported by the platform/container
+
+There are lot of difficulties are there in the above approach of defining the information about our application classes to the containers
+1. describing the information about our classes in a configuration file (like an xml) is a very complex job, the developer has to know the relevant technology of the configuration file to describe the details of our classes
+2. there is a huge chance where developer might endup in writing the configuration information wrongly due to which the application goes into runtime errors, debugging and fixing the mis-configuration issues takes lot of time
+3. The amount of configuration describing the information about a class is huge, because we need to describe the class, methods their parameters and returnTypes at a great details which becomes quite huge and takes lot of time
+4. It is very difficult to ensure the application classes and the configuration describing the classes being intact. because always there is a chance where programmer might modify the classes leaving the configuration broken
+
+To overcome the above problems in writing/providing the information about our classes to the platform, the interface-driven programming model has been introduced
+
+#2. interface-driven programming model
+To avoid the above/earlier problems described, the frameworks or the container implementors providers standard interfaces with methods declared with predefined signature describing the parameters and returnTypes of the methods.
+	
+So we need to write our classes by implementing or extends from the interfaces/abstract classes provided by the framework/container/api and we need to write the implementation logic that we wanted to get executed upon called by the container/runtime.
+There are lot of advantages with this approach.
+	1. we dont need to learn any technology in describing the details of our classes to the underlying platform or container, so developer just need to write the class implementating from the standard interface, so that container knows what is the method that is available within our class and their  parameters and returnTypes
+	2. we dont need to write huge configuration describing the parameters and returnTypes of each of the methods of our class
+	3. since we are implementing from an interface, it is type-safe way of defining the configuration information, so there is no chance of mis-configuration issues
+These are all the advantages of using interface-driven programming model, but it has lot of down-sides or dis-advantages as well.
+		
+dis-advantages:-
+	1. There are lot of apis/frameworks available in the market, each of them provide their own set of interfaces declared with methods. memorizing all of the interfaces provided by various different apis/frameworks is a very complex job and tough to remember in building the application
+	2. while working with interface-driven programming model, our application classes are written by implementing or extending framework/third-party library provided interfaces/classes, by which our application will become tighly coupled with the framework/library
+	3. The readability of the code is lost by using interface-driven programming model. The programmer doesnt have flexibility in writing the code describing his own classnames or methods names, since we need to write our class and methods by implementing framework/api provided interfaces and override the methods. if anyone has to understand the functionality implementated as part of the methods of the classes, he can drive it by looking at the methodname, the programmer has to go through the implementation logic inside the method to understand what is the purpose of the method.
+	This becomes complex to understand the application logic and maintain it
+	4. since we are implementing our classes from framework/api provided interfaces, we lost the flexibility of choosing the parameters and returnTypes of our methods, since those are implemented from the interfaces. 
+	5. The primary focus of building the application will not lies towards how to implement the business logic of the application/system being built, rather the programmer always thinks in the aspect of to accomplish a functionality, what interface has been provided by the framework/api and he always plans for writing the business logic complaint/compatable with the framework itself. 
+		
+These are all the biggest pain-points in interface driven programming model, to overcome these problems the annotation-driven programming api/models are introduced.
+Now the frameworks/apis defines bunch of annotations describing their functionality/behaviour that is applied by the framework/api upon using those annotations.
+		
+These annotations are targetted to be written at various places within the source code of the classes describing the information about the classes.
+like few at
+- class level
+- method level
+- parameter level and returnType level
+
+Now the frameworks or apis reads these annotations provides relevant functionality while executing our classes since we provided configuration information describing our classes interms of annotations
+
+There are lot of advantages in using annotation-driven programming model
+1. The programmer dont need to memorize or byheart the interfaces, methods their parameters/returnTypes in working with an api or framework. he just need to understand the annotations provided by the framework and need to explore only a bunch of them through which he can accomplish the functionality he is looking for
+2. annotations are the flexible means of writing the configuration information describing our classes and those are type-safe in nature, there is no chance we might mis-configure something describe the details of our classes
+3. programmer dont need to learn something new in using annotations, since these are special type of java interface only
+4. with annotation-driven programming, now the programmer can write the application classes with any name and methods with any name, so that the programmer has flexibility in choosing the class names and methods names depicting the functionality we are implementing in them, so that the code becomes more readable.
+5. the programmer has a flexibility of choosing his own parameterTypes and returnTypes in writing the methods based on the functionality he is implementing 
+6. our classes are loosely coupled since we are not implementing or extending from framework provided interfaces or abstract classes
+
+To take the above advantages spring framework has deprecated and removed programmatic spring mvc api and has added support for annotation-based programming model
+
+
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

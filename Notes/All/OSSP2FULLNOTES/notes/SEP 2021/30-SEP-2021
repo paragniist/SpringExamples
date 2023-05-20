@@ -1,0 +1,140 @@
+What is a design pattern?
+For a recurring problem under a context, there is best applicable solution that can be applied to solve the problem together documented called "design pattern".
+  
+GOF design patterns document problems and the solution we encounter while building the applications on object oriented programming languages. one of the design pattern out of GOF patterns is "Strategy Design Pattern".
+  
+Strategy Design Pattern defined 3 principle, which we need to apply in writing our application classes.
+1. Favor composition over inheritance
+2. always design to interfaces, never design to concreate classes
+3. code should be open for extension and closed for modification
+
+#1. Favor composition over inheritance
+There are 2 ways a class can reuse the functionality of another class. Either through Inheritance or using Composition.
+  
+Inheritance:
+When we go for inheritance in reusing the functionality of another class, all the traits of parent will be inherited (part of) to child class. we use extends keyword in deriving the inheritance relationship. Inheritance establishes "IS-A" relationship between the classes.
+
+IS-A:
+The child contains all the features of the parent and we can see a child as a substitution of the parent as he poses everything of his parent.
+(or)
+A child can be expressed interms of the parent.
+  
+  
+Composition:
+Within a class we declare other class as an attribute, instantiate the object of another class. and through reference class we are going to call the methods in reusing the functionality which is called "Composition".
+The word "Composition", made of multiple parts inside it. A class has completed its functionality by keeping multiple class references within it thus being called as "Composition" here.
+Composition establishes "HAS-A" relationship between the classes.
+  
+When do we need to use Inheritance and when we should use composition?
+Inheritance:
+There are 2 thumb rules on which we need to choose Inheritance
+1. In our class we want to reuse all the methods of another class
+2. our class can be seen as a substitute of another class
+then we need to go for inheritance
+
+Composition:
+If we want to use few of the methods of another class, then go for composition only.
+(or)
+if we want to partial use the functionality of another class within our class then use Composition
+  
+  
+Strategy Design pattern is recommending us to use Composition, rather than Inheritance most of the time because there are few challenges we will encounter if we use Inheritance, to avoid them it is recommending us to use Composition.
+  
+What are the challenges or difficulties of using Inheritance?
+Problems or challenges of using Inheritance:
+1. In most of the realtime usecases, a class wants to use few of the functionalities of another class, but not all of them. In such case it is recommended to use Composition only than inheritance. By which we can understand most of the realtime usecases are solvable through composition rather than inheritance.
+  
+2. Most of the programming languages including java doesnt support multiple inheritance. In a case where if your class wants to reuse the functionality of multiple other classes the only way we can accomplish is through Composition, we cannot use Inheritance because of the above limitation.
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

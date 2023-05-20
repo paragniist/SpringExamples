@@ -1,0 +1,151 @@
+How to work with bean lifecycle?
+There are 3 ways are there
+1. declarative approach
+2. programmatic approach
+3. annotation-driven approach
+
+#1. declarative approach
+we declare the lifecycle management methods as part of spring bean configuration file as init-method and destroy-method, so that ioc container takes care of calling them to handle lifecycle management.
+	
+class Rectangle {
+	double length;
+	double breadth;
+	double area;
+	
+	public Rectangle(double length) {
+		this.length = length;
+	}
+	public void setBreadth(double breadth) {
+		this.breadth = breadth;
+	}
+	public void init() {
+		area = length * breadth;
+	}
+	public void release() {
+		this.area = 0;
+	}
+}	
+
+a-c.xml
+---------
+<bean id="rectangle" class="Rectangle" init-method="init" destroy-method="release">
+	<constructor-arg value="20"/>
+	<property name="breadth" value="20"/>
+</bean>
+
+class Test {
+	public static void main(String[] args) {
+		BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+		Rectangle rectangle = beanFactory.getBean("rectangle", Rectangle.class);
+		
+	}
+}
+
+when does the init method will be called?
+after creating the object of the bean definition, after performing construction injection, setter injection and aware injection before returning the bean definition to the programmer/application it will invoke init-method to perform post-construction activity for the bean definition.
+	
+when does the destroy-method will be called?
+The ioc container is supposed to call the destroy method before the bean definition is going to be removed from the ioc container.
+
+Here in spring core applications, ioc container will not call the destroy method automatically because:
+1. by default the bean scope is singleton, which means object for the bean definition will be kept inside the ioc container util ioc container termination.
+2. at the time of terminating the ioc container it should of invoking the destroy-method for all the singleton bean definitions and should remove the bean definition object references and terminate the ioc container, but unfortunately ioc container by itself dont know when is it going to terminate as the jvm never notifies the ioc container about its termination
+3. usually the application will gets terminated at the end of the main method, so we can manually let the ioc container notify to destroy singleton beans or scoped bean by calling the respective methods on ioc container
+	((ConfigurableListableBeanFactory)beanFactory).destroySingletons();
+	((ConfigurableListableBeanFactory)beanFactory).destroyScopedBeans("scope");
+note: the prototypes beans are not kept with ioc container so we cannot invoke destroyScopedBeans("prototype");
+
+class Test {
+	public static void main(String[] args) {
+		BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+		Rectangle rectangle = beanFactory.getBean("rectangle", Rectangle.class);		
+		((ConfigurableListableBeanFactory)beanFactory).destroySingletons(); 				
+	}
+}
+
+But our application always may not terminate at the end of main method, we can terminate our application during the execution in middle as well by explicitly calling System.exit(0); this indicates there are multiple terminal points are there for our application.
+	
+Looks like we need to call destroySingletons() at all the places whereever we are terminating our application, which seems to be tedious job to keep track of all the terminal points and invoking the destroySingletons() method.
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

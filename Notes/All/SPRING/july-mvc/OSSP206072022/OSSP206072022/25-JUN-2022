@@ -1,0 +1,96 @@
+How many types of programmatic api controller are available as part of spring 5.x?
+There are 3 controllers are available
+1. Controller
+2. ParameterizableViewController
+3. UrlFilenameViewController
+4. AbstractController
+
+Forwarding controllers:
+The ParameterizableViewController and UrlFilenameViewController are called forwarding controllers as they just receive the request and return the logical viewname forwarding the request to an static view 
+
+#ParameterizableViewController = we bind the viewName the controller has to return for the given request
+
+#UrlFilenameViewController = It follows convention over configuration (coc), where it takes the incoming url as an input converts into viewName by removing or truncating "/" and suffix and returns as logic viewname to the DispatcherServlet
+--------------------------------------------------------------------------------------------
+#1. AbstractController
+AbstractController is the abstract implementation class of Controller interface. We need to use AbstractController, if we wanted to perform operation for the request and want to render a dynamic response/page to the enduser then we need to use AbstractController
+
+interface Controller {
+	ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response);
+}
+
+abstract class AbstractController implements Controller {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
+		# check whether the request method is allowed or not (#GET, #POST)
+		if not allowed throw exception
+		# session synchronization for avoiding data inconsistency issues while the user is sending the request with tabed or multi-window browsing sessions
+		
+		return handleRequestInternal(req, resp);
+	}
+	abstract ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response);	
+}
+
+id="cuc"
+class ContactUsController extends AbstractController {
+	public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) {
+		return new ModelAndView("contact-us");
+	}
+}
+
+
+/contact-us.htm -> DispatcherServlet
+                   |-HandlerMapping
+									  "cuc" <-|
+	
+Controller controller = applicationContext.getBean("cuc", Controller.class);
+ModelAndView mav = controller.handleRequest(req, resp);
+
+
+It is recommended to write an Controller class by extending from AbstractController rather than using Controller interface, because it provides 2 functionalities in common
+1. validating the http request method, before permitting to serve
+2. session synchronization
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

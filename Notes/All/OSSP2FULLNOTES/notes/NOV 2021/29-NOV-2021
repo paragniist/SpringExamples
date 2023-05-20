@@ -1,0 +1,112 @@
+How many ways of collaborating the objects are there?
+There are 2 ways of collaborating the objects are there
+1. dependency pulling
+	1.1 dependency lookup
+	1.2 contextual dependency lookup
+2. dependency injection
+	2.1 setter injection
+	2.2 constructor injection
+	
+2.1	setter injection	
+The dependent object will be injected into our class via the setter method, so it is called "setter injection"
+2.2 constructor injection
+The dependent object will be passed to our class via the argument of the constructor, so it is called "constructor injection"
+	
+
+what is ioc stands for?
+ioc stands for inversion of control
+where the roles of classes in managing the dependencies are inversed, if A wants object of B A used to write the logic for acquiring the object B so A became dependent and B became Target, but with dependency injection the roles are inversed where B is injected into A class by container so A became target of injection and B becomes dependent
+----------------------------------------------------------------------------------------------------
+Setter Injection
+The dependent object will be injected into the target class by calling setter method on the attribute of the target class
+	
+class WaterPump {
+	private Motor motor;
+	void on() {
+		motor.run();
+	}
+	void setMotor(Motor motor) {
+		this.motor = motor;
+	}
+}	
+		
+interface Motor {
+	void run();
+}
+class KirloskarMotorImpl implements Motor {
+	void run() {
+		System.out.println("running kirloskar motor");
+	}
+}
+
+class CromptonMotorImpl implements Motor {
+	void run() {
+		System.out.println("running crompton motor");
+	}
+}
+
+application-context.xml
+<?xml version="1.0" encoding="utf-8"?>
+<beans>
+	<bean id="waterPump" class="WaterPump">
+		<property name="motor" ref="kirloskarMotor"/>
+	</bean>
+	
+	<bean id="kirloskarMotor" class="KirloskarMotorImpl"/>
+	<bean id="cromptonMotor" class="CromptonMotorImpl"/>
+</beans>
+	
+	
+class Test {
+	public static void main(String[] args) {
+		BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("application-context.xml"));
+		WaterPump waterPump = beanFactory.getBean("waterPump", WaterPump.class);
+		waterPump.on();
+	}
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

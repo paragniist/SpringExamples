@@ -1,0 +1,154 @@
+How many approaches are there in working with spring jdbc?
+There are 5 approaches are there in spring jdbc
+1. JdbcTemplate 
+2. NamedParameterJdbcTemplate 
+---------------------------------------
+3. SimpleJdbcTemplate
+4. SimpleJdbcCall or SimpleJdbcInsert
+5. Mapping Sql Operations as subclasses
+------------------------------------------------------------------------------------------#1. JdbcTemplate
+In JdbcTemplate again there are 2 approaches are there
+1.1 Classic Approach
+1.2 Query-based approach
+
+
+class ProductDao {
+	private JdbcTemplate jdbcTemplate;
+
+	public ProductDao(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+}
+
+javax.sql.DataSource
+DataSource is used for creating connection pooling, so that we can configure DataSource and pass it as an input to JdbcTemplate. 
+Whenever we ask JdbcTemplate to perform operation, it can quickly goto DataSource and can grab connection using which it can perform operation.
+	
+3rd party connection pool libraries
+1. proxool
+2. c3p0
+3. dbcp
+4. hikaridb
+Spring Framework has provided its own implementation for DataSource interface, DriverManagerDataSource which is not an real DataSource connection pool, but provided to facilitate in developing the application (should not be used in production)
+	
+application-context.xml
+------------------------
+<bean id="dataSource" class="DriverManagerDataSource">
+	<property name="driverClassname" value="com.mysql.cj.jdbc.Driver"/>
+	<property name="url" value="jdbc:mysql://localhost:3306/springdb"/>
+	<property name="username" value="root"/>
+	<property name="password" value="root"/>
+</bean>
+
+<bean id="jdbcTemplate" class="JdbcTemplate">
+	<constructor-arg ref="dataSource"/>
+</bean>
+
+<bean id="productDao" class="ProductDao">
+	<constructor-arg ref="jdbcTemplate"/>
+</bean>
+------------------------------------------------------------------------------------------
+#1. Classic Approach
+Classic Approach closely resembles to java jdbc programming. In Classic Approach we only write the code for creating statement, substituting parameters, execute query and grab results which looks similar to jdbc programming
+But classic approach greatly relies on call back mechanism, that makes it quite complex to understand
+
+What is callback approach?
+We will be called by someone by passing required inputs to carry out the operation.
+	
+	
+select * from product where product_nm like ?
+Any operation to be performed in Classic approach has 2 phases in it
+1. prepare phase
+we need to create Statement or PreparedStatement and substitute the parameters 
+2. callback phase
+execute the statement and grab the data from the resultset
+
+2 classes implementating 2 interfaces
+
+interface PreparedStatementCreator {
+	PreparedStatement createPreparedStatement(Connection con);
+}
+
+interface PreparedStatementCallback {
+	Object doInPreparedStatement(PreparedStatement pstmt);
+}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

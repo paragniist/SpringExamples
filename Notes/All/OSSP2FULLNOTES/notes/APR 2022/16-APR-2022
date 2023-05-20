@@ -1,0 +1,119 @@
+spring aop
+-----------
+aop stands for aspect oriented programming
+
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	
+	private Cache() {
+		dataMap = new ConcurrentHashMap<>();
+	}
+	
+	public static synchronized getInstance() {
+		if(instance == null) {
+			instance = new Cache();
+		}
+		return instance;
+	}
+	public void put(String key, Object value) {}
+	public Object get(String key) {}
+	public boolean containsKey(String key) {}
+}
+
+class Stock {
+	String stockName;
+	double price;
+	long lat;
+	// accessors
+}
+
+java -Dcache.enable=false applicationMainClass
+
+
+package com.icicidirect.servlet;
+@WebServlet(urlPatterns = {"/getStockPrice"})
+public class GetStockPriceServlet extends HttpServlet {
+	public void service(HttpServletRequest request, HttpServletResponse) {		
+		long now = 0;
+		Calendar c = null;		
+		Cache cache = null;
+		Stock stock = null;
+		double price = 0.0;
+		boolean hit = false;
+		String stockName = null;
+		TradingService trandingService = null;
+		boolean enableCache = false;
+		
+		enableCache = new Boolean(System.getProperty("cache.enable"));
+		if(enableCache == true) {
+			cache = Cache.getInstance();
+			stockName = request.getParameter("stockName");
+
+			if(cache.containsKey(stockName) == true) {
+				stock = (Stock) cache.get(stockName);
+				c= Calendar.getInstance();
+				now = c.getTimeInMilliSeconds();
+				if(now - stock.getLat() <= 300) {
+					price = stock.getPrice();
+					hit = true;
+				}
+			}
+		}
+		// secondary logic has to be written across multiple components of my application
+		// cross-cutting logic/concern		
+		
+		
+		if(hit == false) {
+			// invoke remote distributed nse/bse application
+			tradingService = // reference of tradingService object from remote system (bse/nse)
+			price = tradingService.getStockPrice(stockName);		
+			
+			if(enableCache == true) {
+				stock = new Stock();
+				stock.setStockName(stockName);
+				stock.setPrice(price);
+				c = Calendar.getInstance();
+				stock.setLat(c.getTimeInMilliSeconds());
+				cache.put(stockName, stock);
+			}
+		}
+		
+		request.setAttribute("price", price);
+		request.getRequestDispatcher("/stock-price.jsp").forward(req, resp);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

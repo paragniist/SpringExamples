@@ -1,0 +1,106 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+    
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {
+    this.messageFormatter = messageFormatter;
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+class HtmlMessageFormatterImpl implements IMessageFormatter {}
+class PdfMessageFormatterImpl implements IMessageFormatter {}
+
+application-context.xml
+------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<beans>
+  <bean id="messageWriter" class="com.sdp.beans.MessageWriter"/>
+  
+  <bean id="htmlMessageFormatter" class="com.sdp.beans.HtmlMessageFormatterImpl"/>
+  <bean id="pdfMessageFormatter" class="com.sdp.beans.PdfMessageFormatterImpl"/>
+</beans>
+
+Bean Definition = is nothing but an bean declaration which provides the information about the java class that has to be instantiated and managed by Spring Framework
+  
+BeanFactory
+Knows how to identify for a given bean id, the fqnClass and takes care of instantiating the object and returns to us. The BeanFactory is an interface, for which Spring has provided several implementations to support different formats of Spring Bean Configuration.
+We can define our application classes information in
+1. properties
+2. xml
+3. annotations
+Spring Framework has provided multiple implementations for BeanFactory interface each of them are responsible for reading the bean definition information from various different formats. Now programmer can easily switch from one configuration file format to another just by changing implementation of BeanFactory 
+
+BeanFactory
+|-XMLBeanFactory 
+|-DefaultListableBeanFactory 
+
+BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("application-context.xml"));
+
+MessageWriter messageWriter = (MessageWriter) beanFactory.getBean("messageWriter");
+IMessageFormatter htmlMessageFormatter = (IMessageFormatter) beanFactory.getBean("htmlMessageFormatter");
+
+messageWriter.setMessageFormatter(htmlMessageFormatter);
+messageWriter.writeMessage("Welcome to Spring Framework");
+
+
+
+
+A Resource can be either inside the project or outside the project
+#1 Inside the project (application-context.xml) ClassPathResource
+  - we should use relative path
+  - need to use ClassLoader to read the resources from the ClassPath of the project
+#2 Outside the project  FileSystemResource
+  - we should use absolute path
+  - Use File I/O to read the files from the respective location directly
+  
+Resource
+|-ClassPathResource [ClassLoader]
+|-FileSystemResource [File I/O]
+
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

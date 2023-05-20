@@ -1,0 +1,124 @@
+Nested bean factory 
+-------------------
+What is nested bean factories?
+nested bean factories is about managing the bean definitions across the ioc containers. The target bean and the dependent bean are not part of same ioc container, rather those are in 2 different ioc containers, but will we can manage the dependency between the beans by using nested bean factories.
+	
+There are 2 things we need to do to work with nested bean factories.
+	#1. nest one ioc container inside another one
+	#2. change the bean configuration to manage across the containers
+	
+#1. nest the ioc containers
+while creating the ioc containers dont create them as separate or individual containers so that neither of them can talk to each other. instead nest one ioc container inside the another one.
+when we nest one ioc container inside the another one, one will acts as parent and another one as child container.
+The one that is being nested will become parent. The one that contains the reference of another container becomes child container.
+	
+The child container bean definitions can refer to the beans that are part of the parent container, but parent bean definitions cannot refer the beans that are in child container.	
+	
+How to nest these 2 ioc containers?
+In order to nest parent container inside the child, we need to first create parent container, there after while creating the child pass the reference of parent
+
+BeanFactory parentFactory = new XmlBeanFactory(new ClassPathResource("parent-beans.xml"));
+BeanFactory childFactory = new XmlBeanFactory(new ClassPathResource("child-beans.xml"), parentFactory);
+
+#2 change in the configuration:
+we need to modify the bean definition in such a way asking ioc container to look for dependent in parent ioc container.
+	
+parent-beans.xml
+<bean id="b" class="B"/>
+
+child-beans.xml
+<bean id="a" class="A">
+	<property name="b" ref="b"/>	 		
+</bean>
+
+<ref parent="beanId"/>= asks child ioc container to look for the bean inside parent container only.
+instead of using <ref parent=""/> if we write ref="" attribute <property name="b" ref="b"/> it indicates look for the dependent bean in current ioc container, if it is not available goto the parent ioc container and inject.
+	
+class FuelTank {
+	String fuelType;
+	int capacity;
+	// setter
+}	
+
+class Motor {
+	int serialNo;
+	FuelTank fuelTank;
+	// setter
+}
+
+parent-beans.xml
+<bean id="fuelTank" class="FuelTank">
+	<property name="fuelType" value="petrol"/>
+	<property name="capacity" value="8"/>
+</bean>
+	
+child-beans.xml
+<bean id="motor" class="Motor">
+	<property name="serialNo" value="S987933"/>
+	<property name="fuelTank">
+		<ref parent="fuelTank"/>
+	</property>
+</bean>
+
+Test.java
+-----------
+BeanFactory parentFactory = new XmlBeanFactory(new ClassPathResource("parent-beans.xml"));
+BeanFactory childFactory = new XmlBeanFactory(new ClassPathResource("child-beans.xml"), parentFactory);
+
+Motor motor = childFactory.getBean("motor", Motor.class);
+sop(motor);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

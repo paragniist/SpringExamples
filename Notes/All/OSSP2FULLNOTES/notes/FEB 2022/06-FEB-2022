@@ -1,0 +1,315 @@
+#3 In a class we have member variables and member methods, the member methods are using the state of the object but the state the object is completely sharable. In such case creating multiple objects with the same state will duplicates the number of objects and wastes the jvm memory we can create one single object by making it as singleton
+
+Let us consider an example to understand what is sharable state and how to use singleton to hold the sharable state of an object :
+
+signup.jsp
+-------------
+<html>
+	<head>
+		<title>signup</title>
+	</head>
+	<body>
+		<form name="signupForm" action="signup">
+			email address: <input type="email" name="emailAddress"/>
+			mobile no: <input type="text" name="mobileNo"/>
+			password: <input text="password" name="password"/>
+			re-enter password: <input text="password" name="rePassword"/>
+			address: <textarea name="address"/>
+			city:
+			<select name="city">
+				<option value="hyderabad">hyderabad</option>
+				<option value="banglore">banglore</option>
+				<option value="chennai">chennai</option>
+				<option value="delhi">delhi</option>
+			</select>
+			state:
+			<select name="state">
+				<option value="ts">telangana</option>
+				<option value="ka">karnataka</option>
+				<option value="tn">tamilnadu</option>
+				<option value="dl">delhi</option>
+			</select>
+			country:
+			<select name="country">
+				<option value="IN">India</option>
+			</select>
+		</form>		
+	</body>
+</html>
+
+SignupServlet.java
+--------------------
+@WebServlet(urlPatterns={"/signup"})
+class SignupServlet extends HttpServlet {
+  public void service(HttpServletRequest req, HttpServletResponse resp) {
+		emailAddress = req.getParameter("emailAddress");
+		mobileNo = req.getParameter("mobileNo");
+		password = req.getParameter("password");
+		rePassword = req.getParameter("rePassword");
+		address = req.getParameter("address");
+		city = req.getParameter("city");
+		state = req.getParameter("state");
+		country = req.getParameter("country");
+		// do the data validation
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "root");
+		PreparedStatement pstmt = con.preparedStatement("insert into user values(?,?,?,?,?,?,?)");
+		// substitute parameters
+		pstmt.executeUpdate();
+		
+		req.getRequestDispatcher("/registration-success.jsp").forward(req, resp);
+  }
+}	
+
+In the above signup.jsp page we are directly hardcoding the option of values for city, state and country select controls. These select controls may appear at multiple pages within our application, so hardcoding these select controls with options will makes them duplicate across all the pages and puts us into maintainability problems as described below:
+1. whenever we want to make a change in any of these select control options, lets say we want to add a new city in city select control, we need to add the new city not in one place, in all the places whereever we wrote city select control which requires more amount of development time and increased cost of changes.
+	
+2. it is not about how big the change is rather, it is about how to identify the places where we have written these hardcoded text content inorder make the changes. we have to spend lot of time on searching and identifying the places where we have hardcoded the values inorder to make the change which is lot more difficult and time consuming process
+
+3. How hard we tried in identifying and making the changes, always there is a possibility that we might miss making the changes at some or other place within our application due to which we run into unnecessary bugs and inconsistent behaviour of our application
+
+From the above we can clearly understand never hardcode any of the values within our application. 
+Instead of duplicating the option of values across the pages in our application, let us store these options in a single place of source. So that whereever we want to use these values read from the source and use them.
+If we store in a single source of place and use them we can avoid all the maintainability problems we described above, if a change in values are required, we just need to modify at once single source rather than modifying across all the places whereever we hardcoded.
+	
+What is the source system where we can store the data?	
+There are several options of storing the values are there.
+1. File
+We should not store the data on a File as sequence of set of characters, because we need to read the data of the file through our programs and perform operation, unless the data is stored in programmable format we cannot use the data in our application.
+
+There are multiple programmable formats are there like
+	1. properties (key/value)
+	choose a properties file to store the values when those are represented as a simple key/value pair of data
+	
+	2. xml/json/yaml
+	if your data has multiple fields of information with relationships (optionally) as well then store the data in xml/json/yaml since these are structured and has semantics attached to the data. we can easily read these values using the apis provided by the language
+	
+2. Database
+Instead of storing these values in File we can create database tables and we can store these values within the database to perform operation
+
+File / database, which one should be preferred when?
+1. If we wanted to always fetch all of the values sequentially that are persisted in the source system and use them as apart of our application then use File-based persistency
+if we want to apply complex filter in retrieving the data then use database only since they support querying and filtering the data
+
+2. if we have multiple fields of information with complex relationships to be represented then it is preferred to store the data in database rather than file
+
+3. If we want to perform modifications of the data on underlying source like adding, updating or deleting the data, this cannot be handled easily while storing on Files, rather prefer database for storing the data
+
+we decide where to store the data based on 2 factors
+	1. nature of the data
+	2. based on the usage
+	
+Here let us try to use database for storing options of city, state and country, even though as per above discussion properties file is more appropriate.
+	
+cities
+-------
+city_id
+city_nm
+
+states
+------
+state_id
+state_nm
+
+countries
+---------
+country_id
+country_nm
+
+In a typical application there 3 types of tables are there, which we can categorize them based on their usage in our application
+1. master tables
+These are the tables in which the data is populated prior to the deployment of the application and the data resides in these tables acts as backbone for running the application.
+The enduser will not add/modify the data in these tables, rather the business owner decides what information should be populated within these tables.
+The data within these master tables will undergo changes quite rarely.
+such type of tables in which we store the data are called master tables.
+	
+2. operational tables
+These are the tables into which the data is captured and stored through enduser operations are called operational tables
+
+3. transactional tables
+These tables will hold the data out of a result of a business operation
+
+The cities, states and countries are master tables as per the above discussion. now we need to fetch cities, states and countries and display them as option of values within jsp page.
+	
+How to access the data from master tables and render them in jsp page?
+#1 the jsp page wants the data of cities, states and countries to render as options so let the jsp itself access the data from database and render it 
+
+scriptlet = we can embed java code within jsp page using scriplet [<% java code %>]
+
+signup.jsp
+-----------
+<%@page import="java.sql.Connection" %>
+<body>
+	City:
+	<select name="city">
+		<%
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select city_id, city_nm from cities order by city_nm");
+			while(rs.next()) {
+				int cityId = rs.getInt(1);
+				String cityName = rs.getString(2);
+				out.println("<option value='"+cityId+"'>"+cityName+"</option>");
+			}		
+		%>		
+	</select>
+	<br/>
+	State:
+	<select name="state">
+	<%
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("select state_id, state_nm from states order by state_nm");
+		while(rs.next()) {
+			int stateId = rs.getInt(1);
+			String stateName = rs.getString(2);
+			out.println("<option value='"+stateId+"'>"+stateName+"</option>");
+		}		
+	%>		
+</select>
+<br/>
+Country:
+	<select name="country">
+	<%
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("select country_id, country_nm from countries order by country_nm");
+		while(rs.next()) {
+			int countryId = rs.getInt(1);
+			String countryName = rs.getString(2);
+			out.println("<option value='"+countryId+"'>"+countryName+"</option>");
+		}		
+	%>		
+</select>
+</body>
+	
+	
+	
+			
+			
+			
+			
+			
+			
+			
+			
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,43 @@
+#2 Design to interfaces, never design to concreate classes
+To reuse the functionality of another class in our class there are 2 ways are there
+1. Inheritance
+2. Composition
+
+Composition makes the classes tightly coupled with each other, as we declare the concreate reference of another class in our class directly.
+Coupling = inter-dependency between the classes
+Cohesion = A class complete by it-self
+always it is recommended to avoid coupling and encourage cohesion between the classes.
+  
+problems with coupling  
+A change in our class effects all the other classes which are talking to our class due to which we run into several problems
+1. As a change in one class effects lot of the other classes in our application, the time required for making the changes will become very high and cost of making the changes will be very high
+2. the chances of increasing the bugs will be high
+3. testing and certifying the changes will take lot of time
+Maintainability of the code becomes very difficult due to all the above problems, so avoid coupling between the classes.
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

@@ -1,0 +1,120 @@
+Struts Framework supports only developing web applications, where it support only presentation-aspects of building an web application, so we cannot consider struts framework as end-end application development framework.
+whereas Spring Framework support not only web application development, it support multiple application development types like
+  - Standalone Application
+  - Distributed Web Application
+  - Enterprise Application
+  - Integration-Tier etc
+by using the Spring Framework we can develop end-end application development, so we can consider Spring Framework as complete application development Framework.
+How many types of applications we can develop using Spring Framework?
+Using Spring Framework we can develop multiple application development types in par with JEE.
+Then why do we need to using Spring Framework when we can develop the same type of applications using JEE?
+  
+problems in working with Api
+#1
+JEE Stands for Java Enterprise Edition, it is an java standard api. API Stands for Application programming interface. API's are always partial, they provide only interfaces and abstract classes there will not be any implementation classes within them. Now to work with api we always need an implementation provided by the vendor. So by looking at api/implementations an beginner/novice always find complex to work with api.
+  
+#2 Api are huge in nature, they provide lot of classes as part of them, so learing api will takes more amount of time.
+  
+#3 The classes within the api are inter-dependent on each other, for eg.. to use Connection class in jdbc api we need know DriverManager similarly to use Statement class we need to use Connection for creating statement. Since the classes are inter-dependent on each other learning api and understand is very complex which takes more amount of time to learn as well, than usual.
+  
+#4 We cannot partial learn an api to develop an application, since the classes are interdependent on each other unless we understand the complete api we cannot work with, so api doesnt support quick start application development
+
+
+#5 Api will not provide boiler-plate logic
+boiler-plate logic: it is a piece of code that has to be written redundantly/repeatedly across various different applications we are working on is called boiler-plate logic. for eg.. while we are working with jdbc api to execute select query we write same lines of code irrespective of the query we are executing as shown below.
+  
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = DriverManager.getConnection(url, un, pwd);
+Statement stmt = con.createStatement();
+ResultSet rs = stmt.executeQuery("select * from emp");
+while(rs.next()) {
+  // extract data into object and use it
+}
+// close rs, stmt, con
+
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = DriverManager.getConnection(url, un, pwd);
+Statement stmt = con.createStatement();
+ResultSet rs = stmt.executeQuery("select * from dept");
+while(rs.next()) {
+  // extract data into object and use it
+}
+// close rs, stmt, con
+
+Now developer has to repeatedly write the same piece of code in achieving the functionality, due to which we run into lot of problems.
+If api are not providing boiler plate logic, we need to write more lines of code in developing an application which will put us in more problems 
+  1. if we are writing more lines of code in building application, we need to spend more amount of time in developing the application.
+  2. we need more no of developers in developing the application
+  3. the cost of developing the application goes high
+  4. the efforts of building the application is very high
+  5. if more lines of code, chances of increasing the bugs within our application is very high.
+  6. since we have lot of code to test, the amount of time it takes in certifying or testing the application will be high
+  7. the complexity in understanding the application is very high
+From the above we can understand apis doesnt support rapid application development, so go for frameworks like SpringFramework
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

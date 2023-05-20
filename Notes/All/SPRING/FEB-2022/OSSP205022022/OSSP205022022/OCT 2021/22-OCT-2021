@@ -1,0 +1,73 @@
+There are 3 principles are there in Strategy Design Pattern.
+1. Favor composition over inheritance
+2. Always design to interfaces, never design to concrete classes
+3. Code should be open for extension and closed for modification
+
+By designing the classes based on the above principle our classes will become completely loosely coupled, there after we can give these classes to spring core asking to manage the dependencies.
+--------------------------------------------------------------------------------------------------------
+  
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+    
+    messageFormatter = new PDFMessageFormatterImpl();
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String inMessage);
+}
+
+class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String inMessage) {
+    // 50 lines of code to convert    
+    return "<html><body>"+inMessage+"</body></html>";
+  }
+}
+
+class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String inMessage) {
+    return "<pdf>"+inMessage+"</pdf>";
+  }
+}
+
+
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    messageWriter.writeMessage("Welcome to Strategy Design Pattern");
+  }
+}  
+  
+sts ide
+Spring Tool Suite
+(Eclipse + sts plugin) = it has features for working easily on spring framework and boot projects
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+

@@ -1,0 +1,5 @@
+Business delegate performs 3 activities
+1. managing exceptions as part of the application
+2. convert presentation-tier representation values into business/persistence-tier representation
+3. managing transactions
+

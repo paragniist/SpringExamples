@@ -1,0 +1,26 @@
+Front controller
+----------------
+Front controller is a design pattern that is most commonly used as part of web application frameworks. There are lot of responsibilities being takecare by the Front controller
+
+#1. Front controller acts as an single entrypoint in receiving the requests into our application, it acts as an common gateway of receiving the requests.
+	So that we have better control over the requests that are coming into our application
+
+#2. As every request that is send to our application is received by the front controller, we can apply easily the common processing logic, that has to be mandatorily applied for all the requests that are coming into our application, before the actual request is being processed.
+	
+#3 There are few plubming services or ancillary services that has to be applied across all the requests that are coming into our application which can be handled at Front controller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

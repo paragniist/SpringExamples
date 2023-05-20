@@ -1,0 +1,198 @@
+aop stands for aspect oriented programming, aop is an programming paradigm. aop is used for applying the cross cutting logic across various different classes of our application.
+There are 7 principles of aop are there
+1. aspect
+2. advice
+3. joinpoint
+4. pointcut
+5. proxy
+6. target 
+7. weaving
+
+programming languages provides language constructs helping us in building applications based on the principles. its the responsibility of the programming languages to provide necessary apis that helps us in building applications based on those principles.
+	
+Java programming language also has to provide relevant api to work with aop programming, but unfortunately java has not provided any api to work with aop programming.
+
+There are lot of third-party vendors came forward and provided their own libraries to support building aop principles based application.
+	1. aspectj
+	2. spring aop
+	3. aspectwreak
+	4. jboss aop
+	5. aspect viewer
+	
+so spring framework also has provided an module to support building aop-driven applications
+
+How many ways are there in working with aop in Spring Framework?
+There are total 3 ways are there in working with spring aop
+1. programmatic aop approach
+If we are using programmatic aop api classes provided by spring framework our code becomes invasive with Spring Framework, to support non-invasiveness, Spring has added support for AspectJ Third-party Library.
+Now instead of writing aop programming logic using spring aop api classes, we can write the aop logic with AspectJ api classes and pass that to the ioc container, then ioc container can interpret AspectJ classes and provides aop functionality.
+	
+With Spring Aop with AspectJ we have 2 more ways of working with Spring Aop
+#2. Declarative AspectJ aop approach
+#3. Annotation-Driven AspectJ aop approach
+------------------------------------------------------------------------------------------
+What is the combination of features resulted by integrating Spring aop + AspectJ aop?
+#1 Joinpoint
+The possible places in our class where we can advice the aspect is called "JoinPoint".
+Spring Aop: supports only method as a joinpoint, we can advice the aspect only on the methods of the class.
+AspectJ Aop: supports all the places of a class where we can write the code	for eg, method, constructor,static-block, finalizer, instance block etc
+
+Spring Aop + AspectJ = Method
+
+#2 Pointcut
+set of joinpoints on whom we are advicing the aspect is called pointcut.
+In general there are 2 types of pointcuts are there
+1. Static Pointcut = In static pointcut we fix the list of joinpoints on whom we want to advice the aspect
+
+2. Dynamic Pointcut = The decision of advicing the aspect is made only at runtime based on the inputs with which we are executing the joinpoint which is called "dynamic pointcut"
+
+Spring Aop: supports both static/dynamic pointcuts
+AspectJ: only supports static pointcut
+Spring + AspectJ Aop = only static pointcut
+
+3. Weaving
+Weaving is the process/technic of advising the aspect on the target class joinpoints to build the proxy is called weaving.
+There are 2 types of weavings are there
+1. compile-time weaving =The proxies are created during the stage of compilation, so it is called compile-time weaving
+
+2. runtime weaving
+The proxies are generated during the execution of the program at runtime within the jvm memory, so it is called Runtime Weaving
+
+Spring Aop: Supports Runtime Weaving
+AspectJ Aop: Compile-Time Weaving
+
+Spring Aop + AspectJ = Runtime Weaving
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

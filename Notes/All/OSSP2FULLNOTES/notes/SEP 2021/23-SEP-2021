@@ -1,0 +1,15 @@
+There are 2 key features of the Spring Framework that made Spring unique and more successful
+1. Versatile application development framework
+Spring Framework is very flexible enough in integrating with any of the existing technologies with which we build the application, so that we dont need to rewrite the entire system to use Spring Framework rather with little changes in our application we can integrate Spring and enrich the entire system.
+  
+2. Non-Invasive application development framework
+
+
+class EmployeeAction extends Action {
+  public ActionForward execute(HttpServletRequest request, HttpServletResponse, ActionForm, ActionMappings) {
+    // logic
+  }
+}  
+  
+working with a framework or an api means, we need to use the classes provided as part of the api/framework to build the functionality of our application.
+  

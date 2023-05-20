@@ -1,0 +1,81 @@
+Throws Advice
+-------------
+if we wanted to apply the cross-cutting logic ontop of the target class method when the target class method is running into an exception then we need to use "Throws Advice"
+	
+when the target class method is throwing an exception, then only the Throws Advice will be called to apply cross-cutting logic
+
+In general we use Throws Advice for perform global exception logging as part of an application. There are lot of classes in our application, during execution might run into exception, to log these exceptions we need to write try/catch block across all the classes just for the purpose of logging, instead we can use Throws Advice for centrally capture all the exceptions and log within our application.
+	
+class Thrower {
+	int willThrow(int i) {		
+		if(i <= 0) {
+			throw new IllegalArgumentException("invalid i");
+		}
+		return i;
+	}
+}	
+
+class GlobalExceptionLoggingAdvice implements ThrowsAdvice {
+	public void afterThrowing(Method method, Object[] args, Object target, IllegalArgumentException e) {
+		// here writing cross-cutting logic for the exception reported by the target class
+		sop("method : "+ method.getName()+ " has reported exception with message : "+ e.getMessage());
+	}
+}
+
+ProxyFactory pf = new ProxyFactory();
+pf.setTarget(new Thrower());
+pf.addAdvice(new GlobalExceptionLoggingAdvice());
+
+Thrower proxy = (Thrower) pf.getProxy();
+int i = proxy.willThrow(-1);
+
+Note: In ThrowsAdvice we are not going to catch the exception, and provide alternate path of execution, it is only meant for seeing the exception and perform cross-cutting logic only, once the advice method completed execution automatically the exception will be propogated to the calleee
+
+The only control point we have is we can report or throw a different exception than the one originally reported by re-throwing the exception in advice method
+
+	
+
+-----------------------------------------------------------------------------------------
+interface ThrowsAdvice {
+
+}
+#100 = 200 different types of exceptions
+
+class GlobalExceptionLoggingAdvice implements ThrowsAdvice {
+	void afterThrowing(SecurityException t) {
+		
+	}
+}
+
+
+About ThrowsAdvice:-
+	1. ThrowsAdvice is an marker interface, because we might want to perform specific cross-cutting logic for a specific type of exception. but if ThrowsAdvice interface has defined a method with base Throwable type as a parameter, then for any type of exception being reported, our advice class will be called unnecessarily, so it has been defined as marker interface
+	2. we need to write cross-cutting logic in the advice class by writing a method following standard signature
+	spring aop has provided 2 standard method signatures, we can use any one of them in writing the aspect method in the advice class
+		
+	#1. public void afterThrowing(ClassTypeException e, Method method, Object[] args, Object target)
+	#2. public void afterThrowing(ClassTypeException e);
+	here Exception should be taken as the ClassType of the Exception for whom we want to perform cross-cutting logic rather than base class type
+		
+In the #1 signature we can know the details of the target class method which has reported that exception
+	
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

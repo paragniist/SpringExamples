@@ -1,0 +1,112 @@
+How to handle exceptions as part of the application?
+if the dao has thrown an exception, and if it has been propogated to the action class directly, then 
+1. the action class will be exposed to the database specific error information which has been reported by the underlying database interms of SqlException
+2. the action class will be exposed to the persistence-tier technology specific exception.
+	
+So in future if we are switching from one database to another database or one persistence-tier technology to another technology again we need to rewrite the code in presentation-tier components.
+	
+Which means a change in persistence-tier of your application will effects the presentation-tier of our application, which inccurs more amount of maintainance cost in managing the application.
+	
+class DoctorDelegate {
+	int addDoctor(DoctorVo doctor) {
+		
+		try {
+			DoctorDao dao = new DoctorDao();
+			int doctorNo = dao.saveDoctor(doctorBo);
+		}catch(SqlException e) {
+			throw new AddDoctorFailedException("error while adding doctor",e);
+		}
+		return doctorNo;
+	}
+}	
+	
+class AddDoctorAction extends Action {
+	public ActionForward execute(req, resp, ActionForm form, 
+															 	ActionMappings mappings) {
+		DoctorDelegate doctorDelegate = null;
+		int doctorNo = 0;
+		
+		try {
+			doctorDelegate = new DoctorDelegate();
+			doctorNo = doctorDelegate.addDoctor(vo);
+		}catch(AddDoctorFailedException e) {
+			req.addAttribute("errorMessage", "sorry, we couldnt able to process your add doctor request, please try again after sometime");
+			mappings.findForward("error");
+		}
+	}
+}	
+error.jsp
+-----------
+<body>
+	${errorMessage}
+</body>
+
+For all the know failures we are able to map them to an friendly error message, but there is always a chance within our application we might run into RuntimeException which are unknown failures which will result into 500 internal server error and display an ugly error page to the enduser.
+	
+To ensure never the enduser will be displayed with an ugly errorpage we need to configure global error page in web.xml
+
+web.xml
+<error-page>
+	<location>/global-error.jsp</location>
+</error-page>
+
+we validate the data at persentation-tier before passing it to the business/persistence tier so that we eliminate the chance of running into exception for invalid data. 
+
+From the above we can understand business delegate is responsible for converting persistence-tier/technology specific exceptions into application specific exception and reports to the presentation-tier components, so that our presentation-tier components are de-coupled from persistence-tier exceptions.
+So if there is a change in persistence tier of our application, we dont need to change the code in presentation-tier components of our application
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

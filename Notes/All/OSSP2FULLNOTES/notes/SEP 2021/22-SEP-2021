@@ -1,0 +1,36 @@
+What are the challenges Spring Framework has when it was introduced in market?
+1. No market footprint for Spring Framework, but there is a huge customer base already exists for Struts Framework
+2. There are lot of usecases successfully deployed into production by developing through Struts Framework, whereas Spring is newbie and there are no usecases being deployed in production
+3. Struts Framework is more stable without bugs, whereas Spring Framework has just then released
+4. More community and documentation is available for Struts Framework, where as Spring doesnt have
+5. Struts is next door boy, where we can find many people around us who knows Struts Framework, but Spring Framework being new, we dont find anyone around us to get help
+6. Struts and Spring Framework are open source, but Struts has a guarantee of existence, whereas Spring being newbie there is an risk involved that it might be removed
+---------------------------------------------------------------------------------------------------------
+There are 2 key features of Spring Framework that makes spring unique in the market.
+  1. versatile application development framework
+  2. non-invasive application development framework
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

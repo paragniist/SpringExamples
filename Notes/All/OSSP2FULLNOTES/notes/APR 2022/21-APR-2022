@@ -1,0 +1,48 @@
+      [Target]
+class Calculator {	
+	public int add(int a,int b) {
+		int sum = 0;	
+		sum = a + b;
+		return sum;
+	}
+}
+
+class LoggingAdvice implements MethodInterceptor {
+	public Object invoke(MethodInvocation methodInvocation) {
+		String methodName = null;
+		Object[] args = null;
+		Object proxy = null;
+		
+		methodName = methodInvocation.getMethod().getName();
+		args = methodInvocation.getArguments();
+		proxy = methodInvocation.getThis();
+			
+		System.out.println("entered into "+methodName+"("+args[0])+","+args[1]+")");
+		Object ret = methodInvocation.proceed();
+		System.out.println("existing from " + methodName + " with return value : " + ret);
+		
+		return ret;					
+	}
+}
+
+invoke methods has been called to perform cross-cutting logic onbehalf of the target class method
+	
+Calculator proxy = // logic
+int sum = proxy.add(10, 20);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,229 @@
+@ImportResource
+----------------
+along with annotations if we are using spring bean configuration file also for configuring the information about the classes of our application then we need to use @ImportResource annotation.
+
+// no source code
+class Thermostat {
+	public int degrees;
+	
+	public void setDegrees(int degrees) {}
+}	
+
+// no source code
+class HeatingElement {
+	public void heat(int degrees) {
+		
+	}
+}
+	
+// source code
+@Component
+class RoomHeater {
+	Thermostat thermostat;
+	HeatingElement heatingElement;
+	
+	@Autowired
+	public void setThermostat(Thermostat thermostat) {}
+	@Autowired
+	public void setHeatingElement(HeatingElement heatingElement) {}
+}	
+	
+thermostat-beans.xml
+---------------------
+<bean id="thermostat" class="Thermostat">
+	<property name="degrees" value="80"/>
+</bean>
+
+@Configuration
+@ComponentScan(basePackages = {"com.annotation5.importresource"})
+@ImportResource("classpath:com/annotation5/importresource/thermostat-beans.xml")
+class JavaConfig {
+
+	@Bean
+	public HeatingElement heatingElement() {
+		return new HeatingElement();
+	}
+}
+
+Test.java
+---------
+ApplicationContext context = new AnnotationConfigApplicationContext(JavaConfig.class);
+RoomHeater roomHeater = context.getBean("roomHeater", RoomHeater.class);
+roomHeater.on();
+------------------------------------------------------------------------------------------
+@Lookup
+-------
+interface IEngine {
+	void start();
+}	
+@Component
+@Scope("prototype")
+class YamahaEngineImpl implements IEngine {}
+
+@Component
+@Scope("prototype")
+class SuzkiEngieImpl implements IEngine {}
+
+@Component	
+abstract class Car  {
+	
+	public void drive() {
+		IEngine engine = null;
+		
+		engine = lookupEngine();
+		engine.start();
+		
+		sop("driving");
+	}
+	@Lookup
+	public abstract IEngine lookupEngine();	
+}	
+	
+Test.java
+---------
+ApplicationContext context = new AnnotationConfigApplicationContext("com.annotation5.lookup");
+Car car = context.getBean("car", Car.class);
+
+car.drive();
+car.drive();
+----------------------------------------------------------------------------------------
+@Profile
+---------
+We can switch between different configurations based on the environment on which we are running our application instead of modifying the configuration for each environment with the help of @Profile
+
+// source code
+@Component
+class ConnectionManager {
+	@Value("${db.driverClassname}")
+	private String driverClassname;
+	@Value("${db.url}")
+	private String url;
+	@Value("${db.username}")
+	private String username;
+	@Value("${db.password}")
+	private String password;
+	
+	// setter injection
+	// toString	
+}
+
+db-dev.properties
+-------------
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/db
+db.username=root
+db.password=root
+
+db-test.properties
+-------------
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/db
+db.username=root
+db.password=root
+
+@Configuration
+@ComponentScan(basePackages="com.annotation5.profile")
+@PropertySource("classpath:db-dev.properties")
+@Profile("dev")	
+class DevConfig {
+
+}
+
+@Configuration
+@ComponentScan(basePackages="com.annotation5.profile")
+@PropertySource("classpath:db-test.properties")
+@Profile("test")
+class TestConfig {
+
+}
+
+@Configuration
+@Import({DevConfig.class, TestConfig.class})
+public class RootConfig {
+	
+}
+
+Test.java
+---------
+ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
+/*((ConfigurableApplicationContext)context).setProfile("test");
+context.register(RootConfig.class);
+context.refresh();*/
+
+ConnectionManager cm = context.getBean("connectionManager", ConnectionManager.class);
+sop(cm);
+
+java -Dspring.profiles.active=dev com.annotation5.profile.Test
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

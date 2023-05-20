@@ -1,0 +1,86 @@
+#1 Favor composition over inheritance
+While reusing the functionality of another class within our class, prefer to use composition only rather than inheritance. because if we use inheritance we run into challenges or problems.
+problems with inheritance:
+1. Most of the realtime usecases are solvable through composition rather than inheritance, because many times a class wants to reuse few of the functionalities of another class
+2. Many programming languages doesnt support multiple inheritance, so if a class wants to reuse the functionality of multiple other classes the only solution is composition
+3. Classes will become fragile when we use Inheritance, whereas composition makes them less fragile
+
+#4. Inheritance doesnt support testability of the code, composition supports testability of the code
+
+class Engine {
+  public int ignite(int mode) {
+    return 0;
+  }
+}
+
+abstract class AbstractEngine {
+  int ignite(int mode) {
+    return 0;
+  }
+}
+
+class Engine1 extends AbstractEngine {
+  int ignite(int mode) {
+    return 0;
+  }
+}
+
+mode:
+0 - manual transition
+1 - automatic transition
+
+ignite returnValue:
+0 - engine started
+1 - failed retry
+2 - failed not startable, required repair
+3 - failed, tow to guarage
+
+class Car extends Engine1 {
+  public void drive(int mode) {
+    int engineStatus = super.ignite(mode);
+    
+    if(engineStatus == 0) {
+      sop("Wow! engine started, accelerating the car to drive");
+    } else if(engineStatus == 1) {
+      sop("Oops! failed trying again");
+    } else if(engineStatus == 2) {
+      sop("Failed not startable, calling up for assistance");
+    } else if(engineStatus == 3) {
+      sop("Failed, callup tow agency to pull the car to the guarage");
+    }    
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    Car car = new Car();
+    car.drive(0);
+  }
+}
+
+When can we say our code is ready for delivery?
+  or
+When can we say our code has been developed?
+Along with development if we have completed testing code then only we can say we are done with development.
+  
+When can we say we have completed testing our code?
+If all the paths of execution in our code has been executed through my testing process and should yeild the right outcome, then only we can certify our code is working properly.
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

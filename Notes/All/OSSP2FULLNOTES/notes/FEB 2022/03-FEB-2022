@@ -1,0 +1,59 @@
+A War deployment is loaded by a dedicated instance of a WarClassLoader which is an immediate child of System/Application ClassLoader
+
+What is Ear deployment?
+If our application is composed of multiple web/ejb modules and if those are deployed individually, the common libraries across the modules will be multiple times each per application and wastes jvm memory with duplication bytecode of the same classes. To effective manage in loading these shared libraries we use Ear packaging
+
+.ear
+|-lib
+|-META-INF
+	|-application.xml
+|-WebModule1.war
+|-WebModule2.war
+
+The shared libraries that are common between both WebModule1.war and WebModule2.war should be kept under .ear/lib directory. if there are any specific libraries of a WebModule those must be packaged aspart of the respective .war WEB-INF/lib directory only.
+	
+The Ear file will be loaded by an instance of an Ear classloader with bunch of WarClassLoaders as a child of Ear ClassLoader. The EarClassLoader acts a a child of System/Application ClassLoader and loads all the jar classes which are placed under .ear/lib thus by sharing them across all the WebModules since those are child of EarClassLoader
+-----------------------------------------------------------------------------------------------
+What is a singleton class, when do we call a class as Singleton?
+If a class permits/allows us to create only one object within the scope of the application or within the hierarchy of classloaders then that class is called "singleton" class.
+	
+	
+
+first-tek = 1 year
+cognizant = 3 year (associate)	(technology specialist) (7 years+)
+	
+	
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

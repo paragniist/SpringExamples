@@ -1,0 +1,138 @@
+FactoryBeans
+------------
+FactoryBeans are meant for creating the another class object as a bean definition within ioc container.
+
+There are classes that cannot be instantiated out of new operator/newInstance() method, inorder to create the object of those classes we need to write complex instantiation logic in creating and initializing those objects, the ioc container upon configuring such classes as bean definitions will try to instantiate by using new operator/newInstance() which will eventually leads to failure.
+	
+So to let the ioc container instantiate and place such class objects as bean definitions we need to use FactoryBeans.
+	
+Wrap the complex instantiation/initialization logic for creating the object of a class within FactoryBean class and pass the class to the ioc container, ioc container will takes the help of FactoryBean class and invokes the method in which we wrote the complex logic and takes the object returned by FactoryBean and places it as a bean definition within ioc container
+	
+
+To help the ioc container in distingushing between a FactoryBean class and others, we need to write our FactoryBean class by implementing an standard interface provided by SpringFramework.
+	
+interface FactoryBean<T> {
+	T getObject();
+	Class<?> getObjectType();
+	boolean isSingleton();
+}	
+
+T getObject() = should contain the logic for creating the object of another class and return.
+Class<T> getObjectType() = returns the class type of the object it is creating and this method is not invoked by ioc container as it can derive the same information from generics
+isSingleton() = indicates the object it is returning should be made as singleton or prototype
+
+
+class Meeting {
+	private String subject;
+	private String[] participants;
+	private Calendar meetingTime;
+	// setters
+}
+
+a-c.xml
+-------
+<bean id="meeting" class="Meeting">
+	<property name="subject" value="standup call"/>
+	<property name="participants" value="jim,stephen,mark,greg"/>
+	<property name="meetingTime" ref="calendar"/>
+</bean>
+
+<bean id="calendar" class="CalendarFactoryBean" scope="singleton">
+	<property name="day" value="24"/>
+	<property name="month" value="1"/>
+	<property name="year" value="2022"/>
+	<property name="hour" value="10"/>
+	<property name="minutes" value="30"/>
+</bean>
+
+
+
+class CalendarFactoryBean implements FactoryBean<Calendar> {
+	private int day;
+	private int month;
+	private int year;
+	private int hour;
+	private int minutes;
+
+	// setter	
+	public Calendar getObject() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(month, day, year, hour, minute);
+		return calendar;		
+	}
+	public Class<?> getObjectType() {
+		return Calendar.class;
+	}
+	public boolean isSingleton() {
+		return true;
+	}	
+}
+
+factory.getBean("calendar", Calendar.class);
+
+
+when we configure CalendarFactoryBean as a bean definition, the ioc container while instantiating the object of CalendarFactoryBean will see that the class is implementing from FactoryBean interface, so that it understands this class will return another class object upon calling getObject(){} method which has to be placed as bean definition with scope returned by isSingleton() method
+
+So it immediately instantiates CalendarFactoryBean class object and invokes getObject() method and isSingleton() and takes the returned object and places it within ioc container as bean definition with id as the bean id we configured for FactoryBean class
+	
+In addition the ioc container will keeps the FactoryBean object as well given if we have scope defined as singleton with name "&beanId"
+	
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

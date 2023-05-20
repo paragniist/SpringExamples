@@ -1,0 +1,129 @@
+There are 3 classloaders are provided as part of the core jdk distribution
+1. Bootstrap classloader
+Root or parent classloader within the classloader hierarchy. it is not an java class rather it is written in native language like "c" and compiled to execute on specific platform so it is called native classloader. it loads all the classes that are distributed as part of core jdk which are part of $JAVA_HOME\lib\rt.jar
+	
+2. Extension classloader
+child/decendent of Bootstrap classloader, it is an java class and loads the classes within a jar file from 2 different locations
+	1. $JAVA_HOME\lib\ext = directory container jar files will be loaded
+	2. java.ext.dirs system property pointed directory location container jar files will be loaded
+	
+3. System/Application classloader
+It is the immediate child of Extension classloader and is an another java class. it loads the classes from 3 different directory locations
+	1. CLASSPATH variable pointed directory location classes will be loaded
+	2. -cp or -classpath pointed directory locations
+	3. Class-Path attribute specified in manifest.mf pointed classes will be loaded
+
+
+#1 CLASSPATH environment variable pointed directory location container class files will be loaded by System or Application classloader
+by default when we dont set a classpath environment variable, the default value is "."	, current directory location
+
+#1
+d:\jclwork:/>
+   |-appcl
+Meeting.java
+----------------------
+package com.appcl.beans;
+public class Meeting {
+	public static void main(String[] args) {
+		ClassLoader cl = Meeting.class.getClassLoader();
+		System.out.println("classloader name: " + cl.getClass().getName());
+	}
+}
+	
+#2.
+d:\jclwork\appcl:/> javac -d . Meeting.java
+it generates the .class file along with directory structure based on package hierarchy
+	
+d:\jclwork\appcl:/>
+						|-com
+							|-appcl
+								|-beans
+									|-Meeting.class
+
+										
+#3. execute the java class
+d:\jclwork\appcl:/>
+here we dont need to set the classpath, because the .class file is under current directory location where we are in based on package hierarchy 
+java com.appcl.beans.Meeting
+
+#4. be in different directory other than d:\jclwork\appcl:/> for eg.. goto e:\> drive
+e:/> java com.appcl.beans.Meeting = will give us classnot found error
+inorder to execute the Meeting.class which is under a different directory location we need to set the classpath
+	
+e:/>	
+set CLASSPATH=d:\jclwork\appcl;%CLASSPATH%
+java com.appcl.beans.Meeting
+
+
+The CLASSPATH environment variable we configured is permanent for the terminal window we opened. instead of setting CLASSPATH variable we can pass the directory location of the .class files to jvm using -cp or --classpath switches as well which is temporary 
+
+e:\>
+java -cp d:\jclwork\appcl com.appcl.beans.Meeting
+java -classpath d:\jclwork\appcl com.appcl.beans.Meeting
+
+Note:-
+1. in case of .class files we need to set the classpath pointed to the directory location where class files are there
+for eg..
+d:\work:/>
+A.class
+B.class
+set CLASSPATH=d:\work
+
+2. if the classfiles are packaged as part of an jar file then we should set classpath pointing to the jar file rather than directory
+d:\work:/>
+app.jar
+	|-A.class
+	|-B.class
+
+set CLASSPATH=d:\work = will not work, because the application\system classloader looks for class files immediately inside a directory, where in jar is also an logical directory if you want to load classes inside a jar set the classpath pointing to jar
+set CLASSPATH=d:\work\app.jar
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+										
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

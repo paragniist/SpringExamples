@@ -1,0 +1,162 @@
+Method Replacement
+------------------
+Without modifying the code inside the existing method, we can replace the logic within the method using method replacement.
+If a method has to be qualified for method replacement it should follow the below rules
+1. The class should not be final
+2. The method should not be final and static
+	
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		return Arrays.asList(new String[]{"plan1", "plan2"});
+	}
+}	
+
+class FindPlansReplacer implements MethodReplacer {
+	public Object reimplement(Method method, Object[] args, Object target) {		
+		if(method.getName().equals("findPlans")) {
+			String ageGroup = args[0];
+			int copay = (Integer) args[1];
+			int coverageType = (Integer) args[2];
+			boolean cashless = (Boolean) args[3];
+			
+			// compute the plans
+			return Arrays.asList(new String[]{"plan3", "plan4"});
+		}
+		return null;
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="findPlansReplacer" class="FindPlansReplacer"/>
+
+<bean id="planFinder" class="PlanFinder">
+	<replaced-method name="findPlans" replacer="findPlansReplacer"/>
+</bean>
+
+
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+PlanFinder planFinder = beanFactory.getBean("planFinder", PlanFinder.class);
+List<String> plans = planFinder.findPlans("2-7", 10, 1, true);
+
+What are the best practices we need to follow while working with method replacement?
+#1. always use one MethodReplacer for replacing a method of a class, dont replace multiple methods with one single method replacer, even though technically it is feasible to replace multiple methods with one single replacer
+	
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay) {}
+	public double estimatePremiumAmount(String planName, int tenure, long issurredAmount) {}
+}	
+	
+class PlanFinderReplacer implements MethodReplacer {
+	public Object reimplement(Object obj, Method method, Object[] args) {		
+		if(method.getName("findPlans")) {
+			// replacing findPlans
+		}else if(method.getName("estimatePremiumAmount")) {
+			// replacing premium amount
+		}
+	}
+}	
+
+application-context.xml
+------------------------
+<bean id="planFinderReplacer" class="PlanFinderReplacer"/>
+
+<bean id="planFinder" class="PlanFinder">
+	<replaced-method name="findPlans" replacer="planFinderReplacer"/>
+	<replaced-method name="estimatePremiumAmount" replacer="planFinderReplacer"/>
+</bean>
+	
+#2. always write the if condition in the MethodReplacer class to ensure the method we are trying to replace is the right one or not
+	
+
+class findPlansReplacer implements MethodReplacer {
+	public Object reimplement(Object obj, Method method, Object[] args) {		
+		if(method.getName("findPlans")) {
+			// replacing findPlans
+		}else {
+			throw new IllegalAccessException("not permitted");
+		}
+	}
+}	
+	
+<bean id="planFinder" class="PlanFinder">
+	<replaced-method name="findPlans" replacer="findPlansReplacer"/>
+</bean>
+	
+How to replace the overloaded methods of a class?
+	
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		return Arrays.asList(new String[]{"plan1", "plan2"});
+	}
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless, int county) {
+		return Arrays.asList(new String[]{"plan3", "plan4"});
+	}
+}	
+	
+class FindPlansReplacer implements MethodReplacer {
+	public Object reimplement(Object obj, Method method, Object[] args) {}
+}
+
+application-context.xml
+-------------------------
+<bean id="findPlansReplacer" class="FindPlansReplacer"/>
+<bean id="planFinder" class="PlanFinder">
+	<replaced-method name="findPlans" replacer="findPlansReplacer">
+		<arg-type>java.lang.String</arg-type>
+		<arg-type>int</arg-type>
+		<arg-type>int</arg-type>
+		<arg-type>boolean</arg-type>		
+	</replaced-method>
+</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+

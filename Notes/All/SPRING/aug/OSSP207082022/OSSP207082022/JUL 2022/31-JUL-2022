@@ -1,0 +1,141 @@
+interface Validator {
+	boolean supports(Class clazz);
+	void validate(Object form, Errors errors);
+}
+
+1. supports(Class clazz)
+within the supports method we need to write the code in returning the boolean value indicating which formType class the validator supports validating.
+2. validate(Object form, Errors errors)
+need to write the validation logic in validating the form fields of that specific type
+
+How to display error messages and how to report the validation errors to the enduser?
+we want to display messages to the end user in the spring application
+
+[resource bundle]
+messages.properties
+greeting.message=Hi
+
+message.cn_ZH.properties
+greetings.message=你好
+
+<bean id="messageSource" class="ResourceBundleMessageSource">
+	<property name="baseName" value="messages"/>
+</bean>
+
+Test.java
+----------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+//MessageSource messageSource = context.getBean("messageSource", MessageSource.class);
+//String greetingMessage = messageSource.getMessage("greetings.message", null, Locale.cn_ZH);
+
+String greetingMessage = context.getMessage("greetings.message", null, Local.getDefault());
+sop(greetingMessage);
+-----------------------------------------------------------------------------------------------------------------------
+	
+class ProductFormValidator implements Validator {
+	public boolean supports(Class clazz) {
+		return clazz.isAssignableForm(ProductForm.class);
+	}
+	
+	public void validate(Object form, Errors errors) {
+		ProductForm productForm = (ProductForm) form;
+		
+		if(productForm.getProductName() == null || productForm.getProductName().trim().length() == 0) {
+			errors.reject("productName", "productName.blank");
+		}
+		
+		if(errors.hasFieldErrors("price") == false) {
+			if(productForm.getPrice() <= 0) {
+				errors.reject("price", "price.invalid");
+			}
+		}
+	}
+}	
+																									
+errors.properties
+------------------
+productName.blank=Product Name is blank
+price.invalid=price cannot be less than or equal to zero
+typeMismatch.price=Price must be an positive integer
+
+
+
+@Configuration
+@EnableWebMvc
+class FormSubmissionWebMvcConfigurer implements WebMvcConfigurer {
+	@Bean
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBaseName("errors");
+		return messageSource;
+	}
+}
+
+
+add-product.jsp
+------------------
+<form:form modelAttribute="productForm">	
+	<form:errors path="*"/> <!-- display all field errors -->
+	
+	Product Name: <form:input path="productName"/><br/> <form:errors path="productName"/>
+	Description: <form:input path="description"/><br/> <form:errors path="description"/>
+	Manufacturer: <form:input path="manufacturer"/><br/> <form:errors path="manufacturer"/>
+	category: <form:input path="category"/><br/> <form:errors path="category"/>
+	Price: <form:input path="price"/><br/<form:errors path="price"/>
+	<input type="submit" value="add product"/>
+</form:form>
+
+
+What is Errors and BindingResult?
+
+interface Errors {
+	reject(String fieldName, String property);
+	reject(String fieldName, Object[] args, String property);
+	rejectValue(String property);
+	boolean hasFieldErrors(String property);
+}	
+
+interface BindingResult extends Errors {
+	
+}
+
+class BindException implements BindingResult {
+	// raw form data
+	// form errors
+}
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

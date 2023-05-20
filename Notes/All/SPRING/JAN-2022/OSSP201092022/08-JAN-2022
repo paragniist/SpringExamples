@@ -1,0 +1,77 @@
+How does java achieves platform independency?
+There are 2 aspects through which java is achieving platform independency
+1. the apis in java language are designed insuch a way, those will abstract the low-level apis of the platform so that the same code works across any of the platforms on which we are running
+2. upon compiling the java language provides bytecode, which can be carried across any platforms to execute.	
+From the above write the code once, compile once and execute any where	
+----------------------------------------------------------------------------------------------
+How does java classes are executed by jvm?
+	
+upon compiling the source code, it generates the bytecode (.class) file which is an intermediate executable code. we need an jvm interpreter of that platform and ask him to execute the bytecode.
+Jvm will not by itself read the bytecode from physical location to execute, rather it asks the classloader to load the bytecode into jvm memory inorder to execute the bytecode.
+	
+What is a classloader?
+Classloader is an another java class, which takes care of identifying and loading the bytecode of a java class from a physical system location into jvm memory, so that jvm can read the bytecode and execute it from the jvm memory.
+	
+Looks like unless a bytecode of a class is loaded into jvm memory, the jvm cannot execute a class, so do we need to write classloader for each class to get loaded into jvm memory inorder to execute it?
+No, since it is an common functionality for executing any java class, the java platform itself has provided inbuilt classloaders for loading the java classes into jvm memory
+
+Why jvm is not executing the bytecode by loading byitself?
+If jvm byitself is locating and reading the bytecode from physical location, then they bytecode should be at a fixed system location only, instead of jvm always tries to read the bytecode from jvm memory irrespective of where they bytecode exist.
+So it is the job of classloader who cares about identifying and loading the bytecode from the phyiscal location, so that we can have the bytecode at anyplace inorder to be executed.
+For eg.. we can have byte code in network location or database, or could be on someother location on physical system itself, all we need is an appropriate classloader which can locate and load the bytecode in jvm memory to execute.
+	
+The ClassLoaders are abstracting the physical location of the bytecode from jvm.
+	
+There are 3 different classloaders are provided as part of jdk platform
+1. bootstrap classloader
+2. extension classloader
+3. system/application classloader
+
+These classloaders are not independent of each other they are relate each other in hierarchial manner interms of loading the bytecode of a class, these three classloaders not only works in hierarchy, they load the classes from different locations as well.
+	
+#1. bootstrap classloader
+Bootstrap classloader is the parent of all the classloaders within the hierarchy of the classloaders.
+The bootstrap classloader loads all the core jdk/jre system classes into the jvm memory, unless bootstrap classloader begins its execution it cannot load the jdk api classes into memory. So to make the boostrap execute on the underlying platform it has been written in native programming language like "C" and compiled to execute on that specific platform only.
+	
+Due to the above reason we have different jdk/jre distributions per each platform.
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

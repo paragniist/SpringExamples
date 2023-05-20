@@ -1,0 +1,94 @@
+nse
+bse
+----------- stock exchange offices ---------------
+brokers / agents = comission (buying and selling)
+-----------------------------------------------------------------------------------------------
+through the brokers there is a high chance of fraud in recommending the wrong stocks or promoting while buying/selling with false prices etc
+
+online stock trading websites are introduced to add transperancy in trading stocks. There are lot of financial and banking companies are there to whom they provided brokerage licenses, asking to provide online trading services to the customers onbehalf of bse/nse stock exchange.
+	- sharekhan
+	- icicidirect 
+	- zerodha
+	- upstox
+	- groww
+	- indiabulls
+	
+open an demat account (link with savings account), you need to give power of attorney to the borkerage vendors. transfer money from savings to demat and viceversa while buying/selling the stocks.
+	
+1. transperancy in seeing the latest stock updates
+2. plenty of information about a stock will be available in the trading website. 32 weeks lowest, 32 weeks highest, volumes of trading, todays price, 7 days price
+3. information about the stock listing company, their returns, invenstment, future plans.
+4. daily technical calls and recommendations
+
+They provide lot of tools in trading the stocks
+1. price of stock
+2. portfolio management 
+3. history
+4. buy requests
+5. sell requests
+6. stop loss
+the online brokerage vendors gets comissions for each buy/sell of stocks
+-----------------------------------------------------------------------------------------------
+How does bse/nse stock exchange employees are going to provide business services to the public?
+The information about the stocks/companies are stored in the database, if a vendor/customer comes for buying or selling stock to the agents/employees of the bse stock exchange, performing the operation manually leads to lot of problems as described below:
+1. every employee/agent working in bse/nse stock exchange should be an IT Engineer and has to have good knowledge in accessing/manipulating the data on the underlying database, which is high impossible.
+2. every request in buying/selling stocks requires an through computation operation/business calculatiion like comission charges, govt taxes etc. manually performing these calculations in alloting or selling the stocks will takes
+	2.1 lot of time for the agents at bse/nse
+	2.2 always there is a chance of human errors in performing these calculations which results in in-accuracy
+3. while buying or selling the stocks, the agents has to execute queries on the database tables in modifying the data in allocating or releasing the stocks. its not on one table, may be they need to modify the data on bunch of tables. directly constructing sql queries in modifying the data on the underlying tables is always a high risk.
+there is chance where something might go wrong while constructing the query due to which incorrectly the data would gets modified on the underlying database due to which a huge loss will incurred.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

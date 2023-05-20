@@ -1,0 +1,61 @@
+There are 3 classloaders provided as part of core jdk distribution
+1. Bootstrap classloader
+2. Extension classloader
+3. System/Application classloader
+
+Each of these classloaders follows the classloader principles in loading the bytecode in jvm memory. There are 3 principles of classloaders are there
+1. Principle of delegation
+2. Principle of visibility
+3. Principle of uniqueness
+
+Whenever we ask jvm to execute/run a class, inorder for the jvm to execute the class, bytecode must be available in jvm memory, so the jvm will immediately goes to least/lowest of the classloaders in the hierarchy asking it to load the class into jvm memory.
+As per the above by default always the jvm will goes to System/Application classloader asking to load the class into jvm memory	
+
+#1. Principle of delegation
+Whenever the jvm request a classloader to load a class, no classloader first-in place loads the class into jvm memory, it always delegates the request for loading the class to its immediate parent in the hierarchy. In such a way each way of the classloaders upon receiving the request for loading the class will delegates to the parent until it reaches to the top/root of heirarchy which is nothing but Bootstrap classloader
+
+Now the root of hierarchy tries to load the class by identifying it from respective location, ->if it identifies the class then loads the bytecode in jvm memory and keeps an copy of the Class reference within local cache of the Classloader and returns the control to jvm asking to execute.
+>if the classloader is not able to locate the class, then it throws an exception and returns the control back to immediate child in the hierarchy.
+In this way each of the classloader within their decendents gets a chance to load the class, if they couldnt able to locate the class they report an exception and returns the control to their decendents until it reaches to the least
+	
+If none of the classloaders of the hierarchy is able to load the class, then we endup in ClassNotFoundException.
+Note: Each ClassLoader maintains a cache memory to keep the classes that are loaded by it, so that it can optimize it in looking up the classes quickly whenever it has been requested.
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

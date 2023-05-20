@@ -1,0 +1,135 @@
+Map tag for creating map of key/value pair
+
+<map key-type="java.lang.String" value-type="com.cdi.beans.Person">
+	<entry key="" (or) key-ref="" value="" (or) value-ref=""/>
+</map>
+<map key-type="java.lang.String" value-type="com.cdi.beans.Person">
+	<entry key="" or key-ref="">
+		<value></value> 
+		or
+		<ref bean=""/>
+	</entry>
+</map>
+
+How to work with Properties collection?
+<props>
+	<prop key="">
+		value
+	</prop>
+</props>
+----------------------------------------------------------------------------------------------------
+
+There are 2 problems are there with above collection tags
+1. we cannot specify the implementation class to be instantiated for the interface collection
+2. we cannot declare collection class as a bean definition and reuse it
+
+to overcome the above problems the ioc container has introduced util namespace. in util namespace the collection tags are same as normal collection tags only difference is the above 2.
+	
+class JobSheet {
+	int jobSheetNo;
+	String rtaNo;
+	List<String> repairs;
+	// setter
+}	
+
+application-context.xml
+-------------------------
+<bean id="jobSheet" class="JobSheet">
+  <property name="jobSheetNo" value="292"/>
+	<property name="rtaNo" value="TS09JU0878"/>	
+	<property name="repairs" ref="repairsList"/>	
+</bean>
+	
+<util:list id="repairsList" list-class="java.util.LinkedList" value-type="java.lang.String">
+	<value>clutch plates</value>
+	<value>general servicing</value>
+	<value>break pads</value>
+</util:list>	
+----------------------------------------------------------------------------------------------------
+Bean Alias
+We can define more than 1 name for a bean definition, and we can access the bean from ioc container with any of the names we defined which always refers to the same bean definition.
+
+Note: Not only the bean id even the beans names/aliases we defined for a bean should be unique across the beans of the ioc container
+
+How to declare alias name for a bean definition?
+There are 2 ways we declare alias name for a bean definition.
+1. using name attribute
+2. using <alias> tag.
+	
+class Person {
+	int personNo;
+	String personName;
+	int age;
+	String gender;
+	// setter
+}	
+
+application-context.xml
+-----------------------
+<bean id="person" name="williams,goodPerson,smartPerson" class="Person">
+  <property name="personNo" value="922"/>
+	<property name="personName" value="Williams"/>
+	<property name="age" value="32"/>
+	<property name="gender" value="Male"/>
+</bean>
+	
+The name attribute doesnt allow defining the alias name with special characters. and here "," will acts as a separator so we cannot define a alias name containing ",". To overcome the problem ioc has provided <alias> tag
+
+<alias name="person" alias="sportivePerson"/>
+<alias name="person" alias="badPerson"/>	
+	
+Test.java
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Person person = beanFactory.getBean("smartPerson", Person.class);
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

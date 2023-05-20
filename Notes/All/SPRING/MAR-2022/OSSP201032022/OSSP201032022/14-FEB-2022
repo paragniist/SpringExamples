@@ -1,0 +1,193 @@
+PropertyEditors
+PropertyEditors edits the property values we configured for a bean definition into the target class attribute types so that it can be injected by the ioc container as a dependent into target class.
+	
+There are classes in java which are commonly used in an application, if these classes has to injected as dependencies into the target classes we need to configure them as bean definitions so that ioc container can inject.
+	
+since these are commonly used classes there might appear at many places in our application so to inject them as dependencies we need to configure multiple bean definitions which takes lot of time in writing the bean configuration.
+	
+Instead Spring Framework has provided in-built property editors, so that we can configure these commonly used class types like File, Array, URL, Date as string value to be inject into appropriate attributes so that ioc container will takes the help of corresponding property editor to convert the String value we configured into target class type.
+	
+The ioc container instantiates all the in-built property editors and registers them in the PropertyEditorRegistry inside the ioc container as key/value, where key is the Object Type the property converts into and the value is the object of the property editor itself.
+	
+
+class FacebookAccount {
+	Date dob;
+	// setter
+}	
+
+a-c.xml
+--------
+<bean id="fbAccount" class="FacebookAccount">
+	<property name="dob" value="10/01/1990"/>
+</bean>
+
+Test.java
+-----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+FacebookAccount fbAccount = beanFactory.getBean("fbAccount", FacebookAccount.class);
+
+How does propertyeditors works?
+whenever we configure a string value to be injected into an target class attribute of object type, the ioc container cannot inject string into the object type attribute, so it quickly picks up target class attribute type and goes to the PropertyEditorRegistry of the ioc container and searches for an PropertyEditor Object by matching the attribute type with the key of the registry.
+	
+if there exists a PropertyEditor Object matches with then it picks the PropertyEditor object and passes the String value we configured asking him to convert into corresponding Object type and it takes the Object and injects as dependency into target class Object.
+	
+Custom PropertyEditors
+----------------------
+If there are any frequently used classes of our own in an application configuring them as bean definitions to be injected as dependents into target class is so difficult and takes lot of time. instead we can create our own PropertyEditor and register with PropertyEditorRegistry of ioc container so that we can configure the dependent as simple value itself for our class type, and ioc container takes the help of our PropertyEditor in converting String value we supplied into attribute type which is our class.
+	
+class GeoLocation {
+	double latitude;
+	double logitude;
+	// setters
+}	
+
+class NavigationMap {
+	private GeoLocation geoLocation;
+	// setter
+}
+
+
+<bean id="map" class="NavigationMap">
+	<property name="geoLocation" value="29.334,30.2033"/>
+</bean>
+
+	
+class GeoLocationPropertyEditor extends PropertyEditorSupport {
+	public void setAsValue(String value) {
+		double lat = null;
+		double log = null;
+		String[] tokens = null;
+		GeoLocation geoLocation = null;
+		
+		tokens = value.split(",");
+		lat = Double.parseDouble(token[0]);
+		log = Double.parseDouble(token[1]);
+		geoLocation = new GeoLocation(lat, log);
+		setAsObject(geoLocation);		
+	}
+}	
+
+Test.java	
+-----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Map map = beanFactory.getBean("map", NavigationMap.class);
+
+	
+
+registry (book) = into which write the names of each other to conclude
+Registration Office (ioc)
+	|- Registrar (PropertyEditorRegistrar) (write your own registrar > ioc )
+			|-registry (PropertyEditorRegistry)
+					|-sign
+					
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

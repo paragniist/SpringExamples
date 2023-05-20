@@ -1,0 +1,67 @@
+For rendering an excel as a view, spring webmvc has integrated with apache poi api. apache poi is a library that helps us in reading/writing an excel documents.
+
+apache poi has provided api classes to work with reading/writing the excel documents. An excel document is represented by WorkBook
+Inside the WorkBook we can create Sheet. 
+In each Sheet we can add row and create cell inside the row for storing the data
+	
+instead of we writing an view class by implementing from View interface and write apache poi logic in creating an excel view
+Spring Mvc has provided an abstract view class for creating excel documents quickly called AbstractExcelView 
+
+abstract class AbstractExcelView implements View {
+	public void render(httpReq, httpResp, Map<String, Object> modelMap) {
+		// the logic for creating WorkSheet
+		buildExcelDocument(modelMap, workSheet, httpReq, httpResp);
+	}
+	abstract void buildExcelDocument(Map<String, Object> modelMap, WorkSheet sheet, httReq, httpResp);
+}
+	
+class StatementExcelView extends AbstractXlsView {
+	void buildExcelDocument(Map<String, Object> modelMap, WorkBook workBook, 
+													httReq, httpResp) {
+		
+		
+	}
+}
+	
+<dependency>
+	<groupId>org.apache.poi</groupId>
+	<artifactId>poi</artifactId>
+	<version>5.0.0</version>
+</dependency>
+
+<dependency>
+	<groupId>com.lowagie</groupId>
+	<artifactId>itext</artifactId>
+	<version>2.1.7</version>
+</dependency>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+

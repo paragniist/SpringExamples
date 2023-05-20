@@ -1,0 +1,47 @@
+Strategy Design Pattern
+1. Favor composition over inheritance
+2. Always design to interfaces, never design to concreate classes
+3. Code should be open for extension and closed for modification
+
+#2. Always design to interfaces, never design to concreate classes
+when we use composition for reusing the functionality of another class, our class will become tightly coupled with other class, so a change in another class would effect our class to avoid the coupling use interfaces.
+  
+By declaring interface of another class as an attribute, our class can talk to any of the implementations of the interface, such that we will be loosely coupled.
+  
+2.1 difference between change requirement and coupling
+any change interms of parameters, returnTypes of the method is considered as a functional change rather than coupling
+
+2.2 why does the new implementation should implement from the interface?
+if it is acting as a replacment to existing class, it should serve the same contract
+
+2.3 why only interfaces, why not concreate class?
+we can achieve loose-coupling through concreate classes, but there are many problems we run into by using concrete classes
+
+2.4 can we not use abstract classes instead of using interface?
+Yes we can, but only recommended when we have partial implementation.
+  
+#3 code should be open for extension and closed for modification
+
+Inheritance makes the application design rigid.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

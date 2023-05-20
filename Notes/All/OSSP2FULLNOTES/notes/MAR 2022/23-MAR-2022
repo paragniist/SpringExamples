@@ -1,0 +1,137 @@
+@Autowired
+-----------
+Instead of we declaring the dependencies between the bean definitions we want ioc container to detect the dependencies and inject them automatically using @Autowired annotation
+
+Unlike the configuration approach, when it comes to annotation driven approach there are no modes of autowiring are there. ioc container always identifies the dependency based on classType only
+
+it performs dependency injection based on the place where we have written the annotation.
+we can write @Autowired annotation at 4 different places
+1. attribute level
+2. setter method level
+3. constructor level
+4. arbitary method level
+
+class Launcher {
+	private Rocket rocket;
+	private LaunchConfig launchConfig;
+	
+	@Autowired(required=false)
+	public Launcher(Rocket rocket, LaunchConfig launchConfig){}
+	
+	@Autowired(required=false)
+	public Launcher(Rocket rocket) {}
+	
+	@Autowired(required=false)
+	public Launcher(LaunchConfig launchConfig) {}
+		
+	// during the time of instantiating the Laucher class ioc container invokes this method, and if we want we can invoke the method at anytime during the execution of our application
+}
+
+class Rocket {
+	private String fuelType;
+	
+	public void setFuelType(String fuelType) {}
+}
+
+class LaunchConfig {
+	private String direction;
+	private double pressure;
+	public void setDirection(String direction) {}
+	public void setPressure(double pressure) {}
+}
+
+application-context.xml
+-----------------------
+<bean id="rocket" class="Rocket">
+	<property name="fuelType" value="liquid petrol"/>
+</bean>
+<bean id="launchConfig" class="LaunchConfig">
+	<property name="direction" value="23.38, 293.33"/>
+	<property name="pressure" value="1000"/>
+</bean>
+
+<bean id="launcher" class="Launcher"/>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+Launcher launcher = beanFactory.getBean("launcher", Launcher.class);
+launcher.launch();
+
+when we can write @Autowired annotation on attribute level, then why/when do we need to use setter/construction level injection?
+1. at the time of injecting the dependent object if we want to perform some initialization with the dependent being injected into the target class, then we need to use constructor/arbitary method injection
+2. while injecting the dependent we want to perform validation check then we need to use setter injection
+
+The @Autowire annotation has an attribute called "required", whose default value is true which means the autowire is mandatory. it indicates the corresponding object must/should be injected into target class
+	
+we can write @Autowired annotation on contructor level for only one of the constructor, in case if we want to write for multiple constructors since required=true default we cannot make all construction injects to be mandatory so we need to mark required=false for all of the constructors if we are writing on multiple.
+	
+The ioc container will identifies the dependent bean based on classType, if there are more than one matching bean definitions of the same classType, then ioc container runs into ambiguty
+How to resolve the ambiguty?
+There are 2 ways available
+1. autowire-candidate=false
+2. @Qualifier annotation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

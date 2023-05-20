@@ -1,0 +1,7 @@
+<bean id="handlerMappings" class="org.springframework.web.handler.SimpleUrlHandlerMapping">
+	<property name="mappings">
+		<props>
+			<prop key="/welcome.htm">welcomeController</prop>
+		</props>
+	</property>
+</bean>

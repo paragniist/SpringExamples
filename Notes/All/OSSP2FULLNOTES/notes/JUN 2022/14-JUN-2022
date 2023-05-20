@@ -1,0 +1,96 @@
+How do we configure business/persistence tier components as bean definitions in spring webmvc application?
+	
+We want to perform some operation upon completing the deployment of the application, before the servlet container begins instantiating any of the web application components within our application, and begins accepting the requests for may application
+
+How does the application is being deployed by the servlet container?
+#1 upon starting the servlet container, the servlet container goes to deployment directory of the container
+#2 picksup one war after another, extracts the war into an exploded structure
+#3 it goes into exploded directory and picksup web.xml from the WEB-INF directory, and checks whether it is well-formed or not and valid or invalid.
+	if the web.xml is not valid/well-formed 
+		-> reports an exception and stops deploying the application
+	end
+#4. if the web.xml is valid,
+			-> reads the configuration information written inside the web.xml
+			-> creates an ServletContext object representing the application
+			-> loads the entire configuration into the ServletContext
+		end
+and marks the deployment of the application as successful and moves to the next application
+
+To let the programmers perform operation, post completion of the deployment, before the application begins accepting the request, the servlet container publishes an event
+ServletContextEvent indicating the application has been deployment
+
+ServletContextListener
+	- contextCreated(ServletContextEvent)
+	- contextDestroyed(ServletContextEvent)
+				
+Now we need to write  a class implementing from ServletContextListener and write the code for creating ioc container by reading the spring bean configuration file that contains Servlet/Dao components are bean definitions
+
+Since it looks quite common to separate business/persistence tier components from mvc components, instead of we writing a class, spring mvc has provided an concreate implementation class called "ContextLoaderListener"
+	
+The ContextLoaderListener is a class written by Spring Framework developers implementing from ServletContextListener, which takes care of creating ioc container by reading spring bean configuration file
+So we just need to configure ContextLoaderListener in web.xml of our application, so that servlet container will invoke the ContextLoaderListener during the time of deployment of the application
+
+web.xml
+--------
+<listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+<servlet>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<url-pattern>*.htm</url-pattern>
+</servlet-mapping>
+
+The ContextLoaderListener by default looks for an spring bean configuration file with name as applicationContext.xml under /WEB-INF/ directory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

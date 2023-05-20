@@ -1,0 +1,42 @@
+The default constraint violation annotations provided by the java bean validator api may not be sufficient for enforcing the validation constraints in an application.
+In such case we can create our own constraint violation annotations binded with our own Validator to validate the data contained in the attribute ontop of which we wrote the annotation by using custom constraint validators in java bean validation api
+
+class Trip {
+	@PhoneNumber(message="enquiryNo is not valid")
+	String enquiryNo;
+}
+
+How to create our own custom validator in enforcing the validations on the attributes?
+There are 2 steps in defining a custom validator
+1. create our own Constraint annotation that can be used for enforcing the constraint violation
+2. bind an validator which reads the data from the attribute and perform validation
+
+#1. Constraint Annotation
+For an Constraint Annotation, we need to define #3 attributes
+
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(value=RetentionPolicy.RUNTIME)	
+public @interface PhoneNumber {
+	String message() default "Phonenumber is invalid";
+	
+	Class<?>[] groups() default {};
+	Class<? extends Payload>[] payload() default {};
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

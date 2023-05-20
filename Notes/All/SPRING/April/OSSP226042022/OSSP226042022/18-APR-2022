@@ -1,0 +1,72 @@
+what is aop?
+aop stands for aspect oriented programming, aop is used for managing in applying the cross-cutting logic across various different components of our application
+
+aop is an programming paradigm, it has defined principles as part of it.
+1. aspect
+2. advice
+3. joinpoint
+4. pointcut
+5. target
+6. proxy
+7. weaving
+
+#1. aspect
+aspect is the piece of code, we wanted to apply across various classes of our application.
+	(or)
+aspect is the piece of code we wanted to advice on the target class joinpoints
+	
+#2. advice
+advice is all about how do you want to apply the cross-cutting logic ontop of the primary business logic. There are 4 types of advices are there
+1. before advice
+2. after advice
+3. around advice
+4. throws advice
+(or)
+how do you want to apply the aspect on the target class joinpoints is called "advice"
+
+#3. jointpoint
+joinpoint is nothing but the possible places where we can apply the secondary logic 
+
+The possible places within the target class, where we can advice the aspect is called "joinpoint"
+
+#4. pointcut
+set of joinpoints on whom we are applying the secondary logic is called pointcut
+
+set of joinpoints on where we are advicing the aspect is called "pointcut"
+
+#5. Target
+The class on which we are applying the secondary logic is called target class
+	
+The class on whom we are advicing the aspect is called "target"
+	
+#6. proxy
+Proxy is the class in which both primary logic and secondary logic are put together to get executed
+
+Proxy is the class in which the aspect and primary logic are combined together to be executed
+	
+	
+#7. weaving
+weaving is a technic through which we apply the seondary logic ontop of the primary logic to build the proxy
+
+weaving is the techinic of advicing the aspect on target class joinpoints to build the proxy
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

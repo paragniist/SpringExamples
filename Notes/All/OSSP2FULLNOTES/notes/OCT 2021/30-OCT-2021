@@ -1,0 +1,82 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  
+  public void writeMessage(String message) {
+    String cMessage = null;
+    
+      
+    //messageFormatter = MessageFormatterFactory.createMessageFormatter("pdf");        
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.println(cMessage);
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }
+}
+
+class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>";
+  }
+}
+
+class MessageFormatterFactory {
+  public static IMessageFormatter createMessageFormatter(String type) {
+    IMessageFormatter messageFormatter = null;
+    if(type.equals("html")) {
+      messageFormatter = new HTMLMessageFormatterImpl();
+    }else if(type.equals("pdf")) {
+      messageFormatter = new PDFMessageFormatterImpl();
+    }
+    return messageFormatter;
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    messageWriter.writeMessage("Welcome to Strategy Design Pattern");
+  }
+}
+
+Here in the above, the MessageWriter will not work without using the functionality of HTML/PDFMessageFormatterImpl, so we can say our MessageWriter is dependent on these 2 classes. To the get dependent object into MessageWriter class, we are going and getting the dependent from a factory. Since we have written the logic in getting the object from some other class we are pulling dependencies from other class. So this technic of getting dependent objects by talking to some is caled "Dependency Pulling".
+  
+when we are pulling the dependencies by talking to someone we need to tell the logical classname of another class to get the object of another class. So that our class will become tightly coupled with logical classname of another class. So to switch from one class to another class again we need to change the logical classname.
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+

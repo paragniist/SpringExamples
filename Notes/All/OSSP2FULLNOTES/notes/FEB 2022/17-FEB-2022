@@ -1,0 +1,91 @@
+Bean Lifecycle Management
+--------------------------
+
+Everything that has an existence within this world has an lifecycle, the activities that are taken part on top of the object during its existence is nothing but lifecycle of the object
+
+There are certain activities that has to be conducted ontop of the object at the time of its birth, similarly there are certain activites that has to be conducted while the object is being destroyed, unless these activities performed on top of the object after it was born or before it is going destroyed, the object cannot have its existence and it will not participate in its lifecycle. these activities are called lifecycle management activities
+
+There are 2 lifecycle management activities are there for every object
+1. birth lifecycle management
+it is also called as post-construction activities, the activities that has to be dont mandatorily after an object was born inorder to have the object survive in this world are called birth lifecycle or post-construction activities
+
+2. death lifecycle management
+Before the object is going to be destroyed we need to perform some mandatory operations ontop of the object to have its smooth destruction/termination which are also called as pre-destruction activities
+
+
+its not only for humans even the programmatic objects we create in our application and use it also has these activities applied.
+For eg..
+after an object has been born we need to perform certain activities mandatorily to have the object to perform its lifecycle. all the activities that are being performed ontop of the object are part of lifecycle of the object, for example a method call on the object or a state change on the object will be part of the lifecycle. similary the object during its destruction need to perform some mandatory activities while it is going to be destroyed
+
+
+What are the lifecycle management for a java class object?
+For a java class object also we need lifecycle management, so that the object can perform its lifecycle activities properly
+once the object has been born we might want to perform quite a number of things like initialization etc, so that the object can exists and perform its operations similary we want to form few destruction activities so that the object can terminiate easily
+
+How to conduct these lifecycle management activities ontop of an object?
+For a java class constructor and finalize are the birth and death lifecycle management methods that are available. The jvm takes care of invoking the constructor automatically after the object has been born, similary the jvm is going to take care invoking the finalize method before the object being removed/destroy so that the property post-construction and pre-destruction will takes place on top of the object so that it can participate in lifecycle activities.
+	
+
+class A {
+	int i;
+	int j;
+	
+	public A() { // constructor
+		// post construction logic that has to be applied on the class object
+		i = 19;
+		j = 20;
+	}
+	
+	public int sum() {
+		return i + j;
+	}
+}
+class A {
+	File f;
+	B b;	
+	
+	public void finalize() {
+		f.close();
+	}	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

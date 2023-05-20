@@ -1,0 +1,73 @@
+Static Factory Method Instantiation
+------------------------------------
+By default when we configure a class as a bean definition, ioc container will tries to instantiate the object of a class by using Class.forName("className").newInstance() which is nothing but equal to using a new operator on a class.
+	
+But there are few classes which cannot be instantiated by using new operator for e.g..
+java.util.Calendar = its basically an abstract class byitself, which cannot be instantiated by using new operator. to create the object of Calendar it has provided static factory method getInstance() in the class itself, which we need to call for creating object as shown below.
+	
+Calendar c = Calendar.getInstance();
+if such classes has to be configured as bean definitions, we need to instruct ioc container asking him not to use new operator rather invoke static factory method on that class to get the object of the class, so that it place it as bean definition within ioc container using Static Factory Method Instantiation.
+
+class JobScheduler {
+	private String jobName;
+	private Calendar scheduledTime;
+	private int priority;
+	
+	// setters
+}
+
+application-context.xml
+-----------------------
+<bean id="jobScheduler" class="JobScheduler">
+	<property name="jobName" value="data sorter"/>
+	<property name="scheduledTime" ref="jobScheduledTime"/>
+	<property name="priority" value="1"/>
+</bean>
+
+<bean id="jobScheduledTime" class="java.util.Calendar" factory-method="getInstance"/>
+
+Test.java
+---------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+JobScheduler js = beanFactory.getBean("jobScheduler", JobScheduler.class);
+sop(js);
+
+
+<bean id="c" class="java.util.Calendar"/>
+Calendar c = new Calendar();
+Calendar c = Class.forName("java.util.Calendar").newInstance();
+
+Calendar c = Calendar.getInstance();
+
+
+class A {
+	
+}
+
+<bean id="a" class="A"/>
+
+beanFactory.getBean("a", A.class);
+
+Class.forName("A").newInstance(); // reflection api using runtime reference of the class we are instantiating the object
+(both are same)
+new A(); = static reference
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,244 @@
+To support pagination and sorting the datajpa has provided 2 interfaces
+1. Pageable = In Pageable object we can populate the pageNo and pageSize so that DataJpa Proxies queries the data returns the specific volumns of data given.
+2. Sort = using Sort object we can specify the sort column and sort order as well,so that the DataJpa queries and returns the data based on that
+
+
+JpaRepository interfaces extends from PaginationAndSortingRepository which has additional methods that supports pagination and sorting as below.
+	
+interface PaginationAndSortingRepository	{
+	Iterable findAll(Sort sort);
+	Iterable findAll(Pageable pageable);
+}
+	
+interface JpaRepository extends PaginationAndSortingRepository {}
+------------------------------------------------------------------------------------------------------------------------
+How to query the data from the database while working with DataJpa?
+While working with DataJpa we dont write Dao classes, then how can we execute jpql queries in filtering and accessing the data from tables based on various different query conditions?
+	
+For executing any jpql queries the code we need to write will be same, the only difference is the jpql query and the parameters we wanted to substitute. So datajpa takes care of executing the jpql query by substituting the parameters we supplied through runtime proxies itself, so we dont need to write code for executing queries.
+	
+The DataJpa supports 2 types of queries
+1. derived queries
+2. declared queries
+
+#1. derived queries
+When it comes to derived queries, we dont need to write the jpql query we wanted to execute in filtering and fetching the data, rather we need to write the methods in the Repository interface following standard naming conventions defined the datajpa, so that the query will constructed automatically and executed by the datajpa itself.
+	
+For eg.. we wanted to fetch all the accounts based on accountType
+
+interface AccountRepository extends JpaRepository<Account, Integer> {
+	List<Account> findByAccountType(String accountType);	
+}
+	
+There are 2 keywords with which a method name can start with in the repository interface
+1. find = indicates a select query to be executed to fetch multiple records/objects of data
+2. count = indicates return no of records matching for the criteria we supplied
+
+For eg.. 
+1. we want to fetch all the accounts based on balance
+interface AccountRepository extends JpaRepository<Account, Integer> {
+	List<Account> findByBalance(double balance); # this returns all the accounts who has that balance
+	long countByBalance(double balance); #this returns no of accounts who has that balance
+}
+	
+Below are the pre-defined keywords we can use in writing the methods in the repository interface which are recognized and translated into jpql queries by datajpa automatically
+	
+1. And
+2. Or
+3. In | NotIn
+4. IsNull | Null
+5. IsNotNull | NotNull
+6. Between
+7. After
+8. Before
+9. Like
+10. Distinct
+11. OrderBy
+12. GreaterThan
+13. GreaterThanEqual
+14. LessThan
+15. LessThanEqual
+16. StartingWith
+17. EndingWith
+18. Containing
+19. True
+20. False
+21. IgnoreCase
+22. Is | Equal
+
+interface AccountRepository extends JpaRepository<Account, Integer> {}
+
+Let us see few examples of the method names based on the above keywords:
+1. List<Account> findByMobileNo(String mobileNo) = from Account account where account.mobileNo=?
+The MobileNo should be part an attribute of your entity class, of that Repository interface in which your wrote the method. The Attribute Name should appear in the same case starting with first letter as "capital"
+2. List<Account> findByAccountType(String accountType);
+The no of columns we specified in the method name and the parameters declared in the method should match
+
+3. findByAccountHolderNameAndBalance(String accountHolderName, double balance);
+from Account account where account.accountHolderName=?1 and account.balance=?2
+	
+4. findByMobileNoOrEmailAddress(String mobileNo, String emailAddress);
+from Account account where account.mobileNo = ? or account.emailAddress=?
+	
+5. List<Account> findByAccountTypeIn(Collection<String> accountTypes);	
+from Account account where account.accountType in (?)
+	
+6. List<Account> findByMobileNoIsNull();
+from Account where mobileNo is null
+	
+7. List<Account> findByBalanceBetween(double minBalance, double maxBalance);
+from Account where balance between ? and ?
+	
+8. List<Account> findByOpenedDateAfter(Date date);
+from Account where openedDate > ?
+	
+9. List<Account> findByAccountHolderNameLike(String accountHolderName);
+from Account where accountHolderName like ? (wild card search % & ? are allowed)
+	
+10. List<Account> findByBalanceGreaterThan(double balance);
+11. List<Account> findByAccountHolderNameStartingWith(String accountHolderName);
+from Account where accountHolderName like ?%;
+
+12. List<Account> findByAccountHolderNameContaining(String accountHolderName);
+from Account where accountHolderName like %?%
+	
+13. List<Account> findByStatusTrue();
+from Account where status=true
+	
+The derived queries doesnt support groupBy and join queries, if we want to use join queries or groupBy clauses we need to go for delcared queries.
+	
+List<Account> findByAccountTypeInAndStatusIn(Collection<String> accountTypes, Collection<String> statuses);
+
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,121 @@
+What is bean autowiring?
+instead of we declaring the dependencies between the bean definitions, ioc container takes care of identifying and managing the dependencies automatically, when we use "bean autowiring".
+
+by default bean autowiring is turned off, so in order to manage the dependencies either we need to declare dependencies information manually or enable autowiring.
+	
+To enable autowiring we need to write an attribute at the bean tag level as autowire="mode". we need to write autowire="mode" for whichever the bean we want ioc container to manage automatically on that bean tag level we need to write.
+	
+Mode of autowiring tells 2 things
+1. identify the dependent bean to be injected
+2. how to inject the dependency
+
+There are 4 modes of autowiring are there
+1. byName
+2. byType
+3. constructor
+4. autodetect (deprecated and removed from 3.x)
+	
+#1. byName
+identify the dependent bean matching with attribute name of the target class with bean definition id, and inject it via setter injection
+
+if there is no bean definition id matching with attributeName, the ioc container ignores performing dependency injection as (setter injection) is optional and instantiates the object of the target and returns to us.
+	
+	
+
+class SalesOrder {
+	Distributor distributor;	
+	TransportType transportType;
+	
+	public SalesOrder(Distributor distributor) {
+		this.distributor = distributor;	
+	}
+	
+	public SalesOrder(TransportType transportType) {
+		this.distributor = distributor;	
+		this.transportType = transportType;
+	}	
+}
+
+
+class TransportType {
+	String transportMode;
+	String vehicleType;
+	// setters
+}
+	
+class Distributor {
+	String udno;
+	String distributorName;
+	
+	// setter
+}	
+	
+application-context.xml
+------------------------
+<bean id="salesorder" class="SalesOrder" autowire="constructor">
+</bean>
+
+<bean id="distributor1" class="Distributor">
+	<property name="udno" value="ud893788"/>
+	<property name="distributorName" value="Raghavendra Distributors"/>
+</bean>
+
+<bean id="transportType" class="TransportType">
+	<property name="tranportMode" value="road"/>
+	<property name="vehicleType" value="mini van"/>
+</bean>
+
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+
+SalesOrder salesOrder = beanFactory.getBean("salesorder", SalesOrder.class);
+sop(salesOrder);
+
+#2. byType
+identify the dependenty bean definition object to be injected, by matching with attributeType of target class with bean definition class type, inject it via setter injection
+
+if there are 2 bean definitions of matching class type with attributeType, ioc container will fail in identifying uniquely and runs into ambiguty error. we can resolve the problem by writing autowire-candidate = "false" for one of the bean definition.
+	
+autowire-candidate="false" = indicates ioc container not to consider that bean definition for autowiring.
+	
+#3. constructor
+identify the dependent bean matching with constructor argument type with bean definition classType and perform the injection by passing it as an argument to the target class constructor.
+	
+in case of constructor mode, the dependent bean definition is mandatory to be injected, if the dependent is not available matching with argumentType with bean class type, the ioc container fails in creating the object of the target and throws exception
+
+if there are more than one bean definition matching with bean classType with constructor argumentType, ioc container runs into ambiguty and fails in creating the object for the bean definition. again to resolve the problem we need to use autowire-candidate="false".
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

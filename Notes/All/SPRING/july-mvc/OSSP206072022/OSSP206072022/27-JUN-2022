@@ -1,0 +1,205 @@
+What are ViewResolvers, why do we need to use them?
+ViewResolvers are used for resolving an logical viewname to a View component, that has to be used for rending the view to the enduser.
+	
+The programmer has to configure/create an ViewResolver mapping logcal viewname to a view component. DispatcherServlet upon receiving the lvn from Controller, it takes the help of ViewResolver in identifying the View component to be used in rendering the view.
+	
+For all the ViewResolvers in spring mvc, the base interface is ViewResolver
+	
+interface ViewResolver {
+	View resolveViewName(String viewName, Locale locale);
+}
+
+We can write our own ViewResolver component implementing the ViewResolver interface in mapping an logical viewname to a View class object. Looks like for every spring mvc application ViewResolver is a common component so, instead of we writing our own ViewResolver spring mvc has provided concrete implementations of the ViewResolver interface addressing most of the common requirements in resolving views
+There are 5 ViewResolver core/basic implementations are available
+1. InternalResourceViewResolver
+2. UrlBasedViewResolver
+3. ResourceBundleViewResolver
+4. BeanNameViewResolver
+5. XmlViewResolver
+
+To conclude a ViewResolver 
+1 identifies the View class to be used for a given logical viewname and instantiates it
+2 populates information required for that View object
+
+
+#1. InternalResourceViewResolver
+InternalResourceViewResolver has to be named as "JspViewResolver", it is provided by the spring mvc to help us in easily rendering jsp pages of an application. it works based on coc
+
+JSTLView
+While working with jsp pages, the view logic is already written in jsp itself, so we need a View class to render the jsp page, so spring mvc has provided an common View component that takes care of forwarding or rendering an jsp page called "JSTLView"	
+So from above we can understand for rendering any jsp page we need to use JSTLView class only by populating url (location of the page) as an input to the object
+
+Now the developer has to configure for all the jsp pages the View class as JSTLView only with url as pointing to the location of the page, so the amount of configuration we need to write in a ViewResolver in mapping to a ViewClass object per each jsp page is more.
+For eg..	
+ViewResolver
+|-home (lvn)
+	|-ViewClass = JSTLView
+		|-url=/WEB-INF/jsp/home.jsp
+|-contact-us (lvn)		
+	|-ViewClass=JSTLView
+		|-url=/WEB-INF/jsp/contact-us.jsp
+instead of writing lot of configuring in mapping a logical viewname to JSTLView to render a jsp page, spring mvc has provided InternalResourceViewResolver 
+
+InternalResourceViewResolver:
+1. always instantiates the ViewClass as JSTLView only
+2. constructs url to be populated into JSTLView object based on prefix+lvn+suffix
+so we can easily map an lvn to jsp page using InternalResourceViewResolver
+
+#2. ResourceBundleViewResolver
+The ResourceBundleViewResolver, name itself tells you it supports resolving logical viewnames to the View components by supporting internationalization.
+
+For each locale we wanted to support in resovlving views, we need to create different ResourceBundle properties files in which we need to configure for logical viewname, what viewClass wanted to be used along with its data.
+	
+1. default bundle, if the user locale is not supported, then views are resolved from default bundle
+views.properties
+2. supporting each locale create an local bundle
+views_en_IN.properties (english, India)
+views_cn_CH.properties (chinese, china)	
+	
+in each properties file we need to map logical viewname to viewCLass and its configuration as below.
+	
+views.properties (default: Unitedstates)
+-----------------
+home.(class)=org.springframework.web.view.JSTLView
+home.url=/WEB-INF/jsp/banking-services-us.jsp
+
+views_en_IN.properties (english/India)
+----------------------
+home.(class)=org.springframework.web.view.JSTLView
+home.url=/WEB-INF/jsp/banking-services-in.jsp
+
+<bean class="ResourceBundleViewResolver">
+	<property name="basename" value="views"/>
+</bean>
+
+#3. BeanNameViewResolver
+The BeanNameViewResolver, by name itself we can understand the logical viewname will be taken as an input and identifies the bean definition with id to be used for identify view object.
+	
+|-> home(lvn) => BeanNameViewResolver => <bean id="home" ../>	
+	
+<bean id="home" class="org.springframework.web.view.JSTLView">
+	<property name="url" value="/WEB-INF/jsp/home.jsp"/>
+</bean>
+
+<bean class="BeanNameViewResolver"/>
+	
+#4. XmlViewResolver
+The XmlViewResolver is same as BeanNameViewResolver only, it also takes lvn and tries to find the ViewClass as an bean definition matching with the id and returns the object to DispatcherServlet, but it looks for the bean definition in an another xml file rather than in the dispatcher-servlet.xml (DispatcherServlet bean configuration file)
+
+dispatcher-servlet.xml
+-----------------------
+<bean class="org.springframework.web.resolvers.XmlViewResolver">
+	<property name="location" value="views.xml"/>
+</bean>
+	
+views.xml
+----------
+<bean id="home" class="org.springframework.web.view.JSTLView">
+	<property name="url" value="/WEB-INF/jsp/home.jsp"/>
+</bean>
+
+#5. UrlBasedViewResolver
+UrlBasedViewResolver is a base/parent class of InternalResourceViewResolver, the functionality of the InternalResourceViewResolver is derived from UrlBasedViewResolver only.
+
+It also works based coc, but the only different between them is in case of UrlBasedViewResolver the viewClass is mandatory to be configured that should be used for rendering the page
+
+<bean class="UrlBasedViewResolver">
+	<property name="prefix" value="/WEB-INF/jsp/"/>
+	<property name="suffix" value=".jsp"/>
+	<property name="viewClass" value="org.springframework.web.view.JSTLView"/>
+</bean>
+The above configuration is equal to InternalResourceViewResolver.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

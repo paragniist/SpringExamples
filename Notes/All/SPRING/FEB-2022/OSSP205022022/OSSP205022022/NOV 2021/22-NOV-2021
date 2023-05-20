@@ -1,0 +1,70 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void setMessageFormatter(IMessageFormatter messageFormatter){}
+}
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+class HTMLMessageFormatterImpl implements IMessageFormatter {}
+class PDFMessageFormatterImpl implements IMessageFormatter {}
+
+application-context.xml
+<beans>
+  <bean id="messageWriter" class="com.sdp.beans.MessageWriter"/>
+  <bean id="htmlMessageFormatter" class="com.sdp.beans.HTMLMessageFormatterImpl"/>
+  <bean id="pdfMessageFormatter" class="com.sdp.beans.PDFMessageFormatterImpl"/>
+</beans>
+Resource = helper class which will take care of reading the Resource
+  |-ClassPathResource = it takes the location of the resource as relative path and reads from Class path location using classloader and returns the InputStream.
+  |-FileSystemResource = takes absolute location of the resource and uses I/O streams for reading the underlying resource and returns InputStream.
+
+Resource resource = new ClassPathResource("application-context.xml");
+BeanFactory beanFactory = new XMLBeanFactory(resource);
+(or)
+BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("application-context.xml"));
+// since we are not using Resource object anywhere else apart from BeanFactory
+
+MessageWriter messageWriter = (MessageWriter) beanFactory.getBean("messageWriter");
+IMessageFormatter messageFormatter = (IMessageFormatter) beanFactory.getBean("htmlMessageFormatter");
+messageWriter.setMessageFormatter(messageFormatter);
+
+messageWriter.writeMessage("Welcome to Spring Core");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

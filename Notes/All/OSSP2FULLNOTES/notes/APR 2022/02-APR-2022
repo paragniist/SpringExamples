@@ -1,0 +1,218 @@
+Spring Jdbc
+------------
+What are the advantages of spring jdbc over java jdbc?
+#1.
+java jdbc: boiler-plate logic in buidling persistence aspects of an application
+spring jdbc: spring framework has provided lot of classes in which the boiler-plate logic is written in them, so we dont need to write boiler-plate logic while working spring jdbc 
+
+#2. 
+java jdbc: managing the resources is a difficult job in java jdbc
+spring jdbc: we dont write the code for opening the resources or closing the resources, the spring jdbc api classes itself takes care of creating and closing these resources automatically
+
+#3. 
+java jdbc: all the exceptions are checked exceptions in jdbc api, so we need to mandatorily write try/catch block for handling these exceptions. but most of these jdbc failures are not recoverable which indicates writing the code in try/catch seems to unncessary and it is a bug in jdbc api
+
+checked exception: known failures that can be anticipated as part of the program execution and can be prepared to handle up ahead (recoverable)
+un-checked exception: unknown failures, that occurs at runtime and no guaranteee of recovery
+
+spring jdbc: all the exceptions in spring jdbc api are unchecked exceptions which means we never need to write our code sourrounding try/catch block unless required. so that code becomes clear and easy to understand
+
+#4.
+java jdbc: jdbc api only supports local transactions, it doesnt support global transactions again we need to use jta api for working with global transactions
+spring jdbc: has a integration with spring transaction module, using which we can work with both local/global transactions easily
+------------------------------------------------------------------------------------------
+Why are you using spring jdbc as a persistency technology why not hibernate framework as part of your project?
+#1. 
+We can broadly classify the applications into 3 different types
+1. standlone or desktop applications (single user applications)
+2. distributed web applications
+	2.1 self-service or customer centric applications
+	2.2 e-commerce or general purpose business applications
+	2.3 intranet or back office applications
+3. batch processing systems
+
+From these applications point of view let us derive the persistence needs or aspects in processing the data
+#1. standalone or desktop applications
+These are most of the time thick client applications which are installed on the machine/computer and will be used by a single-user only. The volumes of data these applications are going to process is quite less and the complexity in handling these data is zero
+For these type of applications we can use jdbc api for handling persistence requirements of the appliation
+
+#2. distributed web applications
+The application is deployed on a server/group and exposed over the network, people/customers/endusers access these applications using the web browser over the network in using the functionality
+
+distributed web application can be further classified into 3 types
+2.1 self-service appliations or customer centric applications
+These are the applications who will deal with personalized user data only, at anypoint of time these applications process the data pertaining to the user who is accessing the application. The persistency requirements and complexity in handling the operations for these applications are quite low. 
+For these type of applications as well we can use a simple persistence api like jdbc 
+
+2.2 e-commerce or general purpose business applications
+The volumes of data we are going to process as part of these applications ranges from moderate to high and the persistence requirements in performing the operations are quite high like we need
+1. performance optimization technics to be used like caching at persistence tier
+2. transaction isolation
+3. concurrency
+4. distributed transaction management support (global transations) etc
+for handling the above requirements we cannot use jdbc api, we need to must and should use hibernate/any orm technology
+
+2.3 intra-network or back-office/end applications
+These are the applications used by the employees within an organization in dealing with running day-to-day activities of their business. 
+The volumes of data these applications are going to process will be ranging from moderate to high and requires concurrency, islation and transactionality.
+
+The data volumes of these applications ranges from moderate or high based on the usescases these applications will deal with
+
+So if the volumes of data we are processing is less or moderate: Hibernate Framework
+                                               moderate to high: jdbc api 
+																							 
+#3. batch processing systems
+bulk data processing requirements 
+jdbc + pl/sql (stored procedures)
+																								 
+
+																								 
+																							 
+																							 
+																							 
+																							 
+																							 
+																							 
+																							 
+																							 
+																							 
+																							 
+																							 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

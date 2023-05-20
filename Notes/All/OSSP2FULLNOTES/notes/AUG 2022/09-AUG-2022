@@ -1,0 +1,9 @@
+What are field formatters what is the purpose of them?
+Field formatters are used for converting string data into object and object into string in a typical web application.
+	
+There are limitations with PropertyEditors to overcome them Field Formatters are introduced
+1. PropertyEditor supports one-way conversion only from String to Object and but the Object to the String is not supported, this means PropertyEditors are not designed to used for Web dataBinding
+2. 
+	
+	
+	

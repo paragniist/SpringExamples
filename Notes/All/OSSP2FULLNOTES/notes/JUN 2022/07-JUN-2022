@@ -1,0 +1,37 @@
+#1. To avoid accessing dynamic view/pages directly by the enduser
+#2. To hide the presentation-tier view technology from the enduser, the spring mvc recommends us to place the view components inside the WEB-INF/ directory only
+#3. To avoid security breach in using/accessing the data by directly hitting the dynamic resources, it is recomended to place these under WEB-INF/ directory
+
+How to configure DispatcherServlet?
+	
+web.xml
+--------
+<servlet>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<url-pattern>*.htm</url-pattern>
+</servlet-mapping>
+
+#1. during the time of deployment of the application, the servlet container looks for load-on-startup, and if 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

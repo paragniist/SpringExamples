@@ -1,0 +1,153 @@
+What is instance factory method instantiation?
+by default when configure a class as bean definition the ioc container will creates the object of the class using new operator, but there are some classes for whom we cannot instantiate the object directly using new operator inorder to instantiate the object we have to create the object of another class and call factory method on the object to create object of another class.
+	
+For eg.. when we are working the distributed technology objects like ejb or rmi etc we write the code for pulling the remote references of the objects in a Service Locator	class. Now in order to instantiate or pull the remote references of ejb/rmi and place it as bean definitions we need to ask ioc container instantiate the object of ServiceLocator and invoke the lookupMethod on it which returns remote object place it as an bean definition within ioc container.
+	
+The above technic of placing the objects in ioc container is called "instance factory method instantiation".
+	
+if ioc container doesnt support instance factory method instantiation, the object way of such objects to be used within our class application class is through dependency pull which makes our application classes tightly coupled.
+	
+BSE/NSE Exchange
+Agent Trading System Application
+--------------------------------------------
+interface StockTradeManager {
+	double getStockPrice(String stockName);
+}
+	
+// assume: ejb
+class BSEStockTradeManagerImpl implements StockTradeManager {
+	double getStockPrice(String stockName) {
+		return 938;
+	}
+}
+----------------------------------------------------------------------------------------------
+Upstox.com
+-----------
+
+class GetStockPriceController {
+	private StockTradeManager stockTradeManager;
+	
+	public double findStockPrice(String stockName) {
+		/**
+		// dont write dependency pulling logic, because we are tightly coupled through logical class name, inject StockTradeManager as dependency into our class
+		
+		AgentTradingSystemServiceLocator atssl = new AgentTradingSystemServiceLocator();
+		
+		stockTradeManager = (StockTradeManager) atssl.lookupAgentTradingSystemService("java://bseStockTadeManager");
+		*/
+		double price = stockTradeManager.getStockPrice(stockName);
+		return price;
+	}
+	public void setStockTradeManager(StockTradeManager stockTradeManager) {
+		this.stockTradeManager = stockTradeManager;
+	}
+}
+
+class AgentTradingSystemServiceLocator {
+	public Object lookupAgentTradingService(String jndiName) {
+		Object remote = null;
+		HashTable ht = new HashTable();
+		ht.put("jndiUrl", "t3://localhost:9091");
+		ht.put("username", "weblogic");
+		ht.put("password", "welcome1");
+		ht.put("jndiFactoryClass", "com.weblogic.jndi.WeblogicJNDIFactory");
+		
+		InitialContext ic = new InitialContext(ht);
+		remote = ic.lookup(jndiName);
+		return remote;
+	}
+}
+
+	
+application-context.xml
+-----------------------
+<bean id="getStockPriceController" class="GetStockPriceController">
+	<property name="stockTradeManager" ref="stockTradeManager"/>
+</bean>
+
+<bean id="agentTradingSystemServiceLocator" class="AgentTradingSystemServiceLocator"/>
+
+<bean id="stockTradeManager" factory-bean="agentTradingSystemServiceLocator" factory-method="lookupAgentTradingService">
+	<constructor-arg value="java://bseStockTradeManager"/>
+</bean>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+GetStockPriceController gspc = beanFactory.getBean("getStockPriceController", GetStockPriceController.class);
+double price = gspc.getStockPrice("cipla");
+System.out.println("price :"  +price);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	

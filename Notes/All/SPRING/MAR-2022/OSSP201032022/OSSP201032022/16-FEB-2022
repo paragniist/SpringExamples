@@ -1,0 +1,133 @@
+What are property editors, what is the purpose of them?
+PropertyEditors are meant for editing the property values configured for a bean definition into the target class attribute type, so that ioc container can inject it as dependency into the target class attribute
+
+There are lot of inbuilt PropertyEditors are provided by the ioc container for the most commonly used java class types, all these PropertyEditors are part of PropertyEditorRegistry
+
+When do we need to write our own custom PropertyEditor?
+If we have our own classes which are being frequently used as dependencies within the target classes, rather than injecting them as dependencies through ref, we can configure it as a value by writing our own PropertyEditor
+
+class GeoLocation {
+	private double lat;
+	private double log;
+	// accessors
+}
+
+class NavigationMap {
+	private GeoLocation geoLocation;
+	// setter
+}
+
+application-context.xml
+-----------------------
+<!--
+<bean id="geoLocation" class="GeoLocation">
+	<property name="lat" value="23.39"/>
+	<property name="log" value="12.39"/>
+</bean>
+-->
+
+<bean id="navigationMap" class="NavigationMap">
+	<property name="geoLocation" value="23.78, 19.27"/>
+</bean>
+
+class GeoLocationPropertyEditor extends PropertyEditorSupport {
+	public void setAsText(String text) {
+		String tokens[] = null;
+		GeoLocation geoLocation = null;
+		
+		tokens = text.split(",");
+		geoLocation = new GeoLocation();
+		geoLocation.setLat(Double.parseDouble(tokens[0]));
+		geoLocation.setLog(Double.parseDouble(tokens[1]));
+		setAsValue(geoLocation); // super class method, returns object to ioc container
+	}
+}
+
+Now we need to register the above property editor into PropertyEditorRegistry
+
+PropertyEditorRegistry = we cannot access it directly
+	PropertyEditorRegistrar
+
+// we wrote
+class GlobalPropertyEditorRegistrar implements PropertyEditorRegistrar {
+	// this method will be invoked by ioc container by passing registry to it
+	public void registerCustomEditors(PropertyEditorRegistry registry) {
+		registry.registerCustomEditor(GeoLocation.class, new GeoLocationPropertyEditor());
+	}
+}
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+
+((ConfigurableListableBeanFactory)beanFactory).addRegistrar(new GlobalPropertyEditorRegistrar()); // immediately ioc container invokes the Registrar by passing registry
+// within the registerCustomEditors, we will take registry and register our own PropertyEditor
+// now ioc container has our PropertyEditor registered in its registry
+
+// NavigationMap mMap = beanFactory.getBean("navigationMap", NavigationMap.class);
+
+
+    (immutable)                   (mutable)
+  (setter methods)         (modifiable methods)
+BeanFactory (interface)  ConfigurableListableBeanFactory (interface)
+                    |     |
+	                 XmlBeanFactory
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+
+
+interface Accessor {       interface Configurer {
+	String getMessage();       void setMessage(String message);
+}                          }
+
+class Greetings implements Accessor, Configurer {
+	private String message;
+	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+}
+Accessor accessor = new Greetings();
+accessor.getMessage();
+((Configurer)accessor).setMessage("Good Morning");
+
+
+-> ioc add Registrar to ioc container
+	-> then ioc container invokes Registrar by passing Registry to us
+		-> into the Registry register our custom property editor
+		
+-> registry
+	-> Registrar (appointed) -> office
+	              |-> (ioc) (registry)
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

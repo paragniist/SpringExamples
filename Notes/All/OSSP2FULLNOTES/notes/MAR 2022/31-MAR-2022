@@ -1,0 +1,154 @@
+Spring Framework                   non-invasive
+1. xml-based configuration     =   yes
+2. java-configuration approach =   yes
+3. stereotype annotation       =   no
+
+Below are the annotations we are writing directly on the java classes so that our classes will loose non-invasive-ness.
+@Component/@Controller/@RestController/@Service/@Repository
+@Autowired
+@Qualifier
+	
+@Lazy
+@Value
+@Scope
+	
+To ensure we can quickly configure our classes as bean definition and to retain non-invasiveness spring has added the support for java-config project annotation support as part of the spring framework
+
+jdk 1.5
+jee 5
+------------------
+Java Config Annotation support project
+@Resource
+@Inject
+@Named
+
+Now let the developers write the code by annotating with java/javax annotations instead of spring framework annotations and while running the application on spring framework, the ioc container can understand these annotations and apply relevant functionality so that developers can avoid using spring annotations.
+	
+// source code
+@Named	
+class Robot {
+	public void on() {
+		sop("booting...");
+	}
+}	
+@Named is an substitute for @Component annotation so that ioc container by looking at that annotation makes our class as bean definition
+	
+class Radio {
+	@Inject
+	@Named("tuner1")
+	Tuner tuner;
+	
+	public void on() {
+		tuner.receive();
+		sop("radion on....");
+	}
+}	
+
+class Tuner {
+	int frequency;
+	
+	void receive() {
+		sop("receiving the signals at frequency : " + frequency)
+	}
+	
+	public void setFrequency(int frequency) {
+		this.frequency = frequency;
+	}
+}
+	
+application-context.xml
+-----------------------
+
+<bean id="tuner1" class="Tuner">
+	<property name="frequency" value="80"/>
+</bean>
+
+<bean id="tuner2" class="Tuner">
+	<property name="frequency" value="100"/>
+</bean>
+
+<bean id="radio" class="Radio"/>
+
+	
+The difference between @Resource and @Autowired
+in case of @Autowired we can turn off the autowiring by writing an attribute @Autowired(required=false), but in case of @Resource the dependent is always mandatory there is no way to make autowiring optional
+	
+The other way we can perform autowiring is using @Inject which is same as @Resource only
+
+In case if there are more than one bean of the matching class type is there the ioc container will run into ambiguity 
+	@Autowired = we need to use @Qualifier to resolve ambiguity
+	@Resource(name="") = it has name attribute in which we can provide the id of the bean definition to be injected
+	@Inject = while using @Inject to resolve ambiguity we need to use @Named annotation specifiying the bean id to be injected.
+		
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

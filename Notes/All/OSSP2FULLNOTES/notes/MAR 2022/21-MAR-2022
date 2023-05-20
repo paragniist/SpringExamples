@@ -1,0 +1,68 @@
+@Required
+------------
+	
+class Robot {
+	private Chip chip;
+	
+	@Required
+	public void setChip(Chip chip) {}
+}
+
+class Chip {
+	int chipNo;
+	String chipType;
+	
+	@Required
+	public void setChipNo(int chipNo) {}
+	public void setChipType(String chipType) {}
+}
+
+RequiredAnnotationBeanPostProcessor
+	- postProcessBeforeInitialization(String beanId, Object bean) {}
+	- postProcessAfterInitialization(String beanId, Object bean) {}
+
+
+application-context.xml
+------------------------
+<bean id="robot" class="Robot"/>
+<bean id="chip" class="Chip"/>
+
+//<bean  class="RequiredAnnotationBeanPostProcessor"/>
+
+<context:annotation-config/>
+
+Test.java
+-----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+BeanPostProcessor bpp = beanFactory.getBean("bpp", BeanPostProcessor.class);
+((ConfigurableListableBeanFactory)beanFactory).addBeanPostProcessor(bpp);
+
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+Robot robot = beanFactory.getBean("robot", Robot.class);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

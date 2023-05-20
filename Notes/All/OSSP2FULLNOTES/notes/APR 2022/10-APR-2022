@@ -1,0 +1,237 @@
+Query-Based Approach
+----------------------
+
+@Configuration
+@PropertySource("classpath:db.properties")
+@ComponentScan(basePackages = { "com.qa.dao" })
+public class QAJavaConfig {
+
+	@Bean
+	public DataSource dataSource(@Value("${db.driverClassname}") String driverClassname, @Value("${db.url}") String url,
+			@Value("${db.username}") String username, @Value("${db.password}") String password) {
+		DriverManagerDataSource dataSource = null;
+		dataSource = new DriverManagerDataSource(url, username, password);
+		dataSource.setDriverClassName(driverClassname);
+		return dataSource;
+	}
+
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+		return new JdbcTemplate(dataSource);
+	}
+
+}
+
+package com.qa.dao;
+@Repository
+public class VehicleDao {
+	private final String SQL_NO_OF_VEHICLES = "select count(1) from vehicles";
+	private final String SQL_MAX_LEASE_AMOUNT = "select max(lease_amount) from vehicles";
+	private final String SQL_GET_MODEL_NM_BY_VEHCILE_NO = "select model_nm from vehicles where vehicle_no = ?";
+	private final String SQL_GET_VEHICLE_BY_VEHICLE_NO="select vehicle_no, model_nm, manufacturer, color, price from vehicles where vehicle_no = ?";
+	private final String SQL_GET_VEHICLES_BY_MODEL_NM = "select vehicle_no, model_nm, manufacturer, color, lease_amount from vehicles where model_nm = ?";
+	private final String SQL_GET_VEHICLES_BY_MANUFACTURER = "select vehicle_no, model_nm, lease_amount from vehicles where manufacturer like ?";
+	private final String SQL_INSERT_VEHICLE = "insert into vehicles(vehicle_no, model_nm, manufacturer, color, lease_amount) values(?,?,?,?,?)";
+	
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	public int getNoOfVehicles() {
+		return jdbcTemplate.queryForObject(SQL_NO_OF_VEHICLES, Integer.class);
+	}
+
+	public float maxLeaseAmount() {
+		return jdbcTemplate.queryForObject(SQL_MAX_LEASE_AMOUNT, Float.class);
+	}
+
+	public String findModelName(int vehicleNo) {
+		return jdbcTemplate.queryForObject(SQL_GET_MODEL_NM_BY_VEHCILE_NO, String.class, vehicleNo);
+	}
+	
+	public VehicleBo getVehicleDetails(int vehicleNo) {
+		return jdbcTemplate.queryForObject(SQL_GET_VEHICLE_BY_VEHICLE_NO, new VehicleBoRowMapper(), vehicleNo);
+	}
+	
+	public List<VehicleBo> getVehicles(String modelName) {
+		return jdbcTemplate.query(SQL_GET_VEHICLES_BY_MODEL_NM, new VehicleBoRowMapper(), modelName);
+	}
+	
+	public List<Map> getVehicles(String manufacturer) {
+		return jdbcTemplate.queryForList(SQL_GET_VEHICLES_BY_MANUFACTURER, manufacturer);
+	}
+	
+	public int saveVehicle(VehicleBo bo) {
+		return jdbcTemplate.update(SQL_INSERT_VEHICLE, bo.getVehicleNo(), bo.getModelName(), bo.getManufactuter(), bo.getColor(), bo.getLeaseAmount());
+	}
+	
+	// one record should be mapped to one object only
+	/**
+		if our sql query is return a record of data, to covert the record into an object we need to write our own class implementing from RowMapper interface and write the logic for mapping record into object inside it and pass it as an input to JdbcTemplate
+	*/
+	private final class VehicleBoRowMapper implements RowMapper<VehicleBo> {
+		public VehicleBo mapRow(ResultSet rs, int record) {
+			VehicleBo bo = new VehicleBo();
+			bo.setVehicleNo(rs.getInt(1));
+			bo.setModelName(rs.getString(2));
+			bo.setManufacturer(rs.getString(3));
+			bo.setColor(rs.getString(4));
+			bo.setLeaseAmount(rs.getFloat(5));
+			
+			return bo;
+		}
+	}
+	
+	
+}
+
+class VehicleBo {
+	int vehicleNo;
+	String modelName;
+	String manufacturer;
+	String color;
+	float leaseAmount;
+	
+	// accessors methods
+}
+
+interface RowMapper<T> {
+	T mapRow(ResultSet rs, int rowNumber);
+}
+
+#1. Connection
+#2. PreparedStatement
+#3. substitute the parameters
+----------------------------------
+pass sql & parameters
+
+#4. execute the query
+#5. iterate the resultset
+
+#6. grab the record and store into VehicleBo object
+
+#7. close the resources
+
+class JdbcTempalte {
+	private DataSource dataSource;
+	
+	public JdbcTemplate() {}
+	public JdbcTemplate(DataSource dataSource) {}
+	
+	public T queryForObject(String sql, RowMapper<T> rowMapper, Object... params) {
+		T obj = null;
+		ResultSet rs = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.preparedStatement(sql);
+			// substitute the parameters
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				obj = rowMapper.mapRow(rs, 1);
+			}
+		
+		}catch(SqlException e) {
+			throw new DataAccessException(e);
+		}finally {
+			// close resources
+		}
+		return obj;
+	}
+	
+	public List<T> query(String sql, RowMapper<T> rowMapper, Object... params) {	
+		int rowNum = 0;
+		T object = null;
+		ResultSet rs = null;
+		Connection con = null;
+		List<T> objects = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.preparedStatement(sql);
+			// substitute parameters
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				obj = rowMapper.mapRow(rs, rowNum);
+				objects.add(obj);
+				rowNum++;
+			}
+		
+		}catch(SqlException e) {
+			throw new DataAccessException(e);
+		}finally {
+			// close resources
+		}
+		return objects;
+	}
+	
+	public void setDataSource(DataSource dataSource) {}
+}
+
+select vehicle_no, model_nm, lease_amount from vehicles where manufacturer like ?
+
+vehicle_no model_nm     lease_amount	
+1          toyota corola  650
+2          toyota corola  700
+	
+List<Map>
+
+Map
+vehicle_no = 1
+model_nm = toyota corola
+lease_amount= 650
+
+
+Map
+vehicle_no = 2
+model_nm = toyota corola
+lease_amount= 700
+
+if your query is return partial columns which are generic then we cannot map the record into pojo class object, so each record should be mapped into a generic object type which is Map
+So per each record one map and per list of records List<Map> objects are returned
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

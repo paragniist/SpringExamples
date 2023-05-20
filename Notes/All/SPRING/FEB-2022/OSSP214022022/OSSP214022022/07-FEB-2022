@@ -1,0 +1,194 @@
+We can access the data from database and display it as options within the select of the jsp page by writing java code directly in jsp using scriplets.
+
+signup.jsp
+-----------
+<%@page import="java.sql.Connection" %>
+<body>
+	City:
+	<select name="city">
+		<%
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select city_id, city_nm from cities order by city_nm");
+			while(rs.next()) {
+				int cityId = rs.getInt(1);
+				String cityName = rs.getString(2);
+				out.println("<option value='"+cityId+"'>"+cityName+"</option>");
+			}		
+		%>		
+	</select>
+	<br/>
+	State:
+	<select name="state">
+	<%
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("select state_id, state_nm from states order by state_nm");
+		while(rs.next()) {
+			int stateId = rs.getInt(1);
+			String stateName = rs.getString(2);
+			out.println("<option value='"+stateId+"'>"+stateName+"</option>");
+		}		
+	%>		
+</select>
+<br/>
+Country:
+	<select name="country">
+	<%
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("select country_id, country_nm from countries order by country_nm");
+		while(rs.next()) {
+			int countryId = rs.getInt(1);
+			String countryName = rs.getString(2);
+			out.println("<option value='"+countryId+"'>"+countryName+"</option>");
+		}		
+	%>		
+</select>
+</body>
+
+
+It is not recommended to write java code directly as apart of the jsp pages as we run into several problems
+1. debugging the code if something goes wrong is quite difficult for a java developer
+2. Web developer cannot understand the dynamic code that we have embedded within the HTML tags he often find it very complex to understand and debug, if something went wrong within the jsp page.
+3. always there is a high degree of chance that something might broke while embedding the java code within the HTML page that is delivered by web developer which might push us into iterations for fixing it and wastes further time of development
+
+
+We are writing java code in jsp page for 2 reasons:
+1. business logic and data access logic to query the data from source system
+2. data rendering logic
+
+Let us not write the business logic and data access logic within the jsp rather place it as part of an servlet, let the servlet cookup the data and pass it to the jsp page using scopes.
+	
+class City/State/Country {
+	int cityId;/stateId;/countryId;
+	String cityName;/stateName;/countryName;
+	// accessor
+}	
+	
+@WebServlet("/showsignup")	
+class ViewSigupServlet extends HttpServlet {
+	public void service(HttpServletRequest request, HttpServletResponse response) {
+		List<City> cities = null;
+		List<State> states = null;
+		List<Country> countries = null;
+		
+		cities = new ArrayList();
+		states = new ArrayList<>();
+		countries = new ArrayList<>();
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+		Statement stmt1 = con.createStatement();
+		Statement stmt2 = con.createStatement();
+		Statement stmt3 = con.createStatement();
+		
+		ResultSet cityrs = stmt1.executeQuery("select city_id, city_nm from cities order by city_nm");
+		ResultSet staters = stmt2.executeQuery("select state_id, state_nm from states order by state_nm");
+		ResultSet countryrs = stmt3.executeQuery("select country_id, country_nm from countries order by country_nm");
+		while(cityrs.next()) {
+			city = new City();
+			city.setCityId(cityrs.getInt(1));
+			city.setCityName(cityrs.getString(2));
+			cities.add(city);
+		}
+		while(staters.next()) {
+			state = new State();
+			state.setStateId(staters.getInt(1));
+			state.setStateName(staters.getString(2));
+			states.add(state);
+		}
+		while(countryrs.next()) {
+			country = new Country();
+			country.setCountryId(countryrs.getInt(1));
+			country.setCountryName(countryrs.getInt(2));
+			countries.add(country);
+		}		
+		request.setAttribute("cities", cities);
+		request.setAttribute("states", states);
+		request.setAttribute("countries", countries);
+		request.getRequestDispatcher("/sigup.jsp").forward(request, response);
+	}
+}	
+
+signup.jsp
+<body>
+	City:
+	<select name="city">
+		<%
+			List<City> cities = req.getAttribute("cities");
+			for(City city : cities) {
+				out.println("<option value'"+ city.getCityId()+"'>"+city.getCityName()+"</option>");
+			}
+		%>
+	</select>
+</body>
+
+jstl tag libraries
+c tag
+
+sigup.jsp
+-----------
+<%@taglib uri="http://www....jstl/c" prefix="c"%>
+<body>
+	<select name="city">
+		<c:forEach items="${cities}" var="city">
+			<option value="${city.cityId}">${city.cityName}</option>
+		<c:forEach>
+	</select>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

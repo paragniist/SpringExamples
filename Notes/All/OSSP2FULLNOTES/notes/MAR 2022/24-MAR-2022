@@ -1,0 +1,239 @@
+class Launcher {
+	private Rocket rocket;
+
+	@Autowired
+	@Qualifier("readyToLaunch")
+	public void setRocket(Rocket rocket) {}
+}
+
+class Rocket {
+	private String fuelType;
+	public void setFuelType(String fuelType) {}
+}
+
+application-context.xml
+-----------------------
+<bean id="rocket1" class="Rocket">
+	<property name="fuelType" value="liquid petrol"/>
+</bean>
+<bean id="rocket2" class="Rocket">
+	<property name="fuelType" value="white petrol"/>
+</bean>
+<bean id="rocket3" class="Rocket">
+	<property name="fuelType" value="white petrol"/>
+	<qualifier value="readyToLaunch"/>
+</bean>
+
+<bean id="launcher" class="Launcher"/>
+<context:annotation-config/>
+
+Test.java
+----------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+Launcher launcher = context.getBean("launcher", Launcher.class);
+
+
+There are 2 ways in resolving ambiquity
+1. using autowire-candidate="false" = only one bean definition of that class type will be eligible for autowiring, which is an big limitation or drawback, to overcome that spring has provided @Qualifier
+
+2. @Qualifier annotation
+There are 2 parts there while working with @Qualifier
+	2.1 For the bean definition define the qualifier value which you wanted to be injected into target class
+	2.2 along with @Autowired annotation, we need to use @Qualifier annotation specifiying the qualifier value we given to bean definition to be injected
+
+
+The default qualifier for a bean definition is bean id and it is not recommended to use as the code becomes tightly coupled with bean id
+
+In case of ambiguity the ioc container by default tries to resolve the ambiguity error first by searching for the bean definition whose id is matching with attributeName (if there is no qualifier defined) and tries to resolve it otherwise endup withan exception.
+------------------------------------------------------------------------------------------
+Stereotype Annotations
+-----------------------
+Stereotype annotations are used for configurating the class as a bean definition without writing xml configuration. There are total 5 stereotype annotations are there
+1. Component
+2. Controller
+3. RestController
+4. Service
+5. Repository
+all the above annotations are just meant for making a class as bean definition only. but spring has provided these 5 annotations depends on the role of classes that typical exists in a web application. So that we can easily classify the classes based on roles by applying relevant annotations and can apply common post processing logic for a specific roles of classes.
+
+@RestController("bike1")	
+@Lazy
+class Bike {
+	@PostConstruct
+	public void init() {
+		// post contruction logic
+	}
+	
+	public void ride() {
+		System.out.println("riding...");
+	}
+	
+	@PreDestroy
+	public void release() {
+		// pre-destruction logic
+	}
+}	
+	
+a-c.xml
+--------
+<context:component-scan base-packages="com.annotation5.stereotype"/>
+
+<context:annotation-config/> only enables few of the annotation post processors like
+1. @Required
+2. @Autowired
+3. @Qualifier
+4. @PostConstruct
+5. @PreDestroy
+etc
+
+For stereotype annotations spring has provided another bean post processor called CommonAnnotationBeanPostProcessor
+To enable CommonAnnotationBeanPostProcessor spring has provided another tag called, 
+<context:component-scan base-packages="pkg1, pkg2"/>, we need pass the list of packages names separated by "," as an input to let the ioc container identify the class which are annotated with stereotype annotations
+
+<context:component-scan> tag internally enables <context:annotation-config/> so we can avoid writing it while using component-scan.
+component-scan scans the given package along with sub-packages as well.
+
+Test.java
+-----------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+Bike bike = context.getBean("bike", Bike.class);
+bike.ride();
+
+The default name of the bean definition is the className in starts with "smaller letter",
+if we want to we can specify the name to the bean definition using declaring value
+
+
+@Scope = is used for changing the scope of the bean definition (singleton, prototype, request, session)
+@Lazy = to mark an bean definition to be instantiated lazily to the ioc container
+@PostConstruct/@PreDestroy = are used for managing the lifecycle for a bean definition
+-----------------------------------------------------------------------------------------
+
+How can we completely get rid off using an xml-based configuration file since we dont have any bean definitions to be defined?
+The spring has provided an another implementation of the ApplicationContext called "AnnotationConfigApplicationContext"	
+	
+ClassPathXmlApplicationContext = reads the bean configurations from xml, so ioc container is not sure whether you are using annotations or not, so we need to explicitly configure post processors by writing <context:annotation-config/> or <context:component-scan/>
+
+if we are not using xml at all instead of creating ioc container with ClassPathXmlApplicationContext we can use AnnotationConfigApplicationContext, by which the ioc container by default enables annotation post processors
+
+ApplicationContext context = new AnnotationConfigApplicationContext("packageNames");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

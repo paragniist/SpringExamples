@@ -1,0 +1,66 @@
+Java Bean Validation api
+------------------------
+Java Bean Validation api (JSR 380) = #knows as Bean Validation 2.0
+Java Bean Validation api is used for validating the data that is binding to an bean object attributes before using the bean object for performing operations.
+The validation seems to be a common requirement across any kind of applications. The programmers has to write code for validating the attributes of an bean object manually before using the data to perform operation, eventually developers endup in writing lot of code in implementing the validations as part of the application.
+	
+To overcome and address such common aspects of validating the data for any type of application sun microsystems has introduced java bean validation api.
+
+Without Javabean validation api, here is the sample code we need to write for implementing validation in an application:
+class FundsTransferManager {
+	public String transferFunds(TransferFundsRequest request) {
+		Map<String, String> errors = new HashMap();
+		//business logic
+		if(request.getFromAccount() == null || request.getFromAccount().length==0) {
+			errors.put("fromAccount", "from account is blank");
+		}
+		
+		if(errors.size() > 0 ){
+			// display all errors
+			throw RuntimeException
+		}
+	}
+}
+
+
+class Person {
+	int personNo;
+	String personName;
+	Date dob;
+	String gender;
+	String mobileNo;
+	String emailAddress;
+	
+	// accessors
+}
+
+#java bean validator api to validate the data
+To validate the bean object data, the java bean validation api has provided an api class called Validator, it has an validate(Object object) that performs validation of the bean object attributes.
+	
+ConstraintViolation<?> = each error specific to an attribute of our bean object is reported as an ConstraintViolation, which means an rule violated by the bean object attribute.
+	
+validator.validate(obj);	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

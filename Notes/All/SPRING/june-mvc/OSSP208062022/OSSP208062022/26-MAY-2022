@@ -1,0 +1,82 @@
+
+class RequestWrapper {
+	public Object wrap(HttpServletRequest request, Class<?> classType) {
+		Map<String, String[]> paramMap = null;
+		Object obj = null;
+		String paramValue = null;
+		Method method = null;
+		
+		paramMap = request.getParametersMap();
+		obj = classType.newInstance();
+		for(String paramName : paramMap.keySet()) {
+			paramValue = paramMap.get(paramName)[0];
+			method = classType.getDeclaredMethod("set"+paramName, new Class[]{String.class});
+			method.invoke(obj, paramValue);
+		}
+		return obj;
+	}
+}
+
+
+Map<String, String[]> paramMap = request.getParametersMap();
+
+"doctorName",    ["federik"]
+"age",           ["45"],
+"gender",        ["Male"]
+"qualification", ["MBBS"]
+"experience",    ["12"]
+"specialization",["nuero"]
+"mobileNo",      ["9283938"]
+"emailAddress",  ["fedrik@gmail.com"]
+
+
+class A {
+	void m1() {
+		sop("hi");
+	}
+}
+
+Class<?> clazz = Class.forName("A");
+Method method = clazz.getDeclaredMethod("m1", new Class<?>[]{});
+Object obj = clazz.newInstance();
+method.invoke(obj, new Object[]{});
+
+
+
+
+
+class NewDoctorServlet extends HttpServlet {
+  public void service(req, resp) {
+    NewDoctoForm doctorForm = null;
+
+    doctorForm = (DoctorForm) RequestWrapper.wrap(req, NewDoctorForm.class);
+		if(doctorForm.getDoctorName() ==null || doctorForm.getDoctorName().trim().length==0) {
+			request.setAttribute("errorMessage", "doctorName is blank");
+			request.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}else if(Integer.parseInt(doctorForm.getAge()) <0 || Integer.parseInt(doctorForm.getAge()) > 100) {
+			request.setAttribute("errorMessage", "age is not valid");
+			request.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}else if(doctorForm.getGender() == null) {
+			request.setAttribute("errorMessage", "choose your gender");
+			request.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}else if(doctorForm.getQualification() == null) {
+			request.setAttribute("errorMessage", "choose your gender");
+			request.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}else if(doctorForm.getExperience() == null) {
+			request.setAttribute("errorMessage", "choose your gender");
+			request.getRequestDispatcher("/error.jsp").forward(req, resp);
+			return;
+		}
+		DoctorService doctorService = new DoctorService();
+		int doctorNo = doctorService.addDoctor(doctorForm);
+		req.getRequestDispatcher("/success.jsp").forward(req, resp);
+  }
+}
+
+
+
+

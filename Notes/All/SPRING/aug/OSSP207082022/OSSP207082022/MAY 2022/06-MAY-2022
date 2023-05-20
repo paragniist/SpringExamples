@@ -1,0 +1,33 @@
+dao
+dao stands for data access object, it takes care of performing the persistence operations of our application.
+why do we need to write our persistence logic of our application within the dao class, why dont we write the persistence logic in any other classes of our application?
+There are lot of advantages of writing the persistence logic only within the dao class as below
+1. if we are switching from a persistence storage technology to another persistence storage technology, for eg. from an relational database to no-sql database or from database to file-based persistency, we only need to change the code within the dao class, we dont need to modify the code across all the classes of our application
+2. if we are switching from an persistence storage vendor product to another vendor product for eg.. from an oracle database to mysql server database, since we are writing persistence logic only within the dao class, we need to rewrite the dao classes of our application only
+3. if we are switching from a persistence technology api to another persistence technology api for eg.. from jdbc api to hibernate/jpa api then we need to only modify the code in dao only.
+by the above we can understand dao is abstracting all the other classes of the application from persistence aspects of our application, so any change in the underlying persistence-tier of our application are shiled and protected from other classes through the help of dao.
+	
+What is business delegate,what is the purpose of business delegate?
+There are 3 reaons why we use business delegate as part of our application
+#1. managing the execeptions of our application
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	

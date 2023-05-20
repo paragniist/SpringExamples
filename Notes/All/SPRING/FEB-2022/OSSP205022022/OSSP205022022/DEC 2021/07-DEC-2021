@@ -1,0 +1,72 @@
+Bean Autowiring 
+What is bean autowiring?
+instead of we declaring the dependencies between the bean definitions, we want ioc container to identify the dependencies automatically and inject them, which is called "bean autowiring".
+(or)	
+ioc container byitself will detect and manage the dependencies between the bean definitions
+
+when we declare classes as bean definitions, without declaring the dependencies ioc container will not automatically manage them because bean autowiring is turned off by default. so to manage dependencies between the beans either we can manually declare the dependencies or enable/turnon autowiring
+
+How to turn-on the bean autowiring?
+For the bean definition we want ioc container to manage dependencies automatically, on that bean definition tag write an attribute autowire="mode" to enable/turn-on autowiring for that bean
+
+here the mode of autowiring tells the ioc container 2 things:
+1. how to identify the dependency
+2. how to inject the dependency
+
+there are 4 modes of autowiring are there
+1. byName
+2. byType
+3. constructor
+4. autodetect (deprecated in spring 3.0 and removed thereafter)
+	
+class SalesOrder {
+	int orderNo;	
+	int quantity;
+	double amount;
+	
+	Distributor distributor;	
+	public void setDistributor(Distributor distributor) {}
+}
+
+class Distributor {
+	String udno;
+	String distributorName;
+	// setters
+}
+	
+application-context.xml
+------------------------
+
+<bean id="salesorder" class="SalesOrder" autowire="byName">
+	<property name="orderNo" value="o9387383"/>	
+	<property name="quantity" value="10"/>	
+	<property name="amount" value="9383"/>
+	
+</bean>
+
+<bean id="distributor1" class="Distributor">
+	<property name="udno" value="ud9383"/>
+	<property name="distributorName" value="Venkateswara Distributors"/>
+</bean>
+
+<bean id="godown" class="Godown"/>
+<bean id="worker" class="Worker"/>
+	
+Test.java
+-----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+SalesOrder salesorder  = beanFactory.getBean("salesorder", SalesOrder.class);
+
+byName = identify the dependent object matching with attribute name of the target class with the bean id in ioc container, once identified a matching bean definition inject it via setter injection
+
+
+
+
+
+
+
+
+
+
+
+

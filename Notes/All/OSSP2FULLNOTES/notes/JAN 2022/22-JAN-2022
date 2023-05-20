@@ -1,0 +1,137 @@
+How many types of jar distributions are there?
+There are 2 types of Jar distributions are there
+1. Distributable Jar (libraries) = packaged with .class files
+2. Executable Jar (Application) = along with .class files, in the manifest.mf the Main-Class attribute must be defined with fqnMainClass of our application
+
+
+manifest.mf = The developer of the application has to publish the manifest/information of the application by writing in manifest.mf and keep the file under /META-INF directory inside the jar. There are standard attributes defined by the jre that should be used by the developer in declaring the information about the application in manifest.mf
+For eg..
+Main-Class: fqnMainClass, so that the enduser/client doesnt require to pass information about the classes of the application to jvm inorder to run application, instead the jvm itself will extract the details from manifest.mf and execute directly. 
+This makes the java applications easily distributable
+
+How does jvm knows the details of the application are written in manifest.mf and are not passed externally by the user?
+In general we launch an application by setting the classpath pointing to jar and run the application using java fqnMainClass.
+but incase of executable jar we need to directly java -jar pathToJarFile, which indicates jvm execute the Jar, it is self-executable jar which has all the details described inside it to execute.
+----------------------------------------------------------------------------------------------
+d:\work:/>	
+package com.gotrip.beans;
+public class TripAdvisor {
+	public List<String> getPopularPlaces(String city) {
+		return Arrays.asList(new String[]{"golconda", "charminar"});
+	}
+}
+
+package com.gotrip.main;
+public class GotripApplication {
+	public static void main(String[] args) {
+		TripAdvisor tripAdvisor = new TripAdvisor();
+		List<String> popularPlaces = tripAdvisor.getPopularPlaces("hyderabad");
+		popularPlaces.stream().forEach(System.out::println);
+	}
+}
+	
+
+#1. compile the classes
+d:\work:/> javac -d . *.java
+
+#2. 
+d:\work:/>
+com
+|-gotrip
+	|-beans
+		|-TripAdvisor.class
+	|-main
+		|-GotripApplication.class
+			
+d:\work:/>			
+manifest.txt
+-------------
+Main-Class: com.gotrip.main.GotripApplication 
+
+#3. package the classes as executable jar 
+d:\work:/> jar -cvfm gotrip.jar manifest.txt ./com
+
+#4. how to run executable jar?
+d:\work:/>
+java -jar gotrip.jar
+
+e:\> java -jar d:\work\gotrip.jar
+----------------------------------------------------------------------------------------------
+Note:
+when we package our application as an executable jar, jvm will reads the information about our application to execute from manifest.mf
+
+java -jar gotrip.jar com.abc.xyz.Test
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

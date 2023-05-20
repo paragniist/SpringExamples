@@ -1,0 +1,75 @@
+How to register programmatically the web application components without web.xml?
+We need to register all of the components information into the ServletContext of the application.
+	
+There are 2 ways to do this
+#1 ServletContextListener
+In our application we can write ServletContextListener, and annotate it using @Listener. In this class we can write the code for programmatically registering a Webapplication components of our application into ServletContext
+
+#2. Framework or third-party libraries
+The above approach of programmatically registering the components through ServletContext listener will not work, because
+The Framework vendors may provide implementations of ServletContextListener pre-written with the logic of registering the Framework components and annotate the class with @Listener and ship them as part of jar modules
+The application developers imports these Framework Jar modules and use them in building their application. during the time of building the application, the application developer might mark the metadata-complete="true" in the web.xml, due to which the metadata scanning of the jar modules will not takes place and the framework components will not be bootstrapped or registered.
+	
+To overcome the above problem, the servlet specification has provided an new api from Jee5 onwards in bootstrapping the framework or third-party vendors about their components programmatically
+
+Write a implementation class implementing from ServletContainerInitializer interface
+	
+interface ServletContainerInitializer {
+	void onStartup(ServletContext context, Set<Class<?>> classes);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,152 @@
+class KeyGenerator {
+	int generateKey(int range) {
+		SecureRandom random = null;
+		int key = 0;
+		
+		random = new SecureRandom();
+		key = random.nextInt(range);
+		return key;
+	}
+}
+
+#Range: 100 [<50 weak key && >50 strong key]
+
+class KeyCheckAspect {
+	public void validate(Joinpoint jp, Object ret) {
+		if((Integer) ret <= 50) {
+			throw new IllegalArgumentException("weak key generated");
+		}
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="keyGenerator" class="KeyGenerator"/>
+<bean id="keyCheckAspect" class="KeyCheckAspect"/>
+
+<aop:config>
+	<aop:pointcut id="pc1" expression="execution(* com.ara.beans.KeyGenerator.generateKey(..))"/>
+	<aop:aspect ref="keyCheckAspect">
+		<aop:afterReturning method="validate" pointcut-ref="pc1" returning="ret"/>
+	</aop:aspect>
+</aop:config>
+
+Test.java
+----------
+ApplicationContext context = new ClassPathXmlApplicationContext("a-c.xml");
+KeyGenerator kg = context.getBean("keyGenerator", KeyGenerator.class);
+int key = kg.generateKey(100);
+--------------------------------------------------------------------------------------------
+How to write pointcut expressions in aspectj aop?
+There are 2 types of pointcuts are there
+1. static pointcut
+2. dynamic pointcut
+
+aspectj aop supports only static pointcuts only, where the pointcut expression we have written will be evaluated during the time of instantiating the bean definition objects and the aspect logic is being adviced on the target classes.
+The expression we are writing here is called OGNL (object graph navigation language)	
+	
+The aspectj supports 5 types PCD (Pointcut designator) to be used while writing the pointcut expressions
+1. within
+2. execution
+3. target
+4. this
+5. bean
+
+#1. within (pcd)
+if we wanted to advice all the methods of a target classes under a specific package then we need to use within pcd
+syntax:-
+	within(packageName.className)
+	
+#2. execution (pcd)
+if we wanted advice our aspect logic on specific methods of the target classes then we need to use execution pcd
+
+syntax:-
+execution(access_modifier* returnType packageName.className.methodName(args))
+execution(public int com.ara.beans.Calculator.add(int, int))
+execution(int com.ara.beans.*.add(..))	
+	
+#3 target pcd
+if we want to advice our aspect to all the methods of a specific class then we need to use target
+syntax:-
+target(packageName.className)
+	
+if(Class == A.class) {} // check	
+
+#4 this pcd
+if we want to advice our aspect logic to all the methods of a the target class, given the object of the target class is an instance of a classType then we need to use this() pcd
+
+syntax:
+this(package.className)	
+if(object instance A) {} // check
+
+#5. bean pcd
+bean is not a pcd belongs to aspectj aop,rather it is introduced by spring framework to support advicing the aspect to a specific bean definitions of the ioc container
+
+class A {}
+<bean id="a1" class="A"/>
+<bean id="a2" class="A"/>
+
+syntax:-
+bean(beanId)
+bean("a1")	
+
+We can combine multiple pointcut expressions together using logical operators
+1. add (&&)
+2. or (||)
+3. not (!)
+
+
+
+
+
+
+ThrowsAdvice
+------------
+class Thrower {
+	public int willThrow(int i) {
+		if(i<=0 ){
+			throw new IllegalArgumentException("invalid i");
+		}
+		return i;
+	}
+}
+
+class GlobalExceptionLoggingAspect {
+	public void log(Joinpoint jp, IllegalArgumentException iae) {
+		sop(jp.getSignature().getName() + " has throw exception with message : " + iae.getMessage());
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="thrower" class="Thrower"/>
+<bean id="globalExceptionLoggingAspect" class="GlobalExceptionLoggingAspect"/>
+
+<aop:config>
+	<aop:pointcut id="pc1" expression="within(com.ata.beans.*)"/>
+	<aop:aspect ref="globalExceptionLoggingAspect">
+		<aop:afterThrowing method="log" pointcut-ref="pc1" throwing="iae"/>
+	</aop:aspect>
+</aop:config>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

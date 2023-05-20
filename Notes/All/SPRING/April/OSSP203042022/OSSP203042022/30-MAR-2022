@@ -1,0 +1,100 @@
+@Profile
+-----------
+Profile is used for switching between different multiple different environments quickly
+
+// source code
+@Component
+class Tournament {
+	@Value("${tournamentName}")
+	String tournamentName;
+	@Autowired
+	Team team;
+	
+}
+
+// no source code
+class Team {
+	int teamNo;
+	String teamName;
+	
+	public Team(int teamNo) {}
+	public void setTeamName(String teamName) {}
+}
+
+common-dev.properties
+---------------------
+tournamentName=State Tournament
+teamNo=29
+teamName=Dragon Team
+
+common-test.properties
+-----------------------
+tournamentName=District Tournament
+teamNo=23
+teamName=Speed Team
+
+@Configuration
+@PropertySource("classpath:common-dev.properties")
+@Profile("dev")	
+class DevConfig {
+	
+}
+
+@Configuration
+@PropertySource("classpath:common-test.properties")
+@Profile("test")	
+class TestConfig {
+	
+}
+
+@Configuration
+@Import(DevConfig.class, TestConfig.class)
+class RootConfig {
+	@Autowired
+	private Environment env;
+	
+	@Bean
+	public Team team() {
+		Team team = null;
+		
+		team = new Team();
+		team.setTeamNo(Integer.parseInt(env.getProperty("teamNo")));
+		team.setTeamName(env.getProperty("teamName"));
+		return team;
+	}
+}
+
+Test.java
+-----------
+ApplicationContext context = new AnnotationConfigApplicationContext();
+(context)ConfigurableApplicationContext.setActiveProfile("dev");
+context.register(RootConfig.class);
+context.refresh();
+
+Tournament tournament = context.getBean("tournament", Tournament.class);
+sop(tournament);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,91 @@
+Dont write the java code directly as part of the jsp page, instead let someother class in our application take the responsibility of gathering the data by performing operation and pass down the data as an input to jsp asking him to render the data.
+	
+The class in which we need to write the java code for gathering the data is Servlet and should perform business and persistence logic and pass the data to jsp through the help scopes provided by Servlet Container
+
+Scopes:- the shared memory locations at various different level through which web application components can share the data between them.
+For eg a servlet can pass the data as an input to another servlet or a jsp through the help of scopes
+1. request scope = The data resides in the memory and made available during the request util the container serves the response
+2. session scope = to user session level, until user logout
+3. application scope = while the application running, the data will be available
+
+@WebServlet(urlPatterns={"/showSignup"})
+class ViewSignupServlet extends HttpServlet {
+	public void service(HttpServletRequest req, HttpServletResponse resp) {
+		List<City> cities = null;
+		List<State> states = null;
+		List<Country> countries = null;
+		
+		cities = new ArrayList();
+		states = new ArrayList<>();
+		countries = new ArrayList<>();
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cddb", "root", "root");
+		Statement stmt1 = con.createStatement();
+		Statement stmt2 = con.createStatement();
+		Statement stmt3 = con.createStatement();
+		
+		ResultSet cityrs = stmt1.executeQuery("select city_id, city_nm from cities order by city_nm");
+		ResultSet staters = stmt2.executeQuery("select state_id, state_nm from states order by state_nm");
+		ResultSet countryrs = stmt3.executeQuery("select country_id, country_nm from countries order by country_nm");
+		while(cityrs.next()) {
+			city = new City();
+			city.setCityId(cityrs.getInt(1));
+			city.setCityName(cityrs.getString(2));
+			cities.add(city);
+		}
+		while(staters.next()) {
+			state = new State();
+			state.setStateId(staters.getInt(1));
+			state.setStateName(staters.getString(2));
+			states.add(state);
+		}
+		while(countryrs.next()) {
+			country = new Country();
+			country.setCountryId(countryrs.getInt(1));
+			country.setCountryName(countryrs.getInt(2));
+			countries.add(country);
+		}		
+		request.setAttribute("cities", cities);
+		request.setAttribute("states", states);
+		request.setAttribute("countries", countries);
+		request.getRequestDispatcher("/sigup.jsp").forward(request, response);
+	}
+}
+
+signup.jsp
+------------
+<body>
+	City:
+	<select name="city">
+		<c:forEach items="${cities}" var="city">
+			<option value="${city.cityId}">${city.cityName}</option>
+		</c:forEach>
+	</select>
+	State:
+	<select name="state">
+		<c:forEach items="${states}" var="state">
+			<option value="${state.stateId}">${state.stateName}</option>
+		</c:forEach>
+	</select>
+	<!--countries-->
+</body>
+-----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

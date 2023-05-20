@@ -1,0 +1,57 @@
+class Calculator {	
+	int add(int a, int b) {
+		int sum = 0;
+		sum = a + b;
+		return sum;
+	}
+}
+
+#"by looking at MethodInterceptor interface", The aspect logic should be applied before/after the target class method, so within the proxy it generates the code for executing cross-cutting logic first rather than primary business logic
+
+class LoggingAdvice implements MethodInterceptor {
+	public Object invoke(MethodInvocation methodInvocation) {
+		String methodName = null;
+		Object[] args = null;
+		Object proxy = null;
+		
+		methodName = methodInvocation.getMethod().getName();
+		args = methodInvocation.getArguments();
+		proxy = methodInvocation.getThis();
+		
+		args[0] = (Integer) args[0] + 1;
+		args[1] = (Integer) args[1] + 1;
+
+		sop("entered into " + methodName+"("+args[0]+","+args[1]+")");
+		
+		Object ret = methodInvocation.proceed();
+		ret = (Integer) ret + 1;
+		
+		sop("exiting from method " + methodName + " with ret : " + ret);
+		return ret;
+	}
+}
+
+#unless we have details of the target class method for whom we are called, we cannot perform cross-cutting logic onbehalf of the method, so the information about the target class method form whom invoke has been called is wrapped inside "MethodInvocation"
+
+class Test {
+	public static void main(String[] args) {
+		ProxyFactory pf = new ProxyFactory();
+		pf.setTarget(new Calculator());
+		pf.addAdvice(new LoggingAdvice());
+		
+		Calculator proxy = (Calculator) pf.getProxy();
+		int sum = proxy.add(10, 20);
+		sop("sum : " + sum);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+

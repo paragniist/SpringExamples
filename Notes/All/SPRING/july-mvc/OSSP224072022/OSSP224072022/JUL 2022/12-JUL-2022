@@ -1,0 +1,195 @@
+While working with annotation-driven approach how to register DispatcherServlet and ContextLoaderListener in our application without web.xml?
+	
+	
+	
+class ProgAnnonDispatcherServletInitializer extends AbstractDispatcherServletInitializer {
+	protected WebApplicationContext createServletApplicationContext() {
+		AnnotationConfigWebApplicationContext servletApplicationContext = new AnnotationConfigWebApplicationContext();
+		servletApplicationContext.register(MvcConfig.class);
+		return servletApplicationContext;
+	}
+
+	protected String[] getServletMappings() {
+		return new String[] { "*.htm" };
+	}
+
+	protected WebApplicationContext createRootApplicationContext() {
+		AnnotationConfigWebApplicationContext rootApplicationContext = null;
+
+		rootApplicationContext = new AnnotationConfigWebApplicationContext();
+		rootApplicationContext.register(RootConfig.class);
+		return rootApplicationContext;
+	}
+}	
+
+In every spring mvc annotation-based application we need to write the class extending from AbstractDispatcherServletInitializer and override 3 methods and create ioc container with Config classes and return to super class in configuring the DispatcherServlet and ContextLoaderListener with the ioc containers, since it is redundant in every application we can treat it as a boiler-plate logic
+
+So to overcome repeatedly writing the code in creating ioc containers the spring mvc has provided one more Abstract class called
+AbstractAnnotationConfigDispatcherServletInitializer
+	- getRootConfigClasses()
+	- getServletConfigClasses()
+	- getServletMappings()
+	
+	
+#ServletContainer
+#SpringServletContainerInitializer implements ServletContainerInitializer	
+	onStartup(Set<Class<?>> handlers, ServletContext) {}
+
+abstract class AbstractDispatcherServletInitializer implements WebApplicationInitializer {
+	public void onstartup(ServletContext servletContext) {
+		#dispatcherServlet and contextLoaderListener
+			
+	}
+}
+	
+abstract class AbstractAnnotationConfigDispatcherServletInitializer extends AbstractDispatcherServletInitializer {
+	protected WebApplicationContext createServletApplicationContext() {
+		AnnotationConfigWebApplicationContext servletApplicationContext = new AnnotationConfigWebApplicationContext();
+		servletApplicationContext.register(getServletConfigClasses());
+		return servletApplicationContext;
+	}
+	
+	protected WebApplicationContext createRootApplicationContext() {
+		AnnotationConfigWebApplicationContext rootApplicationContext = null;
+
+		rootApplicationContext = new AnnotationConfigWebApplicationContext();
+		rootApplicationContext.register(getRootConfigClasses());
+		return rootApplicationContext;
+	}
+	
+	abstract Class<?>[] getServletConfigClasses();
+	abstract Class<?>[] getRootConfigClasses();	
+}	
+	
+#1 min
+class ProgAnnonConfigDispatcherServletInitializer extends AbstractAnnonConfigDispatcherServletInitializer {
+	public Class<?>[] getServletConfigClasses() {
+		return new Class<?>[] {MvcConfig.class};
+	}
+	public Class<?>[] getRootConfigClasses() {
+		return new Class<?>[] {RootConfig.class};
+	}
+	public String[] getServletMappings() {
+		return new String[] {"*.htm"};
+	}
+}	
+--------------------------------------------------------------------------------------------
+To enable programmer to quickly configure spring mvc components as bean definitions while working the java configuration approach spring mvc has introduced
+
+WebMvcConfigurer interface
+WebMvcConfigurerAdapter = abstract implementation of WebMvcConfigurer interface
+	
+MvcConfigurer are a kind of builder classes to which we pass the configuration values with which we wanted to create spring mvc components as bean definitions. The MvcConfigurer class itself will creates the mvc components as bean definitions withour configuration values we supplied.
+
+There are lot of 	spring web mvc components are there as below
+HandlerMapping
+ViewResolver
+View
+Interceptors
+ExceptionHandler
+Validator
+ResourceHandler
+MessageConverter
+MessageSource
+	
+For every type of component of each implementation spring mvc has provided one method to configure in MvcConfigurer class.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

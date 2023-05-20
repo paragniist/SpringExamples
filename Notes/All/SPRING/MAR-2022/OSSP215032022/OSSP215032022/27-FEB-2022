@@ -1,0 +1,306 @@
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	private Cache() {dataMap = new ConcurrentHashMap();}
+	public static synchronized getInstance() {}
+	public void put(String key, Object val) {}
+	public Object get(String key) {}
+	public boolean containsKey(String key) {}
+}
+
+class LoanManagerServlet extends HttpServlet {
+	public void service(httpReq, httpResp) {
+		// read the request params
+		city = req.getParameter("city");
+		if(cache.containsKey("ri") == false) {
+			props = new Properties();
+			props.load(new FileInputStream(httpReq.getServletContext().getRealPath("/WEB-INF/city-ri.properties")));
+			cache.put("ri", props);
+		}else {
+			props = (Properties) cache.get("ri");
+		}
+		float ri = Float.parseFloat(props.getProperty(city));
+		// perform operation
+	}
+}
+
+There are several classes in our application wanted to use rate interest properties file values within the application, from the above implementation looks like in each class we need to write the logic for verifying the data is available or not and load the data into the cache.
+	
+if each class of our application whoever wanted the data from cache is loading the data into the cache, it loads to lot of problems
+1. redundantly we endup in writing the same code across all the classes in loading the data into the cache due to which all the maintainability problems creep up:
+	1.1 if the underlying source system from where we are reading the data has been changed again we need to modify the code across all the classes whereever we have written the code for loading the data
+2. In future if want dont want to cache a specific data, identifying in which classes we are caching and get rid of the code is very difficult
+
+In-short:- Dont write data loading logic into the cache across all the classes of our application
+
+class LoanManagerServlet extends HttpServlet {
+	public void service(httpReq, httpResp) {
+		// read the request params
+		city = req.getParameter("city");
+		props = (Properties) cache.get("ri");
+		float ri = Float.parseFloat(props.getProperty(city));
+		// perform operation
+	}
+}	
+	
+Instead of writing the code for loading the data into the Cache in all the classes of our application why cant we load the data into the Cache byitself during the time of instantiating the Cache?
+	
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	
+	private Cache() {
+		dataMap = new ConcurrentHashMap();	
+		initialize();
+	}
+	private void initialize() {
+		Properties props = null;
+		props = new Properties();
+		props.load(this.getClass().getClassLoader().getResourceAsStream("city-ri.properties"));
+		this.put("ri", props);
+	}
+	public static synchronized getInstance() {}
+	public void put(String key, Object val) {}
+	public Object get(String key) {}
+	public boolean containsKey(String key) {}
+}	
+	
+The Cache is meant for storing and distributing the data to other classes of the application, if it is loading the data from various different source systems, we unnecessarily run into several problems as described below:
+1. The code for loading the data from several sources systems are written at one place within the Cache which makes very complex to understand and maintain
+2. If there is an change in the source system, we need to modify the data loading logic written inside the cache, which has high chances of breaking the other parts of the code written inside it
+3. since Cache is a global class being used by all the classes of our application, any failure/change on the Cache will effect all the classes of our application, so dont overload the responsiblities into the Cache 
+
+
+If none of the classes of our application by themself should load the data into the Cache or Cache byitself should not load the data, then who has to load the data into the Cache?
+	
+We need one more class which is responsible for gathering the data and loading the data into Cache which is "CacheManager".
+	
+class CacheManager {
+	private Cache cache;
+	public CacheManager(Cache cache) {
+		this.cache = cache;
+		initialize();
+	}
+	
+	private void initialize() {
+		// properties file
+		Properties props = null;
+		props = new Properties();
+		props.load(this.getClass().getClassLoader().getResourceAsStream("city-ri.properties"));
+		cache.put("ri", props);
+		// database tables
+		// json		
+	}
+}	
+
+In CacheManager also we are writing the code for loading the data from multiple different source systems, so the code becomes quite complex to understand and maintain when we write the same in CacheManager.
+	
+interface IAccessor {
+	String getKey();
+	Object getData();
+}	
+
+class CityRIPropsAccessor implements IAccessor {
+	public String getKey() {
+		return "ri";
+	}
+	public Object getData() {
+		Properties props = null;
+		props = new Properties();
+		props.load(this.getClass().getClassLoader().getResourceAsStream("city-ri.properties"));
+		return props;
+	}
+}
+class CitiesAccessor implements IAccessor {
+	public String getKey() {
+		return "cities";
+	}
+	public Object getData() {
+		// write jdbc logic to query the data from database tables
+		return the data;
+	}		
+}
+
+class CacheManager {
+	Cache cache;
+	List<IAccessor> accessors;
+	public CacheManager(Cache cache, List<IAccessor> accessor) {
+		this.cache = cache;
+		this.accessors = accessors;
+		initialize();
+	}
+	public void initialize() {
+		for(IAccessor accessor : accessors) {
+			cache.put(accessor.getKey(), accessor.getData());
+		}
+	}	
+}
+--------------------------------------------------------------------------------------------------
+Spring Implementation:
+
+class LoanManager {
+	private Cache cache;
+	public double calculateInterestAmount(long principle, int tenure, String city) {
+		Properties riProps = null;
+		
+		riProps = (Properties) cache.get("ri");
+		if(riProps.containsKey(city) == false) {
+			throw Exception("city not found");
+		}
+		float ri = Float.parseFloat(riProps.getProperty(city));
+		double interestAmount =  (principle * tenure * ri)/100;
+		return interestAmount;
+	}
+	public void setCache(Cache cache) {
+		this.cache = cache;
+	}
+}
+
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	
+	private Cache() {
+		dataMap = new ConcurrentHashMap();	
+	}
+	public static synchronized getInstance() {}
+	public void put(String key, Object val) {}
+	public Object get(String key) {}
+	public boolean containsKey(String key) {}
+}
+
+
+interface IAccessor {
+	String getKey();
+	void setKey(String key);
+	Object getData();
+}	
+
+class CityRIPropsAccessor implements IAccessor {
+	private String key;
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public Object getData() {
+		Properties props = null;
+		props = new Properties();
+		props.load(this.getClass().getClassLoader().getResourceAsStream("city-ri.properties"));
+		return props;
+	}
+}
+class CitiesAccessor implements IAccessor {
+	public String getKey() {
+		return "cities";
+	}
+	public Object getData() {
+		// write jdbc logic to query the data from database tables
+		return the data;
+	}		
+}
+
+class CacheManager {
+	Cache cache;
+	List<IAccessor> accessors;
+	public CacheManager(Cache cache, List<IAccessor> accessor) {
+		this.cache = cache;
+		this.accessors = accessors;
+		initialize();
+	}
+	public void initialize() {
+		for(IAccessor accessor : accessors) {
+			cache.put(accessor.getKey(), accessor.getData());
+		}
+	}	
+}
+
+application-context.xml
+------------------------
+<bean id="cache" class="Cache" factory-method="getInstance"/>
+
+<bean id="cityRIAccessor" class="CityRIAccessor">
+	<property name="key" value="ri"/>
+</bean>
+<bean id="citiesAccessor" class="CitiesAccessor">
+	<property name="key" value="cities"/>
+</bean>
+
+<bean id="cacheManager" class="CacheManager">
+	<constructor-arg ref="cache"/>
+	<constructor-arg>
+		<list>
+			<bean ref="cityRIAccessor"/>
+			<bean ref="citiesAccessors"/>
+		</list>
+	</constructor-arg>
+</bean>
+
+<bean id="loanManager" class="LoanManager">
+	<property name="cache" ref="cache"/>
+</bean>
+
+Test.java
+-----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+LoanManager loanManager = beanFactory.getBean("loanManager", LoanManager.class);
+
+double ia = loanManager.calculateInterestAmount(100000, 12, "hyd");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

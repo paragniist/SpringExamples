@@ -1,0 +1,144 @@
+What is bean alias?
+defining more than one name for a bean definition is called "bean alias". There are 2 ways we can define alias for a bean definition.
+	1. name attribute
+	2. alias tag
+	
+class Key {
+	private int keyNo;
+	private String secret;
+	// setter
+}	
+
+application-context.xml
+-----------------------
+<bean id="key" name="mainkey,topkey" class="Key">
+	<property name="keyNo" value="2"/>
+	<property name="secret" value="0383njklho97-jh[33]"/>
+</bean>
+In name attribute the "," comma acts as an separator, so we cannot define the alias name containing "," comma inside it. to overcome this problem <alias> tag is introduced
+
+<alias name="key" alias="smartkey"/>
+<alias name="key" alias="hclasskey"/>
+
+
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+String[] aliases = beanFactory.getAliases("topkey"); // n-1 alias names it returns
+
+why do we use bean alias?
+--------------------------------------------------------------------------------------
+	
+class OrderManagementService {
+	private ParcelService bluedartParcelService;
+	private ParcelService dtdcParcelService;
+	
+	public String placeOrder(List<String> products, Address address, PaymentInfo paymentInfo) {
+		// create an new order with status as "pending", generates orderNo
+		// add all the products to the order
+		// compute the overall cost/amount of the order including discounts and taxes
+		// goto payment gateway in processing the payment using payment info
+		if(payment == failed) {
+			// mark the ordered as failed
+			// send an email to the user
+			// display payment failed page
+		}		
+		
+		if(address.getZip() > 1000 && address.getZip() < 2000) { // cities address
+			awbNo = bluedartParcelService.shipParcel(orderNo, address);
+		}else {
+			awbNo = dtdcParcelService.shipParcel(orderNo, address);
+		}
+			
+		//String awbNo = parcelService.shipParcel(orderNo, address);
+		// update order data in database with awbNo, status=accepted
+		return orderNo;		
+	}
+	
+	public void setBluedartParcelService(ParcelService bluedartParcelService) {
+		this.bluedartParcelService = bluedartParcelService;
+	}
+	public void setDtdcParcelService(ParcelService dtdcParcelService) {
+		this.dtdcParcelService = dtdcParcelService;
+	}
+}	
+
+interface ParcelService {
+	String shipParcel(String orderNo, Address address);
+}
+
+// headoffice = 20 days
+class BluedartParcelServiceImpl implements ParcelService {
+	public String shipParcel(String orderNo, Address address) {
+		// store the shipment information and generate awbNo
+		return awbNo;
+	}
+}
+
+class DtdcParcelServiceImpl implements ParcelService {
+	public String shipParcel(String orderNo, Address address) {
+		return awbNo;
+	}
+}
+	
+application-context.xml
+------------------------
+<bean id="bluedartParcelService" class="BluedartParcelServiceImpl"/>	
+<bean id="dtdcParcelService" class="DtdcParcelServiceImpl"/>
+
+<!--<alias name="dtdcParcelService" alias="bluedartParcelService"/>-->
+
+<bean id="orderManagementService" class="OrderManagementServiceImpl">
+	<property name="bluedartParcelService" ref="bluedartParcelService"/>
+	<property name="dtdcParcelService" ref="dtdcParcelService"/>	
+</bean>
+
+<bean id="parcelManagementService" class="ParcelManagementService">
+	<property name="bluedartParcelService" ref="bluedartParcelService"/>
+	<property name="dtdcParcelService" ref="dtdcParcelService"/>	
+</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+

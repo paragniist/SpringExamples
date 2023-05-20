@@ -1,0 +1,81 @@
+
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		// complex logic in evaluating the inputs 
+		return Arrays.asList(new String[] {"plan1", "plan2"});
+	}
+}
+
+release-10 (fix bug)
+--------------------	
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		#180 lines			
+	}
+}	
+
+in addition there are other classes in which the development team has made changes in rolling some bug fixes
+
+
+Method Replacement
+-------------------
+Without modifying the code in an existing method of a class, we want to replace the logic inside the method of a class, this can be done through Method Replacement
+
+class PlanFinder {
+	public List<String> findPlans(String ageGroup, int copay, int coverageType, boolean cashless) {
+		// complex logic in evaluating the inputs 
+		return Arrays.asList(new String[] {"plan1", "plan2"});
+	}
+}
+
+we cannot replace any class any method, if we want to replace a method of a class, the class should not be final and the method should not be static/final then only those are qualified for method replacement
+
+#2 = How to write the code to replacement the method
+#3 = How is it working
+
+class FindPlansReplacer implements MethodReplacer {
+	public Object reimplement(Method method, Object[] args, Object target) {
+		// new algorithmic logic for computing the plans
+		String methodName = method.getName();
+		args[0] = ageGroup
+		args[1] = copay
+		return Arrays.asList(new String[]{"plan3", "plan4"});
+	}
+}
+
+application-context.xml
+-------------------------
+<bean id="findPlansReplacer" class="FindPlansReplacer"/>
+
+<bean id="planFinder" class="PlanFinder">
+<!--
+	<replaced-method name="findPlans" replacer="findPlansReplacer"/>
+	-->
+</bean>
+
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("a-c.xml"));
+PlanFinder planFinder = beanFactory.getBean("planFinder", PlanFinder.class);
+
+List<String> plans = planFinder.findPlans("2-5", 10, 1, true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

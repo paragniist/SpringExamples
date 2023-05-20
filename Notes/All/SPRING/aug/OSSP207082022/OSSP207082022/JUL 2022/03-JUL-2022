@@ -1,0 +1,100 @@
+How to configure a servlet without web.xml?
+From Jee5, the oracle has introduced annotations in support of configuring a servlet with a Servlet Container, rather than using web.xml
+@WebServlet
+@WebFilter
+etc
+
+We can use annotation approach in configuring the Web application components (Serlvet/Filter/Listeners etc) with the Servlet container given if we have source of these classes, but what about if we dont have sourcecode of these classses?
+	
+Frameworks provides the servlet/filters as a pre-built components for eg.. Spring Mvc has provided DispatcherServlet component, which we need to use it aspart of our application directly. since it is provided by framework we dont have sourcecode of these classes, then we cannot write annotations, so how to configure them in our application without web.xml
+
+To support configuring the webapplication components in an application, the jee5 has provided programmatic apis as well.
+	
+How does an application is deployed by the ServletContainer?
+upon starting the servlet container, the servlet container does the below process to deploy and initialize an application
+#1. loading/validation phase
+
+#1. goes to each .war that is deployed under deployment directory of the servlet container
+#2. it explodes the war into a directory structure by unpacking the war
+#3. it goes to the web.xml of the war file
+	- checks for well-formness and validity, if it is not wellformed or valid it terminates/stops the deployment of the application but not the container
+  - if the web.xml configuration is valid then below process will be triggered
+	
+#2. deployment phase	
+
+#4. it creates the ServletContext object representing the configuration information of your entire application 
+#5. then loads the entire configuration information about your application from web.xml and annotations into ServletContext object
+#here we wanted to add our own components information into ServletContext
+
+#6. it will invoke the Listener (ServletContextListener), indicating the deployment of the application as successful
+
+#.3 Initialization phase
+then goes to each component and checks whether the load-on-startup has been marked or not, if yes it will instantiate the object of Servlet/Filter and invokes init() method on it to perform initialization and places the object of the Servlet/Filter within the Servletcontainer with the Name of the component
+
+Post completion of the initialization our application will be marked for ready and the components are made accessible to the user.
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

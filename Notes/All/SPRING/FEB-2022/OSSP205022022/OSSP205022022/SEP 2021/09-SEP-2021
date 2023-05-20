@@ -1,0 +1,62 @@
+Spring Framework supports multiple application development types, so we can say it is a very huge/big framework, being so big still spring framework is called light weight application development framework only. 
+How do we support Spring Framework is light weigth application development framework?
+Spring Framework has been broken down into multiple modules where each module is independent of another. 
+The foundation or fundamental modules on which other modules of the Spring Framework work is core container which has 4 modules inside it
+  1. core
+  2. beans
+  3. context
+  4. spring el
+To work with Spring Framework, the developer dont have to learn the entire Spring Framework and should use it, instead depends on the type/nature of the application he has identify the relevant module, can learn and use along with core container the specific module of the Spring Framework.
+Thus making Spring Framework light weight, since he can choose and use the module of his choice only.
+  
+
+What are the challenges are difficulties encoutered by the Spring Framework initially? How does Spring Framework overcome them?
+1. Struts Framework by then has been used by lot of people in the market and it has huge customer base and many of the people were aware of it, being new Spring Framework, no one knows about it and doesnt have any customer base. Due to this most of the people shows interest in building their application using Struts Framework rather than Spring Framework
+
+2. There are lot of application being developed on Struts Framework and were successfully deployed onto production, whereas Spring Framework is new bie, no one has used it and there are no successful deployments made through Spring Framework. So there is no gurantee that people can develop application and can delivery using Spring Framework, so most of the people go for Struts Framework
+
+3. By the time Spring Framework got release, the Struts Framework has got multiple releases and most of the bugs in the Struts Framework are already fixed and turned to be a Stable Framework, So if we choose Struts Framework in developing our application there is a guarantee we can complete our application development. Spring Framework just got release, it may still have bugs if we use Spring Framework there is no gurantee we can build our application, because there might be some bugs in Spring Framework which might block our application development
+
+4. Struts Framework can be considered as next door boy, where while working with Struts Framework if got stuck somewhere, we can always find someone around us who can help us in resolving it, whereas SpringFramework being new bie, we cannot find someone who can jump in unblocking us, which is biggest problem
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

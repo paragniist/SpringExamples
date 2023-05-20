@@ -1,0 +1,154 @@
+class MessageWriter {  
+  IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+    
+    messageFormatter = new PDFMessageFormatterImpl();
+    cMessage = messageFormatter.format(message);
+    System.out.println(cMessage);
+  }
+}
+
+interface IMessageFormatter {
+  String format(String inMessage);
+}
+
+final class HTMLMessageFormatterImpl implements IMessageFormatter {
+  final public String format(String inMessage) {
+    return "<html><body>"+inMessage+"</body></html>";
+  }
+}
+
+final class PDFMessageFormatterImpl implements IMessageFormatter {
+  final public String format(String inMessage) {
+    return "<pdf>"+ inMessage +"</pdf>";
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    messageWriter.writeMessage("Welcome to sdp");
+  }
+}
+---------------------------------------------------------------------------------------------------------
+How to install openjdk 11?
+#1  
+download jdk11 
+https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip
+
+#2 extract the openjdk-11+28_windows-x64_bin.zip file
+#3 goto c:/ create the below directories
+c:/program files/java
+#4 copy jdk-11 directory extracted above and place in c:/program files/java directory
+
+#5 create system variable 
+JAVA_HOME=c:/program files/java/jdk-11
+#6
+modify PATH variable of the System add
+%JAVA_HOME%\bin
+
+
+How to install maven?
+#1 download maven binary distribution zip
+https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.zip
+
+#2 extract the apache-maven-3.8.3-bin.zip file
+#3 copy the extract folder apache-maven-3.8.3 into c:/
+#4 create an environment variable with NAME
+MAVEN_HOME=c:\apache-maven-3.8.3
+Edit PATH Variable and an new entry as below
+%MAVEN_HOME%\bin
+
+#5 verify installation
+mvn -version
+Apache Maven 3.8.3 (ff8e977a158738155dc465c6a97ffaf31982d739)
+Maven home: C:\apache-maven-3.8.3
+Java version: 11, vendor: Oracle Corporation, runtime: C:\Program Files\java\jdk-11
+Default locale: en_US, platform encoding: Cp1252
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
+---------------------------------------------------------------------------------------------------------
+How to create maven project?
+open command-prompt and do the below steps:
+
+#1 goto your workspace directory
+cd d:\work\spring\20211023\core/>
+
+#2 type the below command for creating the maven project
+mvn archetype:generate -DgroupId=org -DartifactId=projectName -Dversion=1.0 -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart -archetypeVersion=1.4
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<util:list id="worksList" value-type="java.lang.String"
+		list-class="java.util.Vector">
+		<value>Transformer Maintainance</value>
+		<value>Electrical Substation repair</value>
+		<value>Replace street polls with cement</value>
+	</util:list>
+
+	<bean id="contract" class="com.ucdi.beans.Contract">
+		<property name="contractNo" value="98838" />
+		<property name="title" value="electric work contract" />
+		<property name="works" ref="worksList" />
+	</bean>
+
+</beans>

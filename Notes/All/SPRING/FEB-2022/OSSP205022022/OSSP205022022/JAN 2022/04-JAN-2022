@@ -1,0 +1,108 @@
+What is singleton class, how to create a class as singleton class?
+For a given class, if we can create only one single object within the jvm memory then the class can be called as "Singleton" class.
+	
+By default when we declare a class, it allows us to create as many number of objects we want so by default a class in java is not singleton, we need to write the code in the class to make it singleton as below.
+	
+1. if we want to allow only one object for a class, dont allow other classes of our application to create the object of our class so that we can gain the control on creating the objects.
+so in order to stop other classes of our application to create objects of our class, we need to declare default constructor of our class as private
+	
+Now no one can create the objects which indicates the class has zero objects only.
+	
+class DateConverter {	
+	private DateConverter() {}
+}
+	
+2. In order to use the functionality of the class, we need an object, so how does other classes of our application will get the object of our class to use the functionality?
+since the constructor is private, only the class byitself can create the object, let him create and distribute the object to all the other classes of our application. So we need delcare a static factory method within our class which takes care of creating the object and returns to the other classes upon calling the method
+	
+class DateConverter {	
+	private DateConverter() {}
+	
+	public static DateConverter createDateConverter(){ // static factory method
+		return new DateConverter();
+	}
+}
+	
+3. How do we ensure only one object is being created and return for our class?
+upon creating the object of our class, we need memorize by storing the reference of the object in a static or class-level variable, so that we can return the same reference of the class object through the static reference. so that we can ensure only one object is created for our class
+	
+class DateConverter {
+	private static DateConverter instance;
+	
+	private DateConverter() {} // no one can create
+	
+	public static DateConverter createDateConverter() {				
+		if(instance == null) {
+			instance =  new DateConverter();	
+			return instance;
+		}else {
+			return instance;
+		}						
+	}
+}	
+	
+class JobScheduler {
+	public void execute() {
+		DateConverter dc = DateConverter.createDateConverter();
+	}
+}
+
+class TodoManager {
+	public void manage() {
+		DateConverter dc = DateConverter.createDateConverter();
+	}
+}
+	
+	
+	
+	
+class DateConverter {
+	private static DateConverter instance;
+	
+	private DateConverter() {
+		// no-op
+	} 
+	
+	public static DateConverter getInstance() {				
+		if(instance == null) {
+			instance =  new DateConverter();				
+		}	
+		return instance;
+	}
+}		
+	
+DateConverter dc1 = DateConverter.getInstance();	
+DateConverter dc2 = DateConverter.getInstance();
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

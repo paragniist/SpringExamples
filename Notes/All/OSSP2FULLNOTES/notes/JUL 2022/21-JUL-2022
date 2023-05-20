@@ -1,0 +1,116 @@
+The incoming request will be received by the DispatcherServlet, upon receiving the request the DispatcherServlet only performs common processing logic that should be applied for all the request that are coming into the application.
+	
+To further process the request, the DispatcherServlet has to delegate the request to Controller.
+The DispatcherServlet takes the help of RequestMappingHandlerMapping in identifying the handlerMethod to be called on the controller (based on @RequestMapping annotation).
+	
+upon identifying the controller class, handler method, the DispatcherServlet has to invoke the method. if the controller class, handlerMethod has been declared with any parameterTypes and any ReturnTypes, the DispatcherServlet/RequestMappingHandlerAdapter dont know how to invoke the handlerMethod by passing the required parameters as an input.
+	
+So there are pre-defined parameter types and returnTypes being defined by Spring WebMvc that can be taken as parameters and returnTypes while writing handlerMethods of the controller classes.
+	
+There are 2 major goals of re-writing the spring web mvc modue	
+	1. simplified programming model, no need to memorize the interface names or methods names or parameters and returnTypes. programmers should be able to design their classes with a flexibility keeping in mind of business requirements rather than apis
+	2. the presentation-tier components should be agnostic to the protocol/platform on which it is running. these components should be testable
+	
+ParameterTypes 
+---------------
+#1. HttpServletRequest
+		/HttpServletResponse
+		
+#2. WebRequest/NativeWebRequest
+These are the 2 classes that can be declared as parameters for your controller method. These are generic types that can be used for extracting or accessing the data from request or even session level as well without using servlet api. Now our controller methods are agnostic to servlet api or servlet container or a specific protocol.
+	
+#3. ServletRequest/ServletResponse
+
+What are the ways we can send the request to an web application?
+There are 3 ways we can send the request to an web application
+#1. by entering the url in the browser address bar
+#2. by clicking on an hyperlink
+#3. by submitting a form
+
+In approach #1 & #2 the browser will send the GET request to the webserver
+In #3 approach the browser will send the POST request to the webserver
+The possible request methods with which we can send the request to an web application is GET and POST only
+
+#1. In case of GET request there are 2 ways of sending the data as an input
+1.1 through URI of the request using query parameters
+1.2 through headers/cookies
+
+#2. In case of POST request, there are 3 ways of sending the data as an input
+2.1 URI of the request, using query parameters
+2.2 through headers/cookies
+2.3 body in www-form-url-encoded (format)
+	
+Now we need to write the controller class and handler method to receive the data from the request that is send in the above format
+To receive or read the data from request we can declare the parameters of our methods as
+	1. HttpServletRequest
+	2. WebRequest
+	3. NativeWebRequest
+
+by using the above classes as parameter types the programmer has to write lot of boiler-plate logic in extracting the data from the request, instead of spring mvc has provided handful of annotations and supported Types in easily extracting the data from the request
+
+#1. @RequestParam("parameterName") = to extract the data and receive it into a parameter of your controller method
+#2. @RequestHeader("headerName") = to read the data from request header
+#3. @CookieValue("cookieName") = to receive the data from the cookie of the request
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

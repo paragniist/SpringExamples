@@ -1,0 +1,151 @@
+Parameters in jenkins pipeline
+Parameters in Jenkins pipeline means parameterizing the pipeline, which is nothing but passing the data as an input to the jenkins pipeline while launching / triggering the jenkins build.
+Many of the times while building the project, we may want to pass data/inputs in customizing the build, For eg.. it could be environment information on which the project has to be build/deployed or could be configurations that are required as an input by the application itself for building and deploying etc. All such inputs that are required can be passed while launching the build using jenkins parameters
+
+There are 2 ways we can define parameters in Jenkins pipeline
+1. static parameters
+2. dynamic/runtime parameters
+
+1. static parameters
+These parameters are defined aspart of jenkins job definition in the jenkins UI and is stored aspart of the job metadata within the Jenkins persistence. Since these are defined at the time of creating the job itself these are called static parameters
+The drawback with static parameters are
+1. since these are stored local to the jenkins persistence, we cannot move them across the jenkins env. The developer or the opsengineer has to recreate the parameters manually within the job to use the pipeline script
+2. even though we can export the job and import in another env, we might still encounter issues due to version mis-match etc
+
+#2. dynamic parameters
+Instead of defining the parameters in the jenkinsUI while creating the job, we define the parameters ascode within pipeline script itself. When we ask the jenkins to launch the pipeline build, Jenkins by looking at the job definition it understands we declared the pipeline parameters through code and shows a form-page asking us to enter the inputs using which it can trigger or launch the build
+
+There are 2 steps in working with dynamic parameters
+1. defining parameters 
+2. using the values from these parameters passed while launching the build
+
+#1. defining parameters
+we need to delcare the parameters under parameters {} block within the pipeline.
+	
+pipeline {
+	agent any
+	parameters {
+		string 'TARGET_HOST'
+		choice choices: ['DEV', 'TEST', 'STAGE', 'PROD']	, name: 'BUILD_ENVIRONMENT'
+	}
+	stages {
+		stage('show parameter value') {
+			steps {
+				echo params.TARGET_HOST
+				echo params.BUILD_ENVIRONMENT
+			}
+		}
+	}
+}	
+------------------------------------------------------------------------------------------------------------------------
+How to take the input step while running the jenkins build?
+during the pipeline execution, we want to display message dialogs or confirmation dialogs asking the user to input to proceed the execution of the stages in the pipeline
+we can do that using inputStep in pipeline as below.
+	
+There is a difference between pipeline parameters & inputStep, the pipeline parameters are the initial inputs that has to be passed at the time of lauching the pipeline whereas inputStep is an dynamic input that is prompted during the execution of the pipe stage while progressing
+
+pipeline {
+	agent any
+	stages {
+		stage('checkout from scm') {
+			steps {
+				echo 'pulling the code from scm repository'
+			}
+		}
+		stage('build') {
+			steps {
+				echo 'builing the project'
+			}
+		}
+		stage('deploy') {
+			steps {
+				input message: 'do you want to deploy', ok: 'Yes'
+				echo "code is deployed"
+			}
+		}
+	}
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

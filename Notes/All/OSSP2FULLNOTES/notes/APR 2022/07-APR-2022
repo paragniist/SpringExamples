@@ -1,0 +1,128 @@
+1. Statement 
+2. PreparedStatement
+use Statement, if we are executing static sql queries then use statement, dont use Statement for dynamic sql queries, because it dont detect sql injection attack
+
+If we are repeatedly executing a query over/against a set of values, then we can use PreparedStatement for optimizing the performance, rather than Statement
+------------------------------------------------------------------------------------------
+JdbcTemplate
+has provided bunch of execute() methods to support working with callback mechanism in executing the sql queries and collecting the results
+
+- T execute(PreparedStatementCreator, PreparedStatmentCallback<T>) // dynamic sql
+insert, update, delete and select with where clause
+	
+- T execute(String, PreparedStatementCallback<T>)	// static sql queries
+- T execute(StatementCallback<T>)	// static sql queries
+	
+interface StatementCallback<T> {
+	T doInStatement(Statement stmt) {
+		
+	}
+}
+
+- T execute(CallableStatementCreator, CallableStatementCallback<T>) //pl/sql
+- T execute(procedureName, CallableStatementCallback<T>) // pl/sql
+	
+- void execute(String sql) // ddl queries
+- T execute(ConnectionCallback<T>)
+	
+interface ConnectionCallback<T> {
+	T doInConnection(Connection con) {
+		// give me connection
+	}
+}
+------------------------------------------------------------------------------------------
+
+class ProductBo {
+	int productNo;
+	String productName;
+	String description;
+	float price;
+	// setters and getters
+}	
+
+@Repository
+class ProductDao {
+	private final String SQL_GET_PRODUCTS = "select product_no, product_nm, description, price from product";
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
+	public ProductDao(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;	
+	}
+	
+	public List<ProductBo> getAllProducts() {
+		return jdbcTemplate.execute((new GetProductsStatementCallback()));
+	}
+	
+	private final class GetProductsStatementCallback implements StatementCallback<List<ProductBo>> {
+		public List<ProductBo> doInStatement(Statement stmt) {
+			ProductBo bo = null;
+			ResultSet rs = null;
+			List<ProductBo> products = null;
+			
+			rs = stmt.executeQuery(SQL_GET_PRODUCTS);
+			while(rs.next()) {
+				bo = new ProductBo();
+				// populate record into object
+				products.add(bo);
+			}
+			return products;
+		}
+	}
+	
+}
+
+@Configuration
+@PropertySource("classpath:db.properties")
+@ComponentScan(basePackages={"com.ca.dao"})
+class JavaConfig {
+	@Autowired
+	private Environment env;
+	
+	@Bean
+	public DataSource dataSource() {
+		DriverManagerDataSource dataSource = null;
+		dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassname(env.getProperty("db.driverClassname"));
+		dataSource.setUrl(env.getProperty("db.url"));
+		dataSource.setUsername(env.getProperty("db.username"));
+		dataSource.setPassword(env.getProperty("db.password"));
+		return dataSource;		
+	}
+	
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+		JdbcTemplate jdbcTemplate = null;
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate;
+	}
+	
+}
+
+db.properties
+-------------
+db.driverClassname=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://localhost:3306/hibdb
+db.username=root
+db.password=root
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

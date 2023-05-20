@@ -1,0 +1,143 @@
+Java bean validation api
+java bean validation api is used for validating the java bean objects that holds data being used aspart of business logic in performing operations. unless the data contained inthose objects are valid, we cannot use it for business operation.
+	
+irrespective of the type of application we are working on, using the bean objects for carrying the data in perform the business operation seems to same, so across any of the applications we need to implement validation, so looks like programmer has to endup in writing boiler-plate logic in validating the data that is binded to the bean objects.
+To address such common requirement of validating the data, the java bean validation api has been introduced.
+	
+java bean validation api 2.0 
+apis are always partial, we need implementation to work with api, that is where jboss hibernate has provided an implementation for java bean validation api which hibernate-validator implementation.
+The hibernate-validator is the default implementation used for java bean validation api, and the current version is 7. There is no relation between hibernate framework and hibernate validator implementation library both are independent of their own.
+	
+
+class Trip {
+	@NotBlank(message="source cannot be blank")
+	String source;
+	@NotBlank(message="destination cannot be blank")
+	String destination;
+	@NotBlank(message="tripName cannot be blank")
+	String tripName;
+	@FutureOrPresent(message="planDate should be either in present or future")
+	Date planDate;
+	@NotBlank
+	String travelMode;
+	@Positive
+	int distance;
+	@Min(value=10000)
+	@Max(value=9999999999)
+	double estimatedCost;
+	// accessors
+}	
+
+3                  3         5
+DEPARTMENTCODETYPEEMPLOYEESEQUENCENO
+
+Now to use the object for performing operation, we need valid data, so we need to validate the data contained within the object of that class.
+	
+The java bean validation api has provided necessary api classes for validating the data that is contained in the bean object attributes.
+	
+Validator 
+ - validate(object)
+To the Validator class we need to pass object as an input while calling validate(Object) method, which takes care of performing validations on the bean attribute data.
+Each validation failure/error is reported in a ConstraintViolation class object. So when we invoke validate(Object) method, it returns Set<ConstraintViolation> objects 
+each ConstraintViolation reports the validation failed for a object of its attribute by reporting error message.
+	
+The Validator class dont have the information about what type of Validation constraints to be applied on the attributes of our class. so the programmer has to specify which constraints to be applied on the attributes of our class.
+
+For the most common type of validation constraints we apply/use for a bean objects, the java bean validation api has predefined the ConstraintTypes and provided to use, Now the programmer has to choose out of the available ConstraintTypes which ones should be applied for which attributes of your class by writing configuration.
+	
+Now the validator class reads the configuration you attached to the class attributes and applies the relevant validation logic and reports if an violation exits as an ConstraintViolation.
+	
+To support writing the configuration for the attributes in applying the validations, for each type of constraint we want to apply Java bean validation api has provided an annotation.
+	
+@Digits(integer=, fractions) 
+@Email
+@Max(value=)	
+@Min(value=)	
+@NotBlank = checks the given string is not null and trim length is non zero
+@NotEmpty = object is not null
+@Null
+@NotNull
+@Pattern(regex="")
+@Size(min=, max)
+@Negative
+@NegativeOrZero
+@Future
+@FutureOrPresent
+@PastOrPresent
+
+In addition to the above annotations, the hibernate validator implementation has provided more constraint annotations to apply more validations
+@CreditCardNumber
+@Currency(value=)
+@ISBN
+@Length(min=,max=)
+@Range(min=,max=)
+	
+#AbstractFactory design pattern	
+	
+ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+Validator validator = validatorFactory.getValidator();
+Set<ConstraintViolation<Trip> contraintViolations =  validator.validate(trip);
+
+for(ConstraintViolation violation: constraintViolations) {
+	sop(violation.getMessage());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

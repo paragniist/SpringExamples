@@ -1,0 +1,200 @@
+class Calculator {
+	int add(int a, int b) {
+		return a + b;
+	}
+}
+
+class LoggingAdvice implements MethodInterceptor {
+	public Object invoke(MethodInvocation methodInvocation) {
+		String methodName = null;
+		Object[] args = null;
+		
+		methodName = methodInvocation.getMethod().getName();
+		args = methodInvocation.getArguments();
+		
+		sop("entered into " + methodName +"("+args[0]+","+args[1]+")");
+		
+		Object ret = methodInvocation.proceed();
+		sop("exiting from " + methodName+ " with ret :" + ret);
+		return ret;
+	}
+}
+
+class CacheAdvice implements MethodInterceptor {
+	public Object invoke(MethodInvocation methodInvocation) {
+		String methodName = null;
+		Object[] args = null;
+		Cache cache = null;
+		String key = null;
+
+		cache = Cache.getInstance();
+		methodName = invocation.getMethod().getName();
+		args = invocation.getArguments();
+		key = methodName + "("+args[0]+","+args[1]+")";
+		if (cache.containsKey(key)) {
+			return cache.get(key);
+		}
+		Object ret = invocation.proceed();
+		cache.put(key, ret);
+		return ret;
+	}
+}
+
+Test.java
+---------
+ProxyFactory pf = new ProxyFactory();
+pf.setTarget(new Calculator());
+
+#works as chain of advices, we should be careful interms of adding multiple advices interms of order of executions
+pf.addAdvice(new CacheAdvice());
+pf.addAdvice(new LoggingAdvice());
+
+Calculator proxy = (Calculator) pf.getProxy();
+ 
+int sum = proxy.add(10, 20);
+sop("sum : " + sum);
+
+sum = proxy.add(10, 20);
+sop("sum : " + sum);
+
+--------------------------------------------------------------------------------------
+The ProxyFactory class uses cglib & asm runtime proxy generation libraries in creating an proxy class at runtime ontop of the Target class
+	
+// imagination purpose
+class Calculator$Proxy extends Calculator {
+	private Object target;
+	private MethodInterceptor advice;
+	
+	public int add(int a, int b) {
+		MethodInvocation methodInvocation = null;
+		Object ret = null;
+		
+		methodInvocation = new MethodInvocation();
+		// populates the methodName, arguments, target, this
+		ret = advice.invoke(methodInvocation);
+		return ret;
+	}
+}
+
+// spring aop class
+class MethodInvocation {
+	private Method method;
+	private Object[] arguments;
+	private Object target;
+	
+	public Object proceed() {
+		return method.invoke(target, arguments);
+	}
+	
+	public Method getMethod() {
+		return method;
+	}
+	public Object[] getArguments() {
+		return arguments;
+	}
+}
+------------------------------------------------------------------------------------------
+Method Before Advice
+--------------------
+if we wanted to apply the cross-cutting logic before the primary business logic executes then we need to use before advice
+
+#assumption
+there is a user already logged-in to the system (patrik)
+
+loan
+----
+loan_no  barrower_name  loan_type loan_amount  status
+1001     gosphel        home loan  2300000     approved
+
+audit
+------
+sno activity_dt table_nm  operation_type  column_nm  pk_value old_value  new_value userid
+1   24-04-2022 loan      update          status     1001     pending    approved   12
+
+
+class LoanManager {
+	public boolean approveLoan(long loanNo) {				
+		return true;
+	}
+}
+
+class AuditAdvice implements MethodBeforeAdvice {
+	public void before(Object proxy, Method method, Object[] args) {		
+		sop("patrick has called " + method.getName() + "("+args[0]+")");	
+		// cross-cutting
+		#1 control point
+		// yes ofcourse you can modify the arguments, because the target class has not executed.
+		// yes even the target class method will be executed with modified parameters only
+		
+		#2 we can abort/stop execution of the target class method by throwing exception, but we cannot control the execution of the target class method (1/2 control)
+		
+		#3 no way to see the return value, because advice method will executed only before not after
+		
+		
+		# which user has called what method(), with which arguments, operational auditing
+	}
+}
+
+Test.java
+----------
+ProxyFactory pf = new ProxyFactory();
+pf.setTarget(new LoanManager());
+pf.addAdvice(new AuditAdvice());
+
+LoanManager proxy = (LoanManager) pf.getProxy();
+boolean loanStatus = proxy.approveLoan(9393);
+
+sop("loan status : "+ loanStatus);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

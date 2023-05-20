@@ -1,0 +1,112 @@
+bean scopes
+------------
+Bean Scopes is the way through which we can instruct ioc container in how to instantiate the object for the bean definitions.
+There are total 5 scopes are there
+1. singleton
+2. prototype
+------------- only webapplications
+3. request
+4. session
+5. global session (deprecated)/(removed)
+	
+when we declare a bean definition the default scope is singleton, if we want to we can change the scope using scope attribute on the bean definition.
+	
+class BiCycle {
+	public void ride() {
+		System.out.println("riding...");
+	}
+}
+
+application-context.xml
+------------------------
+<bean id="biCycle" class="BiCycle" scope="prototype"/>
+
+Test.java
+----------
+BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("application-context.xml"));
+BiCycle biCycle1 = beanFactory.getBean("biCycle", BiCycle.class);
+BiCycle biCycle2 = beanFactory.getBean("biCycle", BiCycle.class);
+-----------------------------------------------------------------------------------------------
+	
+Singleton design pattern
+-------------------------
+What is singleton class? When we can call a class as singleton?
+for a class if we can create only one single object within the jvm memory then that class is called "singleton"	class.
+	
+How to make a class as singleton class?
+	
+class DateConverter {
+	private static DateConverter instance;
+	private DateConverter() {}
+	
+	public static DateConverter createDateConverter() {
+		if(instance == null) {
+			instance = new DateConverter();
+			return instance;
+		}else {
+			return instance;
+		}
+	}		
+}	
+
+The other classes in our application wants the object for the class DateConverter.
+
+class JobScheduler {
+	public void execute() {		
+		DateConverter dc = DateConverter.createDateConverter();
+	}
+}
+
+class TodoManager {
+	public void manage() {
+		DateConverter dc = DateConverter.createDateConverter();
+	}
+}
+
+1. declare the default constructor of your class as private, so that other classes of our application cannot instantiate the object of our class, so we have total control of creating the objects of our class
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

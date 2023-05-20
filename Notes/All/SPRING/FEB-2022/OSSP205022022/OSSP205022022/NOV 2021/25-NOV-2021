@@ -1,0 +1,39 @@
+BeanFactory beanFactory = new XMLBeanFactory(new ClassPathResource("com/coredi/common/application-context.xml"));
+
+ioc is an principle = collaborating the objects and managing the lifecycle of the objects is called "ioc"
+  
+The BeanFactory has created an logical memory partition within jvm memory, within this memory partition it is collaborating the objects and managing their lifecycle, since it is following the ioc principle in managing the objects we can call the logical memory partition as ioc container.
+  
+There are 2 ways of collaborating the objects are there
+1. dependency pulling
+  1.1 dependency lookup
+  1.2 contextual dependency lookup
+  
+2. dependency injection
+  2.1 setter injection
+  2.2 construction injection
+  
+  
+#1 what is dependency pulling?
+In our class we will write the logic for pulling or fetching the object of another class, inorder to fetch the object from someone we need to the name or logical classname of the object we want to pull, so that our classes will become tightly coupled.
+  
+There are 2 forms of dependency pulling are there
+1.1 dependency lookup
+1.2 contextual dependency lookup
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+

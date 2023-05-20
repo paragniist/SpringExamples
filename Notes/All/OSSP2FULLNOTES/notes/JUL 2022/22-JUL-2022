@@ -1,0 +1,227 @@
+What are the acceptable parameter Types and returnTypes that can be taken for the handler methods of the controller class in web mvc application?
+	
+Parameter Types
+----------------
+#1. HttpServletRequest/
+	  HttpServletResponse
+		
+#2. WebRequest/NativeWebRequest
+
+#3. ServletRequest/
+	  ServletResponse
+		
+There are 3 ways we can receive the request as an input in a typical web application
+#1. entering url and submitting the request through browser address bar
+#2. clicking on an hyperlink
+#3. through form submission
+
+Through the above actions we can send the request with 2 request methods
+1. GET
+2. POST
+
+#1. possible ways of sending the input data through GET request method
+There 3 possible ways of sending the data as an input
+1. as part of URL of the request
+	1.1 query parameters
+2. through headers
+3. through cookies
+
+#2. possible ways of sending the data through POST request method
+including all the above we can send the data as part of request body, in www-form-url-encoded format
+
+Now we need to write the controller class with handler method to recieve the data from any of the above ways of sending the data as part of the request
+	
+One way we can receive the data from any parts of request as described above is by delcaring the parameters of the handler method as
+	1. HttpServletRequest
+	2. WebRequest/NativeWebRequest
+	3. ServletRequest
+	
+but the developer has to write lot of boiler-plate logic in extracting the data from the request using above parameter types, instead spring mvc supports many ways of reading the data from the request as below.
+	
+#5. @RequestParam("paramName")	String variable; = delcare the parameter of the handler method by annotating with @RequestParam indicating populate the data of the query parameter of the request into this parameter while calling the controller
+
+#6. @RequestHeader("headerName") = extract the http request header value and inject into the parameter of the method
+
+#7. @CookieValue("cookieName")	= inject the cookie value being passed as part of the request into the parameter of the method
+
+#8. @PathVariable("variableName") = used for injecting the data sent as part of the URI to the parameters of the method
+There are 2 ways we can receive the data part of the URL of the request
+1. query parameter = are optional
+2. path parameter = mandatory
+
+#9. Principle = inject authentication data of the request
+
+#10. 
+How to read the data that is send as part of the request body?
+There are 2 ways we can extract the data of the request body
+1. raw data format 
+InputStream = (used for reading binary data, like images, files etc)
+Reader = (text/character data)
+
+2. form object
+@ModelAttribute DoctorForm doctorForm = populate the requestbody data into the form object
+by using @ModelAttribute we dont need to write the code for extracting the data from requestbody and bind to object, rather RequestMappingHandlerAdapter itself takes care of request the request body data and bind to the attributes of the form object matching with key with attributeName
+
+doctorName=paul&age=35&gender=Male&specialization=cardio
+
+class DoctorForm {
+	String doctorName;
+	int age;
+	String gender;
+	String specialization;
+}
+
+@Controller	
+class DoctorController {
+	@RequestMapping("/newDoctor")
+	public String newDoctor(@ModelAttribute DoctorForm doctorForm) {}
+}	
+------------------------------------------------------------------------------------------
+#11. HttpSession
+
+@Controller
+class AppointmentController {
+	@RequetMapping("/appointments")
+	public String showAppointment(HttpSession httpSession) {
+	
+	}
+}
+while invoke the handlerMethod of the controller class, the spring mvc passes the HttpSession of that user as a parameter, so that we can read the data from the Session scope
+
+
+#12. @SessionAttributes({"attribute1", "attribute2"})	
+	
+@Controller	
+@SessionAttributes({"doctorNo"})
+class DoctorController {
+	@RequestMapping("/newDoctor")
+	public ModelAndView newDoctor(@ModelAttribute DoctorForm doctorForm) {
+		// inserted into db and doctorNo has been generated
+		ModelAndView mav = new ModelAndView();
+		mav.addAttribute("doctorNo", doctorNo);
+		
+		mav.setViewName("doctor-details");
+		return mav;
+	}
+}	
+
+#13. SessionStatus
+
+@Controller	
+@SessionAttributes({"doctorNo"})
+class DoctorController {
+	@RequestMapping("/doctor")
+	public ModelAndView showDoctor(@SessionAttribute("doctorNo") String doctorNo, SessionStatus sessionStatus) {
+		// query the data from database
+		ModelAndView mav = new ModelAndView();
+		mav.addAttribute("doctor", doctor);
+		
+		mav.setViewName("doctor-details");
+		sessionStatus.completed();
+		
+		return mav;
+	}
+}		
+
+#14. 
+ModelMap
+Model
+Map
+
+@Controller
+class AppointmentController {
+	@RequestMapping
+	public String showAppointment(@RequestParam("appointmentNo") String appointmentNo, Model modelMap) {
+		// goto database and fetch appointment details
+		
+		modelMap.addAttribute("appointment", appointment);
+		
+		return "appointment-info";
+	}
+}
+
+#15. 
+BindingResult
+
+
+@Controller
+class UserAccountController {
+	@RequestMapping("/signup")
+	public String signup(@ModelAttribute SignupForm signUpForm, BindingResult errors) {
+		//
+	}
+}	
+------------------------------------------------------------------------------------------
+Supported ReturnTypes
+1. ModelAndView
+2. ModelMap
+3. Map
+4. Model
+5. void
+6. String
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

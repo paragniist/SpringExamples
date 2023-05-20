@@ -1,0 +1,183 @@
+What is DispatcherServlet, how to configure the DispatcherServlet within our application?
+DispatcherServlet plays the role of Front Controller in spring webmvc application, all the requests that are send to our application are received by the DispatcherServlet. It applies the common processing logic for each request that is received by the application and there after delegates/dispatches the requests to other mvc components to further process the request.
+	
+So we need to configure DispatcherServlet as part of our application either through configuration approach or programmatic approach.
+	
+web.xml
+--------
+<servlet>
+	<servlet-name>dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>dispatcher</servlet-name>
+	<url-pattern>*.htm</url-pattern>
+</servlet-mapping>
+
+What will happen at the time of instantiating the object of DispatcherServlet?
+There are several spring mvc components being used as part of the spring mvc application like
+	- HanderMappings
+	- Controller
+	- ViewResolvers
+	- View
+and even business-tier/persistence tier components to handle and process the request like
+- Services
+- Dao
+unless these are hosted and managed as part of the ioc container, these cannot leverage the cross-platform or container services offered by the ioc container like
+	- aspected oriented programming
+	- transactionality
+	- event-driven mechanism
+	- internationalization
+	- exception management
+etc
+
+So these components should be configured as bean definitions and should instantiated and hosted them aspart of the ioc container to take the advantage of spring ioc container
+
+The developer has to configure these components which are relevant and appropriate for usage as part of the application in spring bean configuration file.
+
+Since the entrypoint of the mvc application is DispatcherServlet, these components are being used by the DispatcherServlet only to handle and process the requests. So the DispatcherServlet needs these components from the ioc container
+
+From the above we can understand DispatcherServlet by himself should be able to instantiate these components and use them aspart of request processing
+
+The DispatcherServlet has to instantiate the ioc container prior to processing of the request and should be created onlyonce and should use the same container for processing all the requests that are coming into the application
+
+During the startup of the application upon instantiate the object of DispatcherSerlvet within the init() method it takes of creating the ioc container and holds the reference of it, so that it can use the ioc container for all the requests that are coming into the application
+
+The DispatcherServlet follows convention over configuration in identifying the spring bean configuration file to be used in creating the ioc container.
+	#within the init() method it takes the name of the servlet and prepends "/WEB-INF/" and appends "-servlet.xml" and looks for the file in creating the ioc container.
+if the file is not found, it throws an exception terminating/stopping the deployment of the application within the servlet container
+
+What is Controller, why do we need to use?
+Controller is a component written by the developer in which he/she is going to write the code for processing the request that is send to the application.
+
+Since the Controller is called by DispatcherServlet, we cannot write any class with any methods defined withit, if DispatcherServlet has to call the Controller they should be a standard contract defined by the DispatcherServlet that should be implemented by the Controller class.
+	
+Our controller class must and should implement from an standard interface called Controller
+	
+interface Controller {
+	ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response);
+}
+
+
+class WelcomeControllerImpl implements Controller {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("welcome");
+		return mav;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

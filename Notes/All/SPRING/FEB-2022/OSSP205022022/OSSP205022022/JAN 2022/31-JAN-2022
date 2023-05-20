@@ -1,0 +1,138 @@
+What is namespaces of classloaders?
+Each class when it is loaded by an classloader, the classloader prefix the classloader.package.classname to the Class while placing the class into jvm memory, so that each class can be uniquely identified by the jvm.
+	
+What is the difference between NoClassDefFoundError and ClassNotFoundException?
+1. NoClassDefFoundError
+if the classes referred by our application are not in classpath during execution then we get NoClassDefFoundError.
+	
+2. ClassNotFoundException
+	2.1 During the explicit loading of the class we might have used wrong classname within our programming logic due to which we might run into ClassNotFoundException. so need to verify the classname we are using is correct or not
+	2.2 In case if the classname referred in our application is correct then it might lead due to improper classpath
+-----------------------------------------------------------------------------------------------
+Phases of classloading
+----------------------
+What are the phases in which a classloader will try to load the class into jvm memory?
+Each classloader will loads the class into the jvm memory in 3 stages
+1. Loading
+2. Linking
+	2.1 Verification
+	2.2 Preparing
+	2.3 Resolving
+3. Initializing 
+
+
+1. Loading
+In the loading phase the classloader will converts the fqnClassname of the class into navigatable directory structure format, lets consider the below example where we are running a class Launcher with fqn Class.
+java com.pcl.main.Launcher
+
+The classloader takes the fqn class converts into navigatable directory format as com/pcl/main/ and appends to the classname the .class for location the classfile Launcher.class
+com/pc/main/Launcher.class
+	
+now searches for the .class file from the repective physical directory locations of the FileSystem to locate the class file.
+
+If the .class file is not found throws an exception either(NoClassDefFoundError or ClassNotFoundException)
+If the .class file is found, then the classloader reads the bytecode of the class and loads into a byte[] reference variable
+
+The entire process of locating the bytecode and reading the bytecode into classloader local reference is called "Loading" phase/process
+
+2. Linking
+After the classloader is able to locate and reads the bytecode of the .class file, then the linking phase will start. The linking phase has 3 stages in it.
+	
+2.1 Verifying
+During the verification stage the classloader conducts various different types of checks to ensure the bytecode is compatible and executable
+
+Few of the checks the classloader does are
+1. compiled bytecode version is compatible with the jvm version we are using for execution
+2. checksum check to verify the bytecode has been modified post compilation or not '
+	
+These checks/verifications are conducted by the classloader in addition to the above there could be many other checks as well being conducted by the classloader
+
+2.2 Preparing
+during the preparing phase the classloader constructs the Class object by using the bytecode it has read during loading phase. Here the skelecton representation of the class is ported/constructed into Class object by populating members of the class and methods of the class. The other references of our class are not resolved during preparing phase
+	
+2.3 Resolving
+In this phase the classloader tries to identify the other classes that are referenced within our class like delcared other classes as attributes or referred through Inheritance etc and those classes also will loaded by during the resolving phase and the fully resolved Class reference will be available in jvm memory
+	
+3. Initializing
+During the initialization phase the static variables declared within the class and static methods declared are initialized. variables allocated memory. methods are loaded and static blocks are executed.
+	
+class A {
+	static {
+		System.out.println("loaded..");
+	}
+}	
+
+by default static-blocks of the classes are executed during the class loading process, but if we want we can differ their execution until the first object creation of the class using
+
+Class c = Class.forName("A", false, scl);
+	
+How does static modifier declarations works?
+static-blocks of the class are executed during the time of loading the class into jvm memory
+static variables are initialized during the time of loading the class into jvm memory
+static methods are loaded into jvm memory during the time of loading the class
+	
+
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+		

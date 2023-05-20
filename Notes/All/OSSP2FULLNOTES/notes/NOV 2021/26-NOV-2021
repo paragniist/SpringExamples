@@ -1,0 +1,39 @@
+ioc is an principle = collaborating the objects and managing the lifecycle of the objects.
+The logical memory partition created by the BeanFactory is collaborating the objects and managing the lifecycle of it, so it is called "ioc container".
+	
+There are 2 ways of collaborating the objects are there
+1. dependency pulling = That is supported from very long time by most of the platforms or technologies including jee. In case of dependency pulling we need to write code in our class in pulling or getting the object of other class, so here the classes will become tightly coupled.
+	There are 2 forms of dependency pulling are there
+	1.1 dependency lookup
+	1.2 contextual dependency lookup
+	
+
+2. dependency injection = It is modern way of managing the dependencies adopted in recent past and promoted by Spring Framework. we dont write any code referring the class in acquiring the object of another class, so our classes will be completely loosely coupled. There are 2 forms of dependency injection are there
+	2.1 setter injection
+	2.2 construction injection
+	
+#1 dependency pulling
+1.1 dependency lookup
+In our class we write the code for lookuping or searching for an dependent object in a registry or from an public repository and pull the object into our application/class.
+For eg..
+while working with connection pooling supported by jee container, in our class we write the jndi logic for connecting to the jndi registry of jee container in looking up for DataSource object and pull DataSource object into our class, which is nothing but dependency lookup only.
+
+1.2 contextual dependency lookup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

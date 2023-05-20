@@ -1,0 +1,130 @@
+The resources that are internal to the application can be accessed using relative path (relative from the classpath location of the project), instead of using absolute path. only the resources that are outside the project should be accessed using absolute path.
+  
+e:\appClasses.properties (outside the project)
+------------------------------------------------
+messageWriter.class=com.sdp.beans.MessageWriter
+htmlMessageFormatter.class=com.sdp.beans.HTMLMessageFormatterImpl
+pdfMessageFormatter.class=com.sdp.beans.PDFMessageFormatterImpl
+messageBoard.class=com.sdp.beans.MessageBoard
+
+
+d:\work\:/>
+sdpattern
+|-src
+  |-main
+    |-java
+      |-com
+        |-sdp
+          |-beans
+            |-MessageWriter.java
+            |-HTMLMessageFormatterImpl.java
+            |-PDFMessageFormatterImpl.java
+          |-helper
+            |-AppFactory.java
+            
+    |-resources   
+      |-appClasses.properties
+|-pom.xml
+|-target
+  |-classes
+      |-com
+        |-sdp
+          |-beans
+            |-MessageWriter.class
+            |-HTMLMessageFormatterImpl.class
+            |-PDFMessageFormatterImpl.class
+          |-helper
+            |-AppFactory.class
+
+              
+class AppFactory {
+  private static Properties props;
+  
+  static {
+    props = new Properties();
+    InputStream in = MessageWriter.class.getClassLoader().getResourceAsStream("appClasses.properties");
+    props.load(in);
+  }
+  
+  public static Object createObject(lclassname){
+    
+    //props.load(new FileInputStream(new File("e:\\appClasses.properties"))); // absolute path    
+    String fqnClass = props.getProperty(lclassname);
+    Class clazz = Class.forName(fqnClass);
+    Object obj = clazz.newInstance();
+    return obj;
+  }
+}              
+              
+class Test {
+  public static void main(String args[]) {
+    MessageWriter messageWriter = (MessageWriter) AppFactory.createObject("messageWriter.class");
+    MessageBoard messageBoard = (MessageBoard) AppFactory.createObject("messageBoard.class");
+    
+    IMessageFormatter htmlMessageFormatter = (IMessageFormatter) AppFactory.createObject("htmlMessageFormatter.class");
+    IMessageFormatter pdfMessageFormatter = (IMessageFormatter) AppFactory.createObject("pdfMessageFormatter.class");
+    
+    messageWriter.setMessageFormatter(htmlMessageFormatter);
+    messageBoard.setMessageFormatter(htmlMessageFormatter);
+    
+    
+    messageWritter.writeMessage("welcome to sdp");
+    messageBoard.flashMessage("Welcome to SDP");
+  }
+}              
+              
+              
+              
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+    cMessage = messageFormatter.convert(message);
+    sop(cMessage);
+  }
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {
+    this.messageFormatter = messageFormatter;
+  }
+}              
+
+
+class MessageBoard {
+  private IMessageFormatter messageFormatter;
+  
+  public void flashMessage(String message) {
+    String cMessage = null;
+    
+    cMessage = messageFormatter.format(message);
+    // display iton the message board
+  }
+  public void setMessageFormatter(IMessageFormatter messageFormatter) {
+    this.messageFormatter = messageFormatter;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+              
+              
+              
+              
+              
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+Isolation levels
+-----------------
+The transaction isolation levels indicates the consistency level we want to achieve while performing the operation on the database.
+There are 3 data inconsistency problems we run into while performing operation on the database
+1. DIRTY READ
+2. NON REPEATABLE READ
+3. PHANTOM READ
+
+In order to solve these problems we need to use Transaction Isolation levels.
+There are 4 transaction isolation levels are available that can be enabled on the database to achieve data consistency
+1. Read Uncommited
+2. Read Committed
+3. Repeatable
+4. Serializable
+
+Propagation Levels
+--------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

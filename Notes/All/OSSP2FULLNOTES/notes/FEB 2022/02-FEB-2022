@@ -1,0 +1,104 @@
+What are the various different classloaders provided as part of jee environment?
+jee is a specification or an api that is build ontop of jdk, so the classloaders that we learn in jdk environment are still applicable and available in jee environment.
+	
+In addition to those core classloaders the jee containers or servlets containers requires additional classloaders for loading application classes. The java ee api or sun microsystems or oracle has not provided any built-in classloaders like jdk env. But as part of jee specification they defined packaging and deployments standards of deploying an web/jee applications in container environment. so that the packaging and deployability aspects works across any container that is complaint with jee specification
+
+The jee has provided to specifications
+1. container specification
+describes how the jee servers or servlet containers has to execute the programs written in java ee api and deployed on the container.
+	
+2. developer specification
+The developers has to write the application programming logic by using the jee developer specification so that those can packaged and deployed on the jee containers.
+	
+Jee specification has defined standard packaging standards
+1. war
+The java web applications has to be packaged in war packaging standard and should be deployed on the jee/servlet container.
+	
+webroot (directory)
+|-publicresources (html/css/js/images)
+|-WEB-INF
+	|-lib
+	|-classes
+	|-web.xml
+	
+2. ear
+enterprise application archive which is used for packaging and deployment multi-module applications that on build in java ee specification. an ear containers multiple war modules inside it sharing common libraries across them.
+ear
+|-lib
+|-META-INF
+	|-application.xml
+|-webmodule1
+|-webmodule2
+-----------------------------------------------------------------------------------------------
+From the above we can understand each vendor has to comeup with their own classloader implementations to support loading the application classes into jvm memory based on packaging and deployment standards defined as part of jee specifications. So there are no built-in classloaders in jee environment.
+	
+When it comes to jee api we dont know what classloaders are available, since the number of classloaders and their names will differ from container to container. But we can make sum assumptions in order to understand classloading technology in jee/servlet container environment.
+	
+Each servlet/jee container has to provide a classloader supporting loading of the classes from a war deployment, which we could ref it as "WarClassLoader" even though the actual name of it differs from container to container.
+	
+These WarClassLoaders loads the bytecode of the java classes that are packaged inside a war file and under an deployment directory.
+Each container has their own deployment directory locations since they have their own ClassLoader implementations. We need to ref container documentation to identify what is the deployment directory location where the war file has to be placed under so that it would picked up by the respective classloader.
+	
+The WarClassLoader once it has located the War file inorder to load the classes packaged inside the War file, they are going explode the war contents (unzip) into a directory and reads the .class files from WEB-INF/lib and WEB-INF/classes directly respectively
+
+If we deploy 2 war applications into the deployment directory of the container the servlet/jee container uses 2 instances of the WarClassLoader to load their application classes, which are immediate child of System/Application Classloader
+
+Here based on the principle of visibility, the classes that are loaded by the Application1 WarClassLoader cannot see the classes that are loaded by the Application2 WarClassLoader since those are siblings and doesnt fall under hierarchy, that is how jee/servlet container environments are securing the applications that are deployed on same jvm
+
+
+
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

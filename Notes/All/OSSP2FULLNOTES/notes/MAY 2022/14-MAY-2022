@@ -1,0 +1,83 @@
+class EmpDao {
+	public void saveEmployee(Connection con, EmployeeBo bo) {
+		boolean flag = false;
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			// create preparedStatement "insert into emp values(?,?,?,?,)
+			// substitute parameters
+			pstmt.executeUpdate();
+			flag = true;
+		}catch(ClassNotFoundException | SqlException e) {
+			flag = false;
+		}finally {
+			if(pstmt != null) {
+				pstmt.close();
+			}
+		}
+	}
+}
+
+class PayrollDao {
+	public void savePayroll(Connection con, int empNo, PayrollBo bo) {
+		boolean flag = false;
+		PreparedStatement pstmt = null;
+		
+		try {
+			// create preparedStatement "insert into emp values(?,?,?,?,)
+			// substitute parameters
+			pstmt.executeUpdate();
+			flag = true;
+		}catch(ClassNotFoundException | SqlException e) {
+			flag = false;
+		}finally {
+			if(pstmt != null) {
+				pstmt.close();
+			}
+		}
+	}
+}
+
+class EmployeeMgmtDelegate {
+	public void newEmployee(AddEmployeeVo vo) {
+		boolean flag = false;
+		EmpDao empDao = null;
+		PayrollDao payRollDao = null;
+		Connection con = null;
+		try {
+			Class.forName(driverClassname);
+			con = DriverManager.getConnection(url, un, pwd);
+			con.setAutoCommit(false);
+			
+			empDao = new EmpDao();
+			payrollDao = new PayrollDao();
+			// convert vo into bos
+			
+			empDao.saveEmployee(con, empBo);
+			payrollDao.savePayroll(con, empNo, payrollBo);
+			flag= true;
+		}catch(SqlException e) {
+			flag = false;
+			throw new AddEmployeeFailedException("emp add failed", e);
+		}finally {
+			if (con != null){
+				if(flag) {
+					con.commit();
+				}else {
+					con.rollback();
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+

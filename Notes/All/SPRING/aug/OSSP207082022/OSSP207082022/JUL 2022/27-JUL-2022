@@ -1,0 +1,81 @@
+1. form submission with form validations
+2. internationalization
+3. field formatters
+4. message converters
+5. exception handling
+6. javabean validation integration
+7. SessionAttributes
+----------------------------------------------------------
+Internationalization (i18n)
+Internationalization is localizing the application to the language of the user, who is accessing the application.
+	
+How to Internationalize an application?
+There are 3 types of internationalization are there
+1. data internationalization
+2. nls (native language support) programming
+----------------------------------------------------
+
+3. content internationzation
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

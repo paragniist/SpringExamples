@@ -1,0 +1,185 @@
+@Lookup
+@Profile
+@ImportResource
+---------------------
+@Resource
+@Inject
+@Named
+------------------------------------------------------------------------------------------
+@DependOn
+----------
+It is used for managing the in-direct dependencies between the bean definitions, which means creational dependencies. before instantiating a bean definition, if we want ioc container to instantiate another bean definition then we can express by using depends-on
+
+@Component
+class CacheManager {
+
+}
+
+@Component
+@DependsOn("cacheManager")
+class LoanManager {
+
+}	
+
+Test.java
+---------
+ApplicationContext context = new AnnotationConfigApplicationContext("com.annotation5.dependson");
+LoanManager lm = context.getBean("loanManager", LoanManager.class);
+------------------------------------------------------------------------------------------
+@Import
+	
+// no source code	
+class Telephone {
+	private String subscriptionType;
+	private String telephoneNumber;
+	
+	public Telephone(String telephoneNumber) {
+		this.telephoneNumber = telephoneNumber;
+	}
+	public void setSubscriptionType(String subscriptionType) {}
+}	
+	
+// no source code
+class Exchange {
+	private int exchangeNo;
+	private String area;
+	Telephone telephone;
+	
+	public Exchange(int exchangeNo) {}
+	public void setArea(String area) {}
+	public void setTelephone(Telephone telephone) {}
+}
+	
+@Configuration	
+class TelephoneConfig {
+	
+	@Autowired
+	private Environment env;
+	
+	@Bean
+	public Telephone telephone() {
+		Telephone telephone = new Telephone(Integer.parseInt(env.getProperty("telephoneNumber")));
+		telephone.setSubscriptionType(env.getProperty("subscriptionType"));
+		
+		return telephone;
+	}
+}
+	
+@Configuration
+class ExchangeConfig {
+	@Autowired
+	private Environment env;
+
+	@Bean
+	public Exchange exchange(Telephone telephone) {
+		Exchange exchange = new Exchange(Integer.parseInt(env.getProperty("exchangeNo")));
+		exchange.setArea(env.getProperty("area"));
+		exchange.setTelephone(telephone);
+		
+		return exchange;
+	}
+}
+	
+@Configuration
+@Import({TelephoneConfig.class, ExchangeConfig.class})
+@PropertySource("classpath:common.properties")
+class RootConfig {
+	
+}	
+
+common.properties
+----------------------
+telephoneNumber=983938
+subscriptionType=std
+exchangeNo=93
+area=balajinagar
+------------------------------------------------------------------------------------------
+// source code
+@Component
+class Alarm {
+	@Autowired
+	Bell bell;
+	
+	public void remind() {
+		bell.ring();
+	}
+}
+	
+interface Bell {
+	void ring();
+}	
+// no source code
+class MonoBell implements Bell {
+	void ring(){
+		sop("mono bell ringing...");
+	}
+}
+// no source code
+class DigitalBell implements Bell {
+	void ring() {
+		sop("digital bell singing...");
+	}
+}	
+	
+@Configuration
+class JavaConfig {
+
+	@Bean
+	@Primary
+	public MonoBell monoBell() {
+		return new MonoBell();
+	}
+	
+	@Bean
+	public DigitalBell digitalBell() {
+		return new DigitalBell();
+	}
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

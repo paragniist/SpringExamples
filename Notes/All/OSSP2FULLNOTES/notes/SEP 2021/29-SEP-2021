@@ -1,0 +1,133 @@
+Spring core is all about managing the dependency between the classes. Spring core can manage the dependencies between any 2 arbitary set of classes, but it recommends us to design the classes based on a design pattern called "Strategy Design Pattern", to get most benefited out of using Spring Framework.
+  
+For a recurring problem, there is a best applicable solution that can be used/applied to solve the problem, under a context documented together is called a "Design Pattern".  
+Strategy design pattern is one of the design patterns defined as part of GOF Patterns.   
+  
+We need to design our application classes based on Strategy Design Pattern, and pass them to Spring Framework to better manage the dependencies.
+  
+Strategy design pattern has 3 principles following which we need to design our classes.
+1. Favor composition over inheritance
+2. Always design to interfaces never design to concreate classes
+3. Code should be open for extension and closed for modification
+
+#1. Favor composition over inheritance
+There are 2 ways a class can reuse the functionality of another class
+1. Inheritance
+2. Composition
+
+#1. What is Inheritance?
+A class can reuse the functionality of another class through inheritance. We can establish an inheritance relationship between the classes by extending one class from another class.
+
+class B {
+  int m2(int i) {
+    // operation
+    return 34;
+  }
+}
+
+  
+class A extends B {
+  void m1(int i) {
+    int j = m2(i);
+    // operation
+  }
+}  
+
+when we inherit a class from another class all the traits of the parent class will be part of child. So that child can directly use the methods or attributes of the parent as if those are part of child only.
+Here A class can call the method m2(int i) of B class without using the object of B class, because A is having the traits of B inside it.
+  
+Inheritance establishes IS-A relationship between the classes, which means always a child can be expressed interms of parent.
+
+#2. What is composition?
+The another way we can reuse the functionality of another class inside a class is through "Composition". We declare another class as an attribute inside our class, instantiate the object of other class and use the methods and attributes of other class through the reference of the other.
+  
+class A {
+  B b;
+  void m1(int i) {
+    b = new B();
+    int j = b.m2(i);
+    // operation
+  }
+}  
+
+class B {
+  int m2(int i) {
+    // operation
+    return 93;
+  }
+}
+  
+Composition always refer to a thing/or a substance has been madeup of what other things. For eg.. a Bicycle is madeup on lot of other parts like break, chain, frame, handle etc.  
+Composition establishes HAS-A relationship between the classes, which means we have the reference of other to use the functionality of other class.
+  
+when to use inheritance, and when we should go for composition?
+Inheritance:-
+  1. If we want to reuse all the traits of another class, within our class then use Inheritance.
+  2. if we can replace a parent with the reference of child, which means always a child can act as an substitute of the parent. (nothing but child is-a parent)
+    
+    
+class Printer {
+ - init() {}
+ - print() {}
+ - diagnose() {}
+}
+ 
+class LaserJetPrinter extends Printer { // here child can be expressed interms of parent
+    
+}
+  
+class Engine {
+  void ignite() {}
+  void accelerate(int kmph) {}
+  void break() {}
+}  
+  
+// this is wrong, because we cannot replace a Engine with Car. It is not a IS-A relationship.
+class Car extends Engine { 
+  
+}  
+When to go for composition?
+If we want to partially use the functionality of another class inside our class, then use Composition, do go for Inheritance.
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

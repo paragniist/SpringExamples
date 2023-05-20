@@ -1,0 +1,128 @@
+There are 3 principles of classloaders
+1. Principle of delegation
+2. Principle of visibility
+3. Principle of uniqueness
+
+#1. Principle of delegation
+Whenever a classloader has been requested to load a class into jvm memory, it will not load the class first-in place, rather it delegates the request for loading the class to the parent. In this way all the classloaders delegates the request to the parent util it reaches to the root of the hierarchy.
+	
+If none of the classloaders within the hierarchy are able load the class, then the classloader again will get a chance to load the class into the jvm memory.
+Since each classloader delegates to the parent first, it is called "Principle of delegation"	
+
+d:\jclworks\pdel:/>	
+package com.pcl.delegation;
+public class Runner {
+	public static void main(String[] args) {
+		ClassLoader cl = Runner.class.getClassloader();
+		System.out.println(cl.getClass().getName());
+	}
+}
+
+#1 compile
+------------
+d:\jclworks\pdel:/> javac -d . Runner.java
+#2 package into library jar
+d:\jclworks\pdel:/> jar -cvf pdel.jar ./com
+	|-pdel.jar
+	
+#3 copy the jar into $JAVA_HOME\lib\ext directory
+#4 java com.pcl.delegation.Runner
+-----------------------------------------------------------------------------------------------
+#2 Principle of visibility
+Whenever a class is loaded by a classloader, that class can see all the other classes loaded by the same classloader or the classes loaded by any of its parent classloaders
+
+But class loaded by classloader cannot see other classes that are loaded by the child classloader.
+	
+d:\jclworks\visibilityprinciple:/>
+|-corebanking
+package com.pcl.visibility;
+public class AccountService {
+	public double getBalance(String accountNo) {
+		SecureRandom secureRandom = null;
+		
+		secureRandom = new SecuredRandom();
+		int random = secureRandom.nextInt(10000);
+		System.out.println("AccountService is loaded by : "+ this.getClass().getClassLoader().getClass().getName());
+		
+		return random;
+	}
+}
+
+d:\jclworks\visibilityprinciple:/>
+|-applications
+package com.pcl.main;
+import com.pcl.visibility.*;
+public class App {
+	public static void main(String[] args) {
+		AccountService accountService = new AccountService();
+		double balance = accountService.getBalance("ac0933");
+		System.out.println("balance : " + balance);
+		
+		System.out.println("App is loaded by : " + App.class.getClassLoader().getClass().getName());		
+	}
+}
+
+#1 compile
+d:\jclworks\visibilityprinciple\corebanking:/> javac -d . AccountService.java
+d:\jclworks\visibilityprinciple\applications:/>
+set CLASSPATH=d:\jclworks\visibilityprinciple\corebanking
+javac -d . App.java
+
+#2 package corebanking and place in ext directory
+d:\jclworks\visibilityprinciple\corebanking:/>jar -cvf corebanking.jar ./com
+place the jar into $JAVA_HOME\lib\ext
+
+#3 execute App class 
+d:\jclworks\visibilityprinciple\applications:/> java com.pcl.main.App
+-----------------------------------------------------------------------------------------------
+Reverse the places where these classes are placed
+
+#1 compile
+d:\jclworks\visibilityprinciple\corebanking:/> javac -d . AccountService.java
+d:\jclworks\visibilityprinciple\applications:/>
+set CLASSPATH=d:\jclworks\visibilityprinciple\corebanking
+javac -d . App.java
+
+#2 package App.class into jar file
+d:\jclworks\visibilityprinciple\applications:/> jar -cvf app.jar ./com
+place the jar into $JAVA_HOME\lib\ext directory
+
+#3 run the App class by setting the classpath to corebanking directory
+set CLASSPATH=d:\jclworks\visibilityprinciple\corebanking
+java com.pcl.main.App
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

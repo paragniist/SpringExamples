@@ -1,0 +1,167 @@
+#4 Inheritance doesnt support testability of the components, whereas composition supports testablity.
+  
+class Engine {
+  int ignite(int mode) {
+    return 0;
+  }
+}  
+
+abstract class AbstractEngine {
+  public int ignite(int mode) {
+    return 0;
+  }
+}
+
+class Car extends AbstractEngine {
+  public int drive(int mode) {
+    int engineStatus = super.ignite(mode);
+    if(engineStatus == 0) {
+      sop("wow! engine started, accelerating the car to drive");
+    }else if(engineStatus = 1) {
+      sop("oops! failed to start, retrying");
+    }else if(engineStatus == 2) {
+      sop("waring! requires repair, calling for assitance");
+    }else if(engineStatus == 3) {
+      sop("error! tow to guarage");
+    }
+  }
+}
+
+At this point the Engine is still under development, and we have completed the car class by using the prototype of Engine. Now to complete our development, we need to unit test the logic inside the Car class, since Engine class has not yet completed looks like we got stuck in testing the Car, how to resolve this problem?
+  
+We can only certify our code has completed the development only post completion of testing, since the Engine has not yet completed we need to Mock / Dummy classes which can return possible return values with which we can test our Car class.
+  
+class MockSuccessEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 0;
+  }
+}  
+
+  
+class MockFailedRetryEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 1;
+  }
+}  
+  
+class MockFailedRepairEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 2;
+  }
+}  
+  
+class MockFailedGuarageEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 3;
+  }
+}  
+
+class Car extends MockFailedGuarageEngine {
+  public void drive(int mode) {
+    int engineStatus = super.ignite(mode);
+    if(engineStatus == 0) {
+      sop("wow! engine started, accelerating the car to drive");
+    }else if(engineStatus = 1) {
+      sop("oops! failed to start, retrying");
+    }else if(engineStatus == 2) {
+      sop("waring! requires repair, calling for assitance");
+    }else if(engineStatus == 3) {
+      sop("error! tow to guarage");
+    }
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    Car car = new Car();
+    car.drive(1);
+  }
+}
+
+with the above code we cannot certify the Car is working, because unless we execute all the paths of our code using test logic and derive the right outcome we cannot cerify the code is working.
+  
+To test the drive() method of car class, we need write 4 mock engine classes which returns all the possible return values that is returned by ignite() method of original Engine.
+Now to test the car class drive() method I need to change the static reference of the parent through inheritance for 4 times and compile and execute it to test against all possible outcomes, which makes the developers life worse in certifying the code.
+  
+To overcome the above problem we can use composition
+
+abstract class AbstractEngine {
+  public int ignite(int mode) {
+    return 0;
+  }
+}
+class MockSuccessEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 0;
+  }
+}  
+
+  
+class MockFailedRetryEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 1;
+  }
+}  
+  
+class MockFailedRepairEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 2;
+  }
+}  
+  
+class MockFailedGuarageEngine extends AbstractEngine {
+  public int ignite(int mode) {
+    return 3;
+  }
+}    
+class Car {
+  private AbstractEngine engine;
+  
+  public Car(AbstractEngine engine) {
+    this.engine = engine;
+  }
+  
+  public void drive(int mode) {
+    int engineStatus = engine.ignite(mode);
+    if(engineStatus == 0) {
+      sop("wow! engine started, accelerating the car to drive");
+    }else if(engineStatus = 1) {
+      sop("oops! failed to start, retrying");
+    }else if(engineStatus == 2) {
+      sop("waring! requires repair, calling for assitance");
+    }else if(engineStatus == 3) {
+      sop("error! tow to guarage");
+    }
+  }
+}
+  
+class Test {
+  public static void main(String[] args) {
+    Car successCar = new Car(new MockSuccessEngine());
+    Car retryCar = new Car(new MockFailedRetryEngine());
+    Car repairCar = new Car(new MockFailedRepairEngine());
+    Car guarageCar = new Car(new MockFailedGuarageEngine());
+    
+    successCar.drive();
+    retryCar.drive();
+    repairCar.drive();
+    guarageCar.drive();
+  }
+}  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+

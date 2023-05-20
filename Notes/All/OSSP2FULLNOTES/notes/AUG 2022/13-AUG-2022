@@ -1,0 +1,148 @@
+Spring ORM
+Spring Framework integration with object relational mapping technology api/framework
+Spring + Hibernate
+Spring + Jpa api
+
+Why do we need to integrate Spring Framework with Hibernate Framework?
+1. Entity class
+2. Mapping Information [either hbm/annotation]
+3. Hibernate Configuration File
+hibernate.cfg.xml
+database configuration
+- connection.driverClass
+- connection.url
+- connection.username
+- connection.password
+hibernate properties
+- dialect
+- show_sql
+- format_sql
+- hbm2ddl.auto
+- mapping resources
+
+4. SessionFactory object to be instantiated 
+we should create 1 SessionFactory per 1 database and at the end of the application we should close the SessionFactory to avoid resource leakage
+
+5. For each operation we wanted to perform
+- create session object
+- Transaction object
+- perform the operation by calling the method on session object
+- commit/rollback the transaction
+- close the session
+
+While working on hibernate framework in building an application we endup in writing lot of boiler plate logic lets identify 
+1. we need to write the code in managing only 1 object of SessionFactory per 1 database in every application which is seems to be an common requirement, that results in boiler-plate logic
+Instead if we can take the help of Spring Framework and create SessionFactory as a bean definition within ioc container then only one object of the SessionFactory will be created for a bean definition as by default it is singleton scope, so we dont need to write boiler-plate logic
+
+2. in each method while performing operation we write the code for creating the Session and closing the Session at the end of the operation which seems to be boiler-plate logic and potentialy leads to resource leakage issue
+
+3. we write lot of code in managing the transactions in each method of our application which is another boiler-plate logic instead use spring transactions
+
+To overcome the above problems we integrate spring framework with Hibernate/Jpa
+
+
+#1. How to manage SessionFactory for our application?
+	
+class A {}
+<bean id="a" class="A"/>
+A a = new A();
+
+<bean id="sessionFactory" class="org.hibernate.SessionFactory">
+</bean>
+
+SessionFactory sessionFactory  = new SessionFactory();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

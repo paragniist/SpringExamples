@@ -1,0 +1,85 @@
+class MessageWriter {
+  private IMessageFormatter messageFormatter;
+  public void writeMessage(String message) {
+    String cMessage = null;
+    
+    
+    cMessage = messageFormatter.formatMessage(message);
+    System.out.printl(cMessage);
+  }
+}
+
+interface IMessageFormatter {
+  String formatMessage(String message);
+}
+
+class HTMLMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<html><body>"+message+"</body></html>";
+  }
+}
+
+class PDFMessageFormatterImpl implements IMessageFormatter {
+  public String formatMessage(String message) {
+    return "<pdf>"+message+"</pdf>";
+  }
+}
+
+class Test {
+  public static void main(String[] args) {
+    MessageWriter messageWriter = new MessageWriter();
+    messageWriter.writeMessage("Welcome to SDP");
+  }
+}
+
+If a class is creating the object of another class, then we will run into 2 problems.
+1. In order to create the object of another class, our class has to use the new operator and has to refer the concrete classname of another class, to switch from one class to another class again we need to change the concrete classname of another which makes our class tightly coupled.
+
+2. if a class is creating the object of another class, then it is exposed to the complexity in creating the object of another class. 
+
+class A {           class B {      class C {}
+  void m1() {         C c;
+                      B(C c) {}
+  }                 }
+}  
+  
+In the above eg class A want the object of B class, but inorder to create the object B A has to know the details of how to create the object of B (like B is dependent on C etc) and should write complex logic in instantiating the object of B class.
+  
+C c = new C();
+B b = new B(c);
+
+If we are writing that complex logic in creating the object of another class, we will run into maintainability problems
+  1. the code in creating the object of another class would gets duplicated across all the classes whoever want the object of B here
+  2. if instantiation of the B class has been changed again our class will gets affected.
+    
+If our class is creating the object of another class we are running into the above 2 problems, in order to overcome the problem, let our class dont create the object of another class. Let someother create object of the another class.
+  
+Factory design pattern
+-----------------------
+Factories are used for creating the object of another class. 
+There are 2 reasons for which we use the factories.
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

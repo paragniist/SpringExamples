@@ -1,0 +1,130 @@
+Spring core Annotations
+------------------------
+In core java application we takecare of creating the classes, instantiating them and invoke the methods to use the functionality. But when we are working in Jee/enterprise application environments, we create the classes with the relevant logic, but our classes are instantiated and invoked by the underlying containers / infrastructures/ platforms
+
+For eg.. while working with servlet api, we create a servlet class and handover to the servlet container, which takes care of invoking the service() method upon receiving the request. if we dont use the servlet container then the programmer has to write the network logic in receiving the request, extracting the data and passing it as an input to the servlet by invoking the method which seems to be boiler-plate logic.
+	
+Instead we rely on underlying containers/platforms/infrastructures which takes care of applying relevant boiler-plate logic and invoking our application classes.
+	
+In such case to let the underlying containers/platforms/runtime engines to know the details of our application classes, we need to provide the metadata or information about our classes by writing configuration information, that is where metadata or configuration information comes into picture
+
+In general we write configuration information describing about our application classes to the underlying containers through xml based configuration
+
+Annotations are the another means of attaching or defining the configuration information about the application classes to the underlying containers
+
+What are annotations?
+Annotations are used for attaching/defining configuration information for a java class. it is even called as "source-code metadata", since we write the configuration directly as part of the source code of the java class
+	
+From the above we can understand there are 2 ways we can define the configuration information about our classes in java. either we can use xml or annotations, when we can work with xml, why annotations are introduced.
+	
+There are problems while working with xml, to overcome the dis-advantages/difficulties in working with xml annotations are introduced by sun microsystems.
+
+problems in working with xml:
+1. xml is too verbosed, we endup in writing more configuration information describing the components rather than the actual information, developer often find it difficult to memorize such an huge xml tags and tough to write it, and takes lot of time in writing the xml
+2. there are too many number of tags are there in xml and are quite length, these xml tags are case-sensitive. not only memorizing these tags, we need to write these tags in a specific order that makes most of the developer complex in working with xml
+
+3. xml is no way related to java, or it is not related to java language. and even it doesnt have resemblence with java language, it has altogether a different syntax and semantics. so most of the java developers find xml as a different language and find it complex to learn and use it
+
+4. xml doesnt support any intermediate compilation like java, so the only way to identify the errors that are there in xml is by deploying the application and running it. during the runtime the underlying container/framework/runtime environment will tries to read the xml and reports the error if there is any by displaying a length stacktrace to the user.
+Now the user has to go through the stacktrace to identify the mis-configuration issue in xml, modify repackage and redeploy the application
+this process has to go in iterations until all the errors in the xml are identified and are resolved, which seems to be more tedious job and kills most of the time of the developer
+
+5. as the configuration information describing the class has been kept outside the java class by writing in a separate xml configuration, the developer has to often switch between java class and xml to understand the information about the class which is quite difficult
+	
+6. There are no ides available in java to work with xml, so always it is difficult to write the xml configuration file
+
+7. by considering all the above aspects we can understand xml doesnt support rapid application development
+
+So to overcome all the above problems annotations are brought into picture
+What are the advantages of working with annotations over the xml?
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

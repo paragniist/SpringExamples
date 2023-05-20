@@ -1,0 +1,105 @@
+There are 3 principles are there
+1. Principle of delegation
+always a classloader delegates the request to loading the class to its parent. if none of the classloaders within the hierarchy are not able to load then the classloader makes an attempt in loading the class.
+	
+2. Principle of visibility
+A class loaded by a classloader can see the other classes loaded by same classloader or any of the other classes loaded by parent classloader, but it cannot see the classes loaded by child classloader
+For eg..
+The java.lang jdk classes are loaded by Bootstrap classloader, where these classes should not access our application classes.Our application classes are loaded by System/Application classloaded or Extension classloader and these classes can see and use java.lang jdk classes.
+	
+3. Principle of uniqueness
+The principle of uniqueness is achieved through principle of delegation. If a class is loaded by a classloader within the hierarchy, the same class will not be loaded by any other classloader within the hierarchy again.
+	
+d:\jclwork\uniquenessprinciple:/>
+|-products
+package com.up.products;        
+public class Claypot {
+	public int capacity() {		
+		return 10;
+	}
+}
+uproducts.jar ($JAVA_HOME/lib/ext)
+|-com.up.products
+	|-Claypot.class
+
+d:\jclwork\uniquenessprinciple:/>
+|-machinery
+package com.up.main;
+public class Spindle {
+	public static void main(String[] args) {
+		System.out.println("Spindle is loaded by : " + Spindle.class.getClassLoader().getClass().getName()); // system/app
+		
+		Claypot cp = new Claypot();
+		int capacity = cp.capacity();
+		System.out.println("capacity : " + capacity);
+		System.out.println("Claypot is loaded by : " + cp.getClass.getClassLoader().getClass().getName());		// extension
+		
+		Class clazz = Class.forName("com.up.products.Claypot", true, Spindle.class.getClassLoader()); // can you please load Claypot class using System/App classloader
+		System.out.println("Claypot clazz loaded by :" + clazz.getClassLoader().getClass().getName()); // extension classloader
+	}
+}
+	
+d:\jclwork\uniquenessprinciple:/>
+set CLASSPATH=d:\jclwork\uniquenessprinciple\machinery;d:\jclwork\uniquenessprinciple\products
+java com.up.main.Spindle
+-----------------------------------------------------------------------------------------------
+Always we can get a parent classloader of a classloader using getParent() method. if we call on System Classloader ref object getParent(), we can get reference of Extension classloader.
+	
+Note: we cannot get the reference of BootStrap classloader, trying to get the reference of Bootstrap classloader returns null only.
+
+java.lang is reserved package (wrong)	
+package java.lang;
+public class CharString {} // absolutely allowed
+	
+package java.lang;
+public class String {
+	public int length() {
+		return 0;
+	}
+}
+already loaded by bootstrap classloader, so it cannot be loaded by any other classloader in the hierarchy. 
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

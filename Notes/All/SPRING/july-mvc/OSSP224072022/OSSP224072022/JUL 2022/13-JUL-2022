@@ -1,0 +1,122 @@
+There are lot of spring webmvc components are there like
+1. HandlerMapping
+2. Interceptor
+3. ViewResolvers
+4. Validator
+5. View
+6. ExceptionHandler
+7. MessageSource
+8. Resource Handlers
+9. Local Resolvers
+10. Theme Resolvers
+
+While working with spring webmvc many of these spring mvc components are required to build an mvc application. even though we dont use a specific feature like Local resolver or Theme resolver still to make spring mvc work, we need to these components to be configured as bean definitions to let the mvc work
+
+To avoid the programmer avoid configuring these components when he is not using it, the spring mvc has provided WebApplicationContext as a special ioc container for mvc applications
+upon instantiating the implementations of WebApplicationContext, it takes care of creating most of mvc components with their default implementations and configurations so that programmer can avoid configuring them unless needed.
+	
+For each mvc component types, the spring webmvc has defined default implementations to be instantiated as part of DispatcherServlet.properties, the WebApplicationContext implementation class reads the properties file identify the implementations and instantiates in case if we have not provided one for that type
+
+Apart from the default, while working with mvc application we need configure spring mvc components with bean configurations to customize and use within our application
+To help us in quickly configuring the mvc components as bean definitions while working with annotation-driven approach spring mvc has provided
+WebMvcConfigurer and WebMvcConfigurerAdapter interface and abstract classes respectively
+
+WebMvcConfigurer is an interface 
+WebMvcConfigurerAdapter is an abstract implementation of interface, and is marked as deprecated from spring 4 onwards in support of default interfaces
+
+@Configuration
+class MvcConfig {
+	@Bean
+	public Controller homeController() {
+		ParameterizableViewController controller = new ParameterizableViewController("home");
+		return controller;
+	}
+}
+
+WebMvcConfigurer
+-> for each mvc component type which are configurable by the programmer one method is there
+
+@Configuration
+class MvcConfig implements WebMvcConfigurer {
+
+	public void configureViewController(ViewControllerRegistry registry) {
+		registry.addViewController("/home.htm").setViewName("home");
+	}
+	
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+		registry.jsp().prefix("/WEB-INF/jsp/").suffix(".jsp");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

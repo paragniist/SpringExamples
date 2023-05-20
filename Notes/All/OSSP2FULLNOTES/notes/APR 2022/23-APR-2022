@@ -1,0 +1,135 @@
+class Calculator {
+	int add(int a,int b) {
+		int sum = 0;
+		sum = a +b;
+		return sum;
+	}
+}
+
+class LoggingAdvice implements MethodInterceptor {
+	public Object invoke(MethodInvocation methodInvocation) {
+		String methodName = null;
+		Object[] args = null;
+		Object proxy = null;
+		
+		methodName = methodInvocation.getMethod().getName();
+		args = methodInvocation.getArguments();
+		proxy = mehtodInvocation.getThis();
+		
+		sopln("entered into " + methodName+"(");
+		for(int i =0;i<args.length;i++) {
+			if(i==0) {
+				sop(args[i]);
+				continue;
+			}
+			sop(","+args[i]);
+			
+		}
+		sopln(")");
+		args[0] = (Integer)args[0] + 1;
+		args[1] = (Integer)args[1] + 1;
+		
+		Object ret = methodInvocation.proceed();
+		sopln("exiting from " + methodName + " with ret :" + ret);
+		ret = (Integer) ret + 1;
+		return ret;		
+	}
+}
+
+
+class Test {
+	public static void main(String[] args) {
+		ProxyFactory pf = new ProxyFactory();
+		pf.setTarget(new Calculator());
+		pf.addAdvice(new LoggingAdvice());
+		
+		Calculator proxy = (Calculator) pf.getProxy();
+		int sum = proxy.add(10, 20);
+		sop("sum : " + sum);
+	}
+}
+------------------------------------------------------------------------------------------
+#2 usecase of around advice
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	private Cache() {dataMap = new ConcurrentHashMap();}
+	public static synchronized getInstance() {}
+	public void put(String key, Object val) {}
+	public Object get(String key) {}
+	public boolean containsKey(String key) {}
+}
+
+class Calculator {
+	int add(int a,int b) {
+		int sum = 0;		
+		sum = a + b; // costly operation
+		return sum;
+	}
+}
+
+class CacheAdvice implements MethodInterceptor {
+	public Object invoke(MethodInvocation methodInvocation) {
+		String methodName = null;
+		Object[] args = null;
+		String key = null;
+		Cache cache = null;
+		
+		cache = Cache.getInstance();
+		methodName = methodInvocation.getMethod().getName();
+		args = methodInvocation.getArguments();
+		key = methodName+"("+args[0]+","+args[1]+")";// add(10,20) add(11, 21)
+		
+		if(cache.containsKey(key) == true) {
+			return cache.get(Key);
+		}
+		Object ret = methodInvocation.proceed();
+		
+		cache.put(key, ret);// add(10,20) add(11, 21)
+		return ret;
+	}
+}
+
+add(10,20)=30
+add(11,21)=32
+	
+Calculator proxy = ..
+int sum = proxy.add(10, 20);
+sop(sum);
+	
+sum = calculator.add(10, 20);
+sop(sum);
+
+	
+sum = calculator.add(11, 21);
+sop(sum);
+	
+sum = calculator.add(11, 21);
+sop(sum);	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+

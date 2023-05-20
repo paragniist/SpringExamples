@@ -1,0 +1,128 @@
+What is an Java classloader?
+ClassLoaders are the other java class, which takescare of loading the bytecode of the java classes into the jvm memory.
+	
+We dont have to write our own classloaders to load the java classes, rather it is a basic requirement in executing any class to be loaded for execution, java core jdk itself has provided the built-in classloaders
+
+There 3 built-in classloaders provided by the core jdk
+1. bootstrap classloader
+2. extension classloader
+3. system/application classloader
+
+These classloader loads the bytecode of the java classes from various different locations and works based on the rules in securing the jvm lets us explore
+
+1. How and from where these classloaders load the bytecode of the java classes?
+The 3 classloaders are not independent of each other rather they work in hierarchial manner one acting as a child and another as a parent in loading the classes.
+	
+1.1 bootstrap classloader
+bootstrap classloader is called the primordial or ultimate classloader. The bootstrap classloader is written native language like "c" and is built to execute on the native platform so it is even classed native classloader.
+The bootstrap classloader is responsible for loading all the core jdk classes into the jvm memory which are as part $JAVA_HOME\lib\rt.jar
+
+1.2 extension classloader
+extension classloader is an another java class that is an immediate child of bootstrap classloader and takes care of loading the bytecode of the java classes from 2 different locations
+note: extension classloader loads only the .class files or bytecode which are packaged inside jar only, the purpose of extension classloader is to enhance or extend the jvm system by loading external libraries, since the external libraries are shipped in "jar" distribution he loads only jar files
+
+The extension classloader loads the .class files/bytecode packaged inside a jar file from 2 different directory locations
+	1. all the jar containing classes that are placed under $java_home/lib/ext directory
+	2. java.ext.dir system property pointed directory location container jar files will be loaded by extension classloader
+	
+What is an System Property?
+
+There are 4 scopes at which we can declare the variables in java
+1. Method level variables = the variables/parameters declared local to method are called method level variables and are accessible within the method only
+
+2. Instance variables = all the variables declared as part the class are called "attributes" which are instance variables. those are associated as part of the object of the class through which we can access them. the scope of the instance variables are at the object-level and would be destroyed upon releasing an object
+	
+class Person {
+	int uniqueNo;
+	String fullname;
+}	
+Person p1 = new Person();
+p1.uniqueNo = 39; // instance variables
+
+3. Class-level variables = all the static variables declared as part of the class which are accessible by using the Class are called class-level variables and the scope of these variables are to the application level
+These varibles gets initialized upon loading the class and will be released only while closing/terminating down the application.
+	
+4. System Properties/Jvm level variables
+
+
+what is the difference between jdk and jre?
+jdk = java development kit
+provides all the required set of development tools and runtime libraries that are required for developing and running a java program
+
+For eg. all the compilers, applet runners and code generators like rmic, wsgen etc which are required for conducting development activities are shipped as part of jdk install.
+	
+jre = java runtime environment
+provides the runtime libraries and tools required for only running java application
+libraries
+java A
+note:- every jdk install comes with an jre inside it
+
+what is a jvm?
+jvm is a program under execution it is not an software bits we installed through a jdk/jre installation, when we lauch a java application through java command, then a jre will be running and executing the program.
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

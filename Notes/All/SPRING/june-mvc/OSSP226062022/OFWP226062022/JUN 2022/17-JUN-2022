@@ -1,0 +1,64 @@
+ContextLoaderListener and DispatcherServlet creates WebApplicationContext interface implementation ioc containers
+	
+ApplicationContext
+|-ClassPathXmlApplicationContext
+|-FileSystemXmlApplicationContext
+|-AnnotationConfigApplicationContext
+
+WebApplicationContext
+|-XmlWebApplicationContext
+|-AnnotationConfigWebApplicationContext
+--------------------------------------------------------------------------------------------
+
+DispatcherServlet
+ContextLoaderListener 
+------------------------
+
+programmatic approach/configuration (minimal) : 1 week
+HandlerMapping 
+Controller
+ViewResolver 
+View 
+--------------------------------------------------------
+How to easily work with the above components in configuration approach
+
+annotation-driven approach
+#1 DispatcherServlet/ContextLoaderListener
+#2 How to work with HandlerMapping, ViewResolver, View in annotation-driven approach
+#3 MvcConfig
+#4. Types of annotation-driven controllers
+	-> Data Validation
+	-> Form Management
+	-> Integration with Java Bean Validation api
+	-> Internationalization support
+	-> Spring Jdbc + Tx
+	
+						 
+Saturday: 18/06/2022 
+Spring Framework: 6:30 am -> 8:00 am
+WebService: 8:15 am -> 9:15 am
+--------------------------------------
+Hibernate: 5:00 pm - 6:30 pm
+ODWA3 Devops With Aws: 7:00 pm - 8:30 pm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

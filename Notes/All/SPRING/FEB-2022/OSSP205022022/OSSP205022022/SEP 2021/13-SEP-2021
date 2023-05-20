@@ -1,0 +1,34 @@
+What are the challenges infront of the Spring Framework in their initial days, to overcome inorder to with stand in the market?
+1. Struts Framework exists a way before Spring Framework, it has huge customer base and lot of users are already using the Struts Framework, when it comes to Spring Framework it has little or no presence in the market. Looks like most of the users are going to use Struts Framework only for their application development due to its presence and popularity
+
+2. There are lot of application that are already developed and deployed in production env using Struts Framework, looks like Spring Framework is a newbie where there are very less or no application are build on it and deployed in production. Since there are no usecases running in production, there is no guarantee that by using Spring Framework we can deliver the application into production
+
+3. By then Spring Framework has been released there are multiple releases of Struts Framework taken place, which made it more stable. Where as Spring Framework being newbie there are no release of the Spring Framework happened and there is no guarantee all the bugs in the Spring Framework are eliminated, So there is a risk involved in building an application using Spring Framework, during the development if we encounter any critical bug in Spring Framework, our development will be halted.
+  
+4. We can always find someone who can help us in resolving the problem, when we stuck while working with Struts Framework, because it is being used my many people in the market. whereas Spring Framework being newbie looks like most of the people dont know, if we stuck some where while developing application using Spring Framework we dont get any references barely that further delays the application development
+
+5. There is a huge community support and rich amount of documentation is available with Struts Framework being established very well, so we can always find it easy to develop the application using Struts Framework. Spring Framework is a newbie, there is no community support or documentation available in the market due to which always it is quite difficult to develop application
+
+6. Struts Framework and Spring Framework are open source, being open source always there is a risk involved. The open source technologies might exists and may sunset by themself at any time without providing the support or future releases due to which all the applications being developed using the open source stack will be effected. Struts Framework exists from long time and lot of people are using the Struts Framework there is gurantee struts would continue to exists for long time. where as Spring Framework being newbie there is no gurantee it would exist for long time.
+  
+Looks like Spring has quite a number of challenges infront of them, to be popular like Struts Framework Spring should address all the above challenges as well.
+  
+Spring Framework has added spring community support
+provided better documentation to help 
+quick release of the Spring Framework made it more active and stable
+Spring Framework developers has conducted lot of technical conferences in the market
+Spring Framework built usecases and deployed on production to give market more confidence about them and partnered with many assignments helping them to make production
+
+
+
+
+
+
+
+
+
+
+
+
+
+

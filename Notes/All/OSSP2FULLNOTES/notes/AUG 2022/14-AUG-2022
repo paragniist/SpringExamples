@@ -1,0 +1,191 @@
+Why do we need to integrate Hibernate with Spring Framework?
+when we are working with hibernate framework we need to write lot of boiler-plate logic in performing the operations using hibernate framework
+1. we need to create one SessionFactory per one database within the application
+2. per each operation we should create a new Session object and should close the Session object at the end of the operation, where there is always a chance that we might run into resource leakage issues
+3. we need to write code for managing the transactions across all the methods of our classes in application
+4. at the end of the application we should write the code for closing the SessionFactory
+
+To avoid the above problems in working with Hibernate Framework we can integrate Spring with Hibernate
+#1. Manage SessionFactory
+To ensure we maintain only one SessionFactory per one database in our application we can configure SessionFactory as an bean definition, so that the default scope of the bean definition is "singleton" so we have only one object of the SessionFactory.
+	
+3 approaches
+1. xml-based configuration approach
+2. Properties approach
+3. Programmatic approach
+
+#1.
+hibernate.cfg.xml
+<hibernate-configuration>
+</hibernate-configuration>
+
+Configuration configuration = new Configuration().configure();
+SessionFactory sessionFactory = configuration.buildSessionFactory();
+
+#2. 
+hibernate.properties
+
+Configuration configuration = new Configuration();
+configuration.addResource(".hbm.xml");
+SessionFactory sessionFactory = configuration.buildSessionFactory();
+
+#3. 
+Configuration configuration = new Configuration();
+configuration.setProperty("key", "value");
+configuration.addResources("*.hbm.xml");
+SessionFactory sessionFactory = configuration.buildSessionFactory();
+
+
+The Spring ORM module has provided an FactoryBean to instantiate and place the SessionFactory as a bean definition in ioc container
+LocalContainerSessionFactoryBean = it is a FactoryBean class that takes care of creating the SessionFactory as a bean definition by using configuration we provided to him
+	
+<bean id="dataSource" class="DriverManagerDataSource">
+	<property name="driverClassname" value="com.mysql.cj.jdbc.Driver"/>
+	<property name="url" value="jdbc:mysql://localhost:3306/db"/>
+	<property name="username" value="root"/>
+	<property name="password" value="root"/>
+</bean>
+
+<bean id="sessionFactory" class="LocalSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"/>
+	<property name="hibernateProperties">
+		<props>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+			<prop key="hibernate.hbm2ddl.auto">update</prop>
+		</props>		
+	</property>
+	<property name="mappingResources">
+		<list>
+			<value>com/shi/entities/Account.hbm.xml</value>
+		</list>
+	<property>
+</bean>
+
+<bean id="hibernateTemplate" class="HibernateTemplate">
+	<property name="sessionFactory" ref="sessionFactory"/>	
+</bean>
+
+<bean id="accountDao" class="AccountDao">
+	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+</bean>
+
+<bean id="transactionManager" class="HibernateTransactionManager">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<aop:config>
+	<aop:pointcut id="txPointcut" expression="within(com.shi.service.*)"/>
+	<aop:advisor advice-ref="transactionManager" pointcut-ref="txPointcut"/>
+</aop:config>
+
+class AccountService {
+	private AccountDao accountDao;
+	
+	public int addAccount(AccountForm accountForm) {			
+		return accountDao.saveAccount(account);		
+	}
+}
+
+class AccountDao {
+	private HibernateTemplate hibernateTemplate;
+	
+	public int saveAccount(Account account) {
+		hibernateTemplate.save(account);
+		return account.getAccountNo();
+	}	
+}
+------------------------------------------------------------------------------------------------------------------------
+How to integrate Jpa?
+1. LocalContainerEntityManagerFactoryBean
+2. JpaTemplate
+3. JpaTransactionManager
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

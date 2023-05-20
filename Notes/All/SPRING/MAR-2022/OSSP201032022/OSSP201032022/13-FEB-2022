@@ -1,0 +1,133 @@
+What is p and c namespace what is the purpose of it?
+instead of writing length property and constructor argument tags in defining a bean the spring has provided p and c as an alternate way of configuring them
+p-namespace is used for setter injection and c-namespace is used for constructor injection. the syntax of using p & c namespace are below
+p:attribute=value (or) p:attribute-ref=beanId
+c:attribute=value (or) c:attribute-ref=beanId
+-----------------------------------------------------------------------------------------------
+PropertyEditors
+----------------
+PropertyEditor edits the property value we configured into the target class attribute type, so that ioc container can inject it as dependent object into the target class.
+	
+There are quite commonly used java classes are there while building an java application like
+- Date
+- File
+- Array
+- URL
+etc
+when we declare them as attributes in our target class, inorder to inject them as dependencies we need to configure these classes as bean definitions so that those can be injected via reference into target class attributes as shown below	
+
+class Meeting {
+	Date scheduledDate;
+	
+	// setter
+}
+a-c.xml
+---------
+<bean id="scheduledDate" class="java.util.Date">
+	<constructor-arg value="2022"/>
+	<constructor-arg value="01"/>
+	<constructor-arg value="13"/>
+</bean>
+<bean id="metting" class="Meeting">
+	<property name="scheduledDate" ref="scheduledDate"/>
+</bean>
+
+since these are commonly used class types, injecting them by configuring these classes as bean definitions will endup in writing lot of configuration.
+For eg.. we are using Date class as dependent/attribute in 10 different classes in our application we need to configure 10 bean definitions of the Date class to be used as dependent
+	
+So it shoots up the development time and even cost of development of the application instead of if we can directly configure these object types will values being injected the amount of configuration we need to write for these classes to be inject becomes quite less and the application becomes easy to manage.
+	
+<bean id="metting" class="Meeting">
+	<property name="scheduledDate" value="13/02/2022"/>
+</bean>
+
+but ioc container dont know how to convert these string value we supplied into corresponding target class type, that is where property editors are used.
+	
+The spring developers has identified the most commonly used class types in java applications and has provided by themself the inbuilt property editors for
+	1. File
+	2. URL
+	3. Date
+	4. Array
+	
+so that while using any of these as attribute in our classes we dont have to configure them as bean definitions, rather we can supply directly the values
+
+class FacebookAccount {
+	private File profilePicture;
+	private URL fbLink;
+	private String[] followers;
+	private Date dob;
+	
+	// setter
+}
+
+<bean id="facebookaccount" class="FacebookAccount">
+	<property name="profilePicture" value="d:/mypic.png"/>
+	<property name="fbLink" value="http://www.facebook.com?id=393"/>
+	<property name="followers" value="alex,goerge,james"/>
+	<property name="dob" value="11/02/1990"/>
+</bean>
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

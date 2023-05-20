@@ -1,0 +1,86 @@
+public class Severity {
+	public static interface WARN extends Payload {}
+	public static interface ERROR extends Payload {}
+}
+
+class LoanApplication {
+	@Postive(message="")
+	private int loanApplicationNo;
+	private String applicantName;
+	@NotBlank(payload = {Severity.ERROR})
+	@Length(min="5", max="10", payload={Serverity.WARN})
+	private String loanType;
+	private int tenure;
+	private double amount;
+	private String mobileNo;
+	private String emailAddress;
+	
+	@Min(value=10, groups={GoldType.class})
+	@Max(value=100, groups={GoldType.class})
+	int grams;
+	// accessors
+}
+
+LoanApplication loanApplication = new LoanApplication();
+// populated data
+
+ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+Validator validator = validatorFactory.getValidator();
+
+Set<ConstraintViolation> violations = validator.validate(loanApplication, GoldLoan.class);
+for(ConstraintViolation violation : violations) {
+	Set<Class<?> extends Payload> payloads = violation.getConstraintDescriptor().getPayload();
+	for(Payload payload : payloads) {
+		if(payload == Severity.ERROR.class) {
+			sop(violation.getMessage());
+		}
+	}
+}
+
+Payload is used for filtering the ConstraintViolations based on Severity we associate to the annotation.
+------------------------------------------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

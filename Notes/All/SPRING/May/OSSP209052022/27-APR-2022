@@ -1,0 +1,174 @@
+Pointcuts:-
+------------
+set of joinpoints on whom we want to advice our aspect logic	
+
+class Calculator {
+	int add(int a, int b) {
+		return a + b;
+	}
+	int substract(int a, int b) {
+		return b-a;
+	}
+	int multiply(int a, int b) {
+		return a * b;
+	}
+}
+
+class LoggingAdvice implements MethodInterceptor {
+	public Object invoke(MethodInvocation methodInvocation) {
+		String methodName = null;
+		Object[] args = null;
+		Object ret = null;
+		
+		methodName = methodInvocation.getMethod().getName();
+		if(methodName.equals("add") || methodName.equals("substract")) {
+			args = methodInvocation.getArguments();
+
+			sop("entered into " + methodName+"("+args[0]+","+args[1]+")");
+			ret = methodInvocation.proceed();
+			sop("exiting from " + methodName + " with ret : " + ret);
+		}else {
+			ret = methodInvocation.proceed();
+		}
+		return ret;		
+	}
+}
+
+Test.java
+---------
+ProxyFactory pf = new ProxyFactory();
+pf.setTarget(new Calculator());
+pf.addAdvice(new LoggingAdvice());
+
+Calculator proxy = (Calculator) pf.getProxy();
+int sum = proxy.multiply(10, 20);
+
+without using the pointcuts also we can apply the cross-cutting logic or aspect logic to specific joinpoints of the target class, by writing conditional checking in advice class, but the problem is all the methods of the target class are proxied (adviced) even we dont want to apply the cross-cutting logic which results in poor performance.
+	
+So instead of adding conditional check which results poor programming/performance we can use pointcuts
+There are 2 types of pointcuts are there 
+1. static pointcut
+we define fixed set of joinpoints on whom we want to advice the aspect (all these methods of the target class, advice)
+	
+2. dynamic pointcut
+we evaluate a conditional check at runtime to decide whether a joinpoint should be adviced or not
+
+#1. static pointcut
+Spring aop has provided an Pointcut interface which acts as a base interface for creating our own pointcut. but there are abstract/concrete implementation classes provided by spring aop implementing that interface
+	1. StaticMethodMatcherPointcut (abstract) (static pointcut)
+	2. DynamicMethodMatcherPointcut (abstract) (dynamic pointcut)
+	3. NamedMatchMethodPointcut
+	4. RegexMethodPointcut
+	
+class LoggingStaticPointcut extends StaticMethodMatcherPointcut {
+	public boolean matches(Method method, Class<?> classType) {
+		if(classType == Calcuator.class && (method.getName().equals("add") || method.getName().equals("substract"))) {
+			return true;
+		}
+		return false;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

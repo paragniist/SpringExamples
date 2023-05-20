@@ -1,0 +1,271 @@
+What is cache?
+Cache is used for storing the data and managing the data, and it distributes the data across all the classes whoever requires the data.
+We need to store the data in the cache in an organized manner where each data should be given an identifier to locate and access the data quickly.
+	
+class Cache {
+	private static Cache instance;
+	private Map<String, Object> dataMap;
+	
+	private Cache() {
+		dataMap = new HashMap<>();
+	}
+	
+	public static synchronized getInstance() {
+		if(instance == null) {
+			instance = new Cache();
+		}
+		return instance;
+	}
+	public void put(String key, Object value) {
+		dataMap.put(key, value);
+	}
+	public Object get(String key) {
+		return dataMap.get(key);
+	}
+	public boolean containsKey(String key) {
+		return dataMap.containsKey(key);
+	}
+}	
+
+@WebServlet(urlPatterns={"/viewSignup"})
+class ViewSignupServlet extends HttpServlet {
+	public void service(req, resp) {
+		City city = null;
+		Cache cache = null;
+		Connection con = null;
+		Statement cityStmt = null;
+		ResultSet cityRs = null;
+		List<City> cities = null;
+		
+		cache = Cache.getInstance();
+		if(cache.containsKey("cities") == false) {
+			cities = new ArrayList();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection(url, un, pwd);
+			cityStmt = con.createStatement();
+			cityRs = cityStmt.executeQuery("select * from cities");
+			while(cityRs.next()) {
+				city = new City();
+				city.setCityId(rs.getInt("city_id"));
+				city.setCityName(rs.getString("city_nm"));
+				cities.add(city);
+			}
+			cache.put("cities", cities);
+		}else {
+			cities = (List<City>) cache.get("cities");
+		}
+		
+		if(cache.containsKey("states") == false) {
+			// fetch the states from database
+			cache.put("states", states);
+		}else {
+			states = (List<State>) cache.get("states");
+		}
+		if(cache.containsKey("countries") == false) {
+			// fetch from database
+			cache.put("countries", countries);
+		}else {
+			countries = (List<Country) cache.get("countries");
+		}
+		req.setAttribute("cities", cities);
+		req.setAttribute("states", states);
+		req.setAttribute("countries", countries);
+		req.getRequestDispatcher("/signup.jsp").forward(req, resp);
+		
+	}
+}
+-----------------------------------------------------------------------------------------------
+when should we go for creating a class as a singleton class?
+There are 3 circumstances under which we need to make a class as singleton
+	#1. In our class there are no member variables which means the object of our class holds zero state, the member methods are not using any of the state of the object and those are taking the data interms of parameters and return the data in return values.
+	Since the member methods are not using any of the state of the object, the outcome of executing these methods will not be dependent on the object we are using rather it depends on the parameter with which we are calling the methods, in such case it is unnecessary to create multiple objects of the class apart from wasting jvm memory create the class as "singleton"
+		
+	#2. In our class there are member variables and member methods are using the state of the object, but the state of the object is completely read-only. In this case all of the objects of the class holds the same state and there is no use of creating multiple objects as the methods are not being dependent on object state, so create the class as "singleton"	
+		
+	#3 In our class there are member variables and the methods are using the state of the object, but the state of the object is completely "sharable", in such case dont create multiple objects of the class, since all the objects are going to have same state as those are sharable and wastes jvm memory, instead make the class as "singleton"	
+		
+		
+When we should use non-singleton?
+if the class object has a state and is not read-only and non-sharable then we should create the class as non-singleton class
+			
+singleton design pattern
+classloaders
+	- jdk classloaders
+	- principles
+	- phases
+	- ClassNotFoundException and NoClassDefFoundError
+	- Jee classloaders
+When to use Singleton?
+Cache design pattern
+Registration Usecase demonstrating use of
+	1. dynamic responses in jsp
+	2. avoiding hardcoding
+	3. making use of Cache to optimize the performance
+----------------------------------------------------------------------------------------------
+Bean Scopes
+-------------
+
+We can manage the number of objects the ioc container has to create for a given bean definition through the help of bean scopes
+There are 4 scopes are supported
+1. singleton
+2. prototype
+3. request
+4. session
+
+#1. singleton
+ioc container creates only one object for the bean definition when it is marked as singleton scope
+
+#2. prototype 
+the bean definition is marked as non-singleton which means for each reference in fetching the object for the bean definition from ioc container it creates a new object of the bean definition
+
+#3. request
+per each http request the ioc container instantes the new object of the bean definition
+
+#4. session
+per each http session object a new bean definition object is instantiated
+
+by default when we declare a class as bean definition, the scope of the bean is "singleton". if we want to change the scope of the bean definition we need to use scope="" attribute at the bean tag level
+
+#1.
+class DataConverter {
+	private static DateConverter instance;
+	private DateConverter(){}
+	public static synchronized DateConverter getInstance() {}	
+	public Date toDate(String date) {}
+}
+
+<bean id="dateConverter1" class="DateConverter" scope="singleton" factory-method="getInstance"/>
+
+<bean id="dateConverter2" class="DateConverter" scope="singleton" factory-method="getInstance"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

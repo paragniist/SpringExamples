@@ -1,0 +1,97 @@
+#3. Which approach are you using in developing the webservice?
+There are 2 approaches are there in developing the webservice
+1. contract-first approach/bottom-up approach
+2. contract-last approach/top-down approach
+
+#1. contract-first approach
+The wsdl acts as an contract between consumer and provider so in case of contract-first approach, the development of the webservice/provider starts with writing wsdl document first-in place. upon completion of wsdl document, based on that the actual development of the provider will commence.
+As the development of provider begins with wsdl in-first, it is called "contract-first approach"
+	
+#2. contract-last approach
+In case of contract-last approach, the developer straight away begins the development of the webservice, upon completing the development of the provider, at the last in place the wsdl/contract will be created to be exposed to the consumers. since the wsdl document is created at the last stage of the development it is called "contract-last" approach
+
+#4. Which message exchange pattern (mep) based web service are you developing?
+Message Exchange Pattern (MEP) indicates how does the communication takes place between the consumer and provider. There are 3 message exchange patterns are there
+
+1. synchronous req/reply / blocking req/reply
+whenever consumer sents a request to the provider, the consumer will be blocked on the request he has sent to the provider waiting for a response back from him. until the response is returned by the provider consumer would indefinitely wait, since the consumer is waiting for an response from the provider it is called "synchronous communication or synchronous req/reply"
+
+2. asynchronous req/reply / delayed response
+The consumer upon sending the request to the provider,he would not wait for an immediate response from the provider, because based on the nature of the request he sent, the consumer knows it takes lot of time for processing, so there is no point consumer being blocked on the request he has sent waiting for the response.
+So upon sending the request, the consumer will close the connection without waiting for response and would perform other activities or operations at the consumer end.
+	
+The provider upon receiving the request,he may place the request in a queue and may take it at later point of time. after completing the processing of the request, the provider connects back to the consumer by establishing a communication channel with consumer and dispatches the response.
+	
+since the consumer is not being blocked waiting for the request and provider is sending the response back to the consumer at a later point of time, it is called "asynchronous req/reply or delayed response"	
+	
+3. one-way invoke / fire & forget
+The consumer upon sending the request to the provider, he would not wait or expect a response from the provider, rather he would immediately closes the communication channel without waiting for an response which is called "one-way invoke or fire & forget"
+
+bp-1.0: jaxrpc api = supports only 2 mep based webservices. sync req/reply and one-way invoke only
+
+bp-1.1: jaxws api = supports all the 3 mep based web services which are
+sync req/reply
+async req/reply
+fire & forget
+--------------------------------------------------------------------------------------------
+#5 which message exchange format (mef) based web service are you developing?	
+message exchange format indicates how does the information/data is being exchanged between the consumer and provider
+
+There are 2 attributes of the wsdl document based on which we derive message exchange format.
+1. style = represents the structure of the data we are exchanging between the consumer and provider
+The style attribute can take 2 possible values.
+	1.1 rpc
+	1.2 document
+
+2. use = the use indicates how does the data is represented inside the xml
+The use attribute can take 2 possible values.
+	2.1 literal
+	2.2 encoded
+	
+based on these we can derive 4 combinations
+1. rpc-encoded
+2. rpc-literal
+3. document-encoded
+4. document-literal
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

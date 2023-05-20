@@ -1,0 +1,219 @@
+What are the advantages of using annotations?
+1. annotations are short in-nature and at max spans an word and quick to write and easy to memorize unlike xml
+2. annotations are nothing but java types, so developers dont have to learn something new to use annotations in writing the configuration
+3. as annotations are directly written as apart of the source code, during the compilation itself we will able to identify the mis-configuration issues and can avoid roundtrips in deploying and running into runtime errors due to mis-configurations. That save lot of developer productivity while building the application
+4. as annotations are directly written as part of the source code of the java class, the developer dont have to goto external configuration file to understand the configuration information about a class
+5. all the java ides supports working with annotations as those are java types only
+6. so considering above all we can understand annotations supports rapid application development.
+	
+There are advantages with xml as well and there are dis-advantages with annotations
+advantages of xml:
+1. as configuration information about all of the classes are written as part of single central xml configuration file we can easily derive holistic configuration information about our application easily. it helps me in easily debugging the application as well
+
+2. we can write configuration information to a class irrespective of whether it has source code or no source code
+	
+3. if we want to modify the configuration information of a class we dont have to modify the source code as it is written in external configuration file, which avoid recompilation, redeployment and restart of the application
+
+dis-advantages with annotations:-
+1. as annotations are scattered across the java classes in our application, identifying the complete configuration information about our application components is very difficult
+
+2. we cannot write annotations for the classes that doesnt have source code, so we need alternate mechanisms for binding the configuration information for such classes
+
+3. as the configuration is directly written as part of the class, any changes to the configuration requires re-compilation, repackging and redeployment of the application.
+------------------------------------------------------------------------------------------
+There are few concerns raised against use of annotations as part of the application and has asked sun microsystems to provide solution for the same.
+	
+1. if we use annotations as part of the application, the our classes loose pojofied nature
+to support pojofied appliation development sun microsystems has introduced RetentionPolicy for annotations
+There are 3 types of RetentionPolicy supported by annotations
+1. SOURCE
+2. COMPILE
+3. RUNTIME
+
+#1. SOURCE
+The presence of these annotations will at the source code level only, and the compiler will not be able to see these annotations during the compile time. These are called source code decorators or documentation purpose only
+
+@Author, @Deprecated = are few of the annotations which are documentation assistors or source code assistors that helps the develpers in reading/understanding the source code of the application.
+
+#2. COMPILE
+These are the annotations which are available during the compilation-time and java compiler can see these annotations and compile it specially based on the annotations we wrote. but these annotations will not be appeared into the bycode of the java class and will not be availabe during the runtime while running the application
+
+@Override, @SuppressWarnings, @FunctionalInterface = these are the annotations that will be read by the compiler during compilation and based on which it might perform additional checks or generates the bytecode accordingly but these will not appear during the runtime
+
+#3. RUNTIME
+these are the annotations that are included as part of the bytecode of the java class by the java compiler and these can be accessed at runtime and the presence of these annotations will modify the functionality/behaviour of the class
+	
+@WebServlet, @WebFilter, @Listener, @Column, @Table = all of these annotations will appear during runtime and the underlying containers or frameworks reads these configurations and provides/adds additional functionality
+
+#2. The developer attaches the configuration information interms of annotations by keeping in view of development env, but the deployer has to modify the configuration pertaining to production environment to make it work on production.
+If there is an issue creeps up during the production neither of these people owns the responsibility of the error and fix it as each of them claims the issue has been produced because of either of their code changes, which leads to conflicting roles of the people
+
+To overcome the above problem the sun microsystems supported overriding annotation configuration with xml, the deployer instead of modifying the source code to change configuration information he can write an external xml configuration file overriding the specific configuration of a class written in annotations so that when deployed the runtime environments has to override annotation based configuration with xml
+so that the conflicts between the roles of the people are resolved
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

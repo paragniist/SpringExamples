@@ -1,0 +1,47 @@
+What is an singleton class?
+For a given class, if we can create only one single object within the scope of an application then the class is called singleton class.
+	
+Why there are multiple objects are created for a singleton class within the jvm, what is the reason for it?
+To understand why there are multiple objects per a singleton class created within the jvm memory we need to understand the classloaders in java language.
+	
+What is a classloader, what is the purpose of it?
+Java is an platform independent programming language which means the program written in java language can be executed on any platform (operating system) without the need to changing the code and re-distributing the code.
+	
+For eg we wrote A.java 
+
+class A {
+	public static void main(String[] args) {
+		InputStream in = new FileInputStream("/news.txt");
+		// reading the contents of the file and display it
+	}
+}
+The above code written in java language will works across all the operating systems without changing the code for each platform.
+
+For eg languages like C and C++ has provided low level instruction set specific to the platform on which we are working. So if we write programs in C lang or C++ lang etc those programs works only on that platform only and will not work on other platform
+To make those program platform portable, the programmer has to change the code in program and write platform specific instruction set to work with that platform.
+For eg.. 
+	1. C supports interrupt programming, where the interrupts will be different from platform to platform so we need to change the code to work across platforms
+	2. C supports graphical programming which has to been changed across platforms
+So languages like C has provided instruction set to low-level at System Routines and Hardware level instructions as well due to this we need to change lines of code when we are switching betwen the platforms.
+	
+
+
+
+	
+
+The sourcecode (.java) file of a java class cannot be executed directly, we need to compile the sourcecode and generate bytecode (.class) file of the java class inorder to execute the code in java.
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

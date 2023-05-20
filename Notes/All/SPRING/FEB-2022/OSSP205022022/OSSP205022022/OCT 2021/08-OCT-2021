@@ -1,0 +1,94 @@
+Strategy design pattern
+1. Favor composition over inheritance
+2. Always design to interfaces, never design to concreate classes
+3. code should be open for extension and closed for modification
+
+#2 Always design to interfaces, never design to concreate classes
+If a class cannot complete its functionality without using another class, then that class is said to be dependent on another class. To manage the dependency between the classes we have 2 ways are there
+1. Inheritance
+2. Composition
+
+We studied earlier by using Inheritance, we run into several problems, so to avoid them we need to go for composition.
+  
+Composition:-
+declare another class as an attribute within our class, using the reference of another class talk to other class in reusing the functionality.
+  
+When a class is directly talking to another class by holding the concreate reference of another class, then the coupling between the classes will be very high.
+Coupling: degree of dependency between the classes
+Cohesion: well defined functionality of the class (need to correct it)
+  
+Always we should avoid coupling between the classes, if the coupling between the classes is very high we run into several problems
+A change in one class will affect all the dependent class which are talking to our class, due to which we run into many problems below.
+1. complexity in making the changes is very high
+2. a simple change in one class as it effects multiple other classes in our application we need to goto each of class and need to make relevant changes which is going to take lot of time
+3. as we are modifying several classes of our application, the change is going to be very costly
+4. there is a high chances of increasing bugs within the application as we are modifying several classes because of a change
+5. takes lot of time in certifying the changes (testing the code)
+From all the above we can easily understand coupling makes the application maintainability very difficult, so avoid coupling between the classes.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

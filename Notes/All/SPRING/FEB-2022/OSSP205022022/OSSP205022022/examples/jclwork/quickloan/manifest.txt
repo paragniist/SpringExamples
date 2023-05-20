@@ -1,0 +1,2 @@
+Main-Class: com.ql.main.QuickLoanApplication
+Class-Path: ./frauddetector.jar

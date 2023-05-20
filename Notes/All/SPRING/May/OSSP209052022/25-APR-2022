@@ -1,0 +1,124 @@
+class OrderManager {
+	String placeOrder(List<Product> products, Address address) {
+		String orderNo = null;
+		
+		orderNo = UUID.randomUID().toString();
+		return orderNo;
+	}
+}
+
+class NotificationAdvice implements AfterReturningAdvice {
+	public void afterReturning(Object returnValue, Method method, Object[] args, Object target) {
+		sop("order no: "+ returnValue + " total products : " + (List)args[0].length() + " shipping to " + (Address) args[1]);
+	}	
+}
+
+Test.java
+----------
+ProxyFactory pf = new ProxyFactory();
+pf.setTarget(new OrderManager());
+pf.addAdvice(new NotificationAdvice());
+OrderManager proxy = (OrderManager) pf.getProxy();
+
+String orderNo = proxy.placeOrder(products,address);
+------------------------------------------------------------------------------------------
+ThrowsAdvice
+------------
+If we want to perform cross-cutting logic, ontop of the primary business logic, when the target class is running into an exception, then we need to use throws advice
+
+when the target class method is throwing an exception before the exception propagates to the callee we can apply cross-cutting logic using throws advice
+
+usecase:-
+In general throws advice is used for performing global exception logging, of our application. instead of writing each method of each class within try/catch block for the sake of exception logging even we dont have alternate path of execution, we can use throws advice to log the exception globally in an application
+
+class Thrower {
+	public int willThrow(int i) {
+			if(i <= 0) {
+				throw new IllegalArgumentException("invalid i");
+			}
+		return i;
+	}
+}
+
+ThrowsAdvice is an marker interface, it doesnt have any method declared as part of it, since different exception types we want to perform different cross-cutting logics and cannot accomodate all of them inside one method
+
+So spring aop has provided an standard signature of the method, which we need to following in writing the method in which we need to write cross-cutting logic
+
+There are 2 signatures of the method supported
+#1. 
+	- the method must be public
+	- the name of the method should be afterThrowing only
+	- the parameters of the method is
+	Exception e, Method method, Object[] args, Object target
+	- returntype is void
+	
+	public void afterThrowing(IllegalArgumentException e, Method method, Object[] args, Object target) {
+	
+	}
+#2.
+	only the Exception type as parameter with methodname as same
+	public void afterThrowing(IllegalArgumentException e) {}
+
+class GlobalExceptionLoggingAdvice implements ThrowsAdvice {
+	public void afterThrowing(IllegalArgumentException e) {
+		
+	}
+	(or)
+	public void afterThrowing(IllegalArgumentException e, Method method, Object[] args, Object target) {
+		
+	}
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
